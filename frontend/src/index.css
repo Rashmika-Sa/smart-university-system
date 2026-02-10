@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  /* 60% - Deep Space Blue (Background) */
+  --color-primary: #0f172a; 
+  
+  /* 30% - Glass Blue (Cards/Secondary) */
+  --color-secondary: #1e293b;
+  
+  /* 10% - Neon Orange (Accent/Glow) */
+  --color-accent: #f97316; 
+  
+  /* Extra - Cyber Blue for highlights */
+  --color-cyber: #3b82f6;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100); }      
+  100% { transform: translateX(-100%); } 
+}
+
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee-reverse 25s linear infinite;
+  padding-left: 100%
+}
+
+/* Pause animation on hover */
+.group:hover .animate-marquee {
+  animation-play-state: paused;
+}
