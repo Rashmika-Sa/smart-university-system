@@ -2,23 +2,27 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const authRoutes = require('./routes/authRoutes');
 
-// Load environment variables
-dotenv.config();
+// 1. LOAD ENVIRONMENT VARIABLES FIRST (Before importing routes!)
+dotenv.config(); 
+
+// 2. NOW Import Routes (They can now see the .env variables)
+const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/users');
 
 // Initialize the App
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware (Allows the frontend to talk to the backend)
+// Middleware
 app.use(cors());
-app.use(express.json()); // Parses incoming JSON requests
+app.use(express.json());
 
-// Routes
+// --- ROUTES ---
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
-// Basic Route (To test if the server is working)
+// Basic Route
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
