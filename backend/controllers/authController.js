@@ -1,75 +1,91 @@
 const User = require('../models/User');
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-// Generate JWT Token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
-  });
-};
-
-// @desc    Register new user
-// @route   POST /api/auth/register
-// @access  Public
+// --- REGISTER USER ---
 const registerUser = async (req, res) => {
-  const { name, email, password, role } = req.body;
-
   try {
-    // Check if user exists
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
+    const { name, email, password, role } = req.body;
+    console.log("-----------------------------------------");
+    console.log("📝 Register Attempt:", email);
+
+    // 1. Check if user exists
+    let user = await User.findOne({ email });
+    if (user) {
+      console.log("❌ User already exists");
+      return res.status(400).json({ msg: 'User already exists' });
     }
 
-    // Create user
-    const user = await User.create({
+    // 2. Hash Password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    
+    console.log("🔑 Original Password:", password);
+    console.log("🔒 Hashed Password:", hashedPassword);
+
+    // 3. Create User
+    user = new User({
       name,
       email,
-      password,
-      role: role || 'student', // Default to student if no role provided
+      password: hashedPassword, // Important: Save the hashed version!
+      role: role || 'student'
     });
 
-    if (user) {
-      res.status(201).json({
-        _id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        token: generateToken(user.id),
-      });
-    } else {
-      res.status(400).json({ message: 'Invalid user data' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    await user.save();
+    console.log("✅ User Saved to DB");
+
+    // 4. Create Token
+    const payload = { user: { id: user.id, role: user.role } };
+    const token = jwt.sign(payload, process.env.JWT_SECRET || 'secretkey', { expiresIn: '1h' });
+
+    res.json({ token, user: { id: user.id, name: user.name, role: user.role } });
+
+  } catch (err) {
+    console.error("❌ Register Error:", err.message);
+    res.status(500).send('Server Error');
   }
 };
 
-// @desc    Authenticate a user
-// @route   POST /api/auth/login
-// @access  Public
+// --- LOGIN USER ---
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
-
   try {
-    // Check for user email
-    const user = await User.findOne({ email });
+    const { email, password } = req.body;
+    console.log("-----------------------------------------");
+    console.log("🔐 Login Attempt:", email);
 
-    // Check password
-    if (user && (await user.matchPassword(password))) {
-      res.json({
-        _id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        token: generateToken(user.id),
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
+    // 1. Check if user exists
+    let user = await User.findOne({ email });
+    if (!user) {
+      console.log("❌ Error: User not found in DB.");
+      return res.status(400).json({ msg: 'Invalid Credentials' });
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    
+    // 2. Compare Passwords
+    // We compare the 'plain text' password from the login form 
+    // with the 'hashed' password saved in the database.
+    const isMatch = await bcrypt.compare(password, user.password);
+    
+    console.log("   Input Password:", password);
+    console.log("   Stored Hash:", user.password);
+    console.log("❓ Password Match Result:", isMatch);
+
+    if (!isMatch) {
+      console.log("❌ Error: Passwords do not match.");
+      return res.status(400).json({ msg: 'Invalid Credentials' });
+    }
+
+    // 3. Create Token
+    const payload = { user: { id: user.id, role: user.role } };
+    const token = jwt.sign(payload, process.env.JWT_SECRET || 'secretkey', { expiresIn: '1h' });
+
+    console.log("✅ Login Successful!");
+    console.log("-----------------------------------------");
+    
+    res.json({ token, user: { id: user.id, name: user.name, role: user.role } });
+
+  } catch (err) {
+    console.error("❌ Login Server Error:", err.message);
+    res.status(500).send('Server Error');
   }
 };
 

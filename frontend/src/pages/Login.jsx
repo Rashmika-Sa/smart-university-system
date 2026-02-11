@@ -1,30 +1,67 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from '../api/axios'; // Import API config
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password });
-    // Add backend connection logic here later
+    setError('');
+
+    try {
+      // 🚀 Send Login Request
+      const response = await axios.post('/auth/login', formData);
+      const { token, user } = response.data;
+
+      // 💾 Save Token & User Info to Local Storage
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+
+      console.log('Login Success:', user);
+
+      // 🔀 Redirect based on Role (Optional Logic)
+      if (user.role === 'admin') {
+        alert('Welcome Admin!');
+        navigate('/'); // Later we can change this to /admin-dashboard
+      } else {
+        alert(`Welcome back, ${user.name}!`);
+        navigate('/'); // Redirect to Home
+      }
+
+    } catch (err) {
+      console.error(err);
+      setError('Invalid email or password. Please try again.');
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      {/* Main Card */}
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         
-        {/* Header Section */}
+        {/* Header */}
         <div className="bg-blue-900 p-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
           <p className="text-blue-200 text-sm">Sign in to access your student portal</p>
         </div>
 
-        {/* Form Section */}
         <div className="p-8">
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm text-center">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             
             {/* Email Input */}
@@ -32,10 +69,12 @@ const Login = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">Student Email</label>
               <input
                 type="email"
+                name="email"
                 placeholder="it12345678@my.sliit.lk"
                 className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleChange}
+                required
               />
             </div>
 
@@ -44,10 +83,12 @@ const Login = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
               <input
                 type="password"
+                name="password"
                 placeholder="••••••••"
                 className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={handleChange}
+                required
               />
             </div>
 
@@ -60,7 +101,6 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Footer Links */}
           <div className="mt-6 text-center text-sm text-gray-500">
             Don't have an account?{' '}
             <button 

@@ -1,29 +1,57 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from '../api/axios'; // Import our new API config
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Register attempt:', { name, email, password });
-    // Add backend connection here later
+    setError(''); // Clear previous errors
+
+    try {
+      // 🚀 Send data to Backend
+      const response = await axios.post('/auth/register', formData);
+      
+      console.log('Registration Success:', response.data);
+      alert('Registration Successful! Please Login.');
+      navigate('/login'); // Redirect to Login page
+
+    } catch (err) {
+      // Handle Errors (like "User already exists")
+      console.error(err);
+      setError(err.response?.data?.msg || 'Registration failed. Try again.');
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         
-        {/* Header - Orange Accent for Register */}
+        {/* Header */}
         <div className="bg-orange-600 p-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
-          <p className="text-orange-100 text-sm">Join the Smart University System today</p>
+          <p className="text-orange-100 text-sm">Join the Smart University System</p>
         </div>
 
         <div className="p-8">
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm text-center">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-5">
             
             {/* Name Input */}
@@ -31,10 +59,12 @@ const Register = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
               <input
                 type="text"
+                name="name"
                 placeholder="John Doe"
                 className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-200 transition-all duration-200 outline-none"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formData.name}
+                onChange={handleChange}
+                required
               />
             </div>
 
@@ -43,10 +73,12 @@ const Register = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">Student Email</label>
               <input
                 type="email"
+                name="email"
                 placeholder="it12345678@my.sliit.lk"
                 className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-200 transition-all duration-200 outline-none"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleChange}
+                required
               />
             </div>
 
@@ -55,10 +87,12 @@ const Register = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
               <input
                 type="password"
+                name="password"
                 placeholder="Create a strong password"
                 className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-200 transition-all duration-200 outline-none"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={handleChange}
+                required
               />
             </div>
 
