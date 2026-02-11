@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../api/axios'; // Import API config
+import axios from '../../api/axios'; 
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -19,23 +19,22 @@ const Login = () => {
     setError('');
 
     try {
-      // 🚀 Send Login Request
       const response = await axios.post('/auth/login', formData);
       const { token, user } = response.data;
 
-      // 💾 Save Token & User Info to Local Storage
+      // Save Token & User
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
       console.log('Login Success:', user);
 
-      // 🔀 Redirect based on Role (Optional Logic)
+      // 🔀 Smart Redirect based on Role
       if (user.role === 'admin') {
-        alert('Welcome Admin!');
-        navigate('/'); // Later we can change this to /admin-dashboard
+        navigate('/admin-dashboard');
+      } else if (user.role === 'staff') {
+        navigate('/staff-dashboard');
       } else {
-        alert(`Welcome back, ${user.name}!`);
-        navigate('/'); // Redirect to Home
+        navigate('/student-dashboard');
       }
 
     } catch (err) {
@@ -48,10 +47,10 @@ const Login = () => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         
-        {/* Header */}
-        <div className="bg-blue-900 p-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
-          <p className="text-blue-200 text-sm">Sign in to access your student portal</p>
+        {/* Header - Neutral for All Users */}
+        <div className="bg-[#0f172a] p-8 text-center">
+          <h2 className="text-3xl font-bold text-white mb-2">System Login</h2>
+          <p className="text-gray-400 text-sm">Access the SLIIT Management Portal</p>
         </div>
 
         <div className="p-8">
@@ -64,13 +63,13 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             
-            {/* Email Input */}
+            {/* Generic Email Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Student Email</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
               <input
                 type="email"
                 name="email"
-                placeholder="it12345678@my.sliit.lk"
+                placeholder="Ex: it123@my.sliit.lk OR name@sliit.lk"
                 className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none"
                 value={formData.email}
                 onChange={handleChange}
@@ -84,7 +83,7 @@ const Login = () => {
               <input
                 type="password"
                 name="password"
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none"
                 value={formData.password}
                 onChange={handleChange}
@@ -95,19 +94,19 @@ const Login = () => {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+              className="w-full bg-[#0f172a] hover:bg-blue-900 text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
             >
-              Sign In
+              Secure Login
             </button>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-500">
-            Don't have an account?{' '}
+            First time here?{' '}
             <button 
               onClick={() => navigate('/register')}
               className="text-blue-600 font-semibold hover:underline"
             >
-              Register Now
+              Create Student Account
             </button>
           </div>
         </div>
