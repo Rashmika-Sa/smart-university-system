@@ -10,7 +10,7 @@ import StudentDashboard from './pages/AuthFunction/StudentDashboard';
 
 import Home from './pages/Home'; // Keep this one normal if you didn't move it
 import ProtectedRoute from './components/ProtectedRoute'; // Keep components separate
-
+import AdminRoute from "./pages/AuthFunction/AdminRoute";
 function App() {
   return (
     <Router>
@@ -34,6 +34,11 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={['student', 'staff', 'admin']} />}>
           <Route path="/student-dashboard" element={<StudentDashboard />} />
         </Route>
+
+        {/* 🔐 Admin Routes (Only Admin can enter) */}
+      <Route element={<AdminRoute />}>
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      </Route>
 
       </Routes>
     </Router>

@@ -1,5 +1,5 @@
 const dns = require('dns');
-// 🛑 FIX: Force Node.js to use IPv4 first (Solves the ECONNREFUSED error)
+//  Force Node.js to use IPv4 first 
 dns.setDefaultResultOrder('ipv4first');
 
 const User = require('../models/User');
@@ -33,7 +33,7 @@ const sendVerificationCode = async (req, res) => {
   console.log("📧 Attempting to send OTP to:", cleanEmail);
 
   try {
-    // 🛑 SLIIT GATEKEEPER: Check if it ends with @my.sliit.lk
+    // SLIIT GATEKEEPER: Check if it ends with @my.sliit.lk
     if (!cleanEmail.endsWith('@my.sliit.lk')) {
        console.log("⛔ Blocked: Non-SLIIT email detected");
        return res.status(400).json({ 
@@ -105,11 +105,11 @@ const registerUser = async (req, res) => {
     // Create User with PLAIN password
     // (Your User.js model handles the hashing via .pre('save'))
     user = new User({
-      name,
-      email: cleanEmail,
-      password: password, // 👈 Send plain password
-      role: role || 'student'
-    });
+  name,
+  email: cleanEmail,
+  password: password,
+  role: 'student' // 🔒 HARDCODE THIS. No one can register as admin via API.
+});
 
     await user.save(); 
     
