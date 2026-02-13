@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../api/axios'; 
+import axios from '../../api/axios'; // ✅ Correct path (up 2 levels)
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -27,6 +27,7 @@ const Login = () => {
 
       console.log('Login Success:', user);
 
+      // 🚦 Smart Redirect based on Role
       switch (user.role) {
         case 'admin':
           navigate('/admin-dashboard');
@@ -34,8 +35,8 @@ const Login = () => {
         case 'canteen_admin':
           navigate('/canteen-dashboard');
           break;
-        case 'library_admin':
-          navigate('/library-dashboard');
+        case 'academic_admin':
+          navigate('/academic-space-dashboard'); // ✅ Matches your App.jsx route
           break;
         case 'shuttle_admin':
           navigate('/shuttle-dashboard');
@@ -57,36 +58,37 @@ const Login = () => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         
+        {/* Header */}
         <div className="bg-[#0f172a] p-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-2">System Login</h2>
           <p className="text-gray-400 text-sm">Access the SLIIT Management Portal</p>
         </div>
 
         <div className="p-8">
+          {/* Error Message */}
           {error && (
             <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm text-center">
               {error}
             </div>
           )}
 
-          {/* 1. Added autoComplete="off" to the form */}
-          <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+          <form onSubmit={handleSubmit} className="space-y-6">
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
               <input
                 type="email"
                 name="email"
-                placeholder="Ex: it123@my.sliit.lk OR canteen@sliit.lk"
+        
+                placeholder="Ex: it123@my.sliit.lk" 
                 className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none"
                 value={formData.email}
                 onChange={handleChange}
                 required
-                // 2. Disable autocomplete for email
-                autoComplete="off"
               />
             </div>
 
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
               <input
@@ -97,11 +99,10 @@ const Login = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                // 3. Disable autocomplete for password (new-password trick works best)
-                autoComplete="new-password"
               />
             </div>
 
+            {/* Login Button */}
             <button
               type="submit"
               className="w-full bg-[#0f172a] hover:bg-blue-900 text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"

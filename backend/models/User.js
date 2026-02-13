@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
       'staff', 
       'instructor',
       'canteen_admin',
-      'library_admin',
+      'academic_admin',
       'shuttle_admin',
       'facility_admin'
     ],

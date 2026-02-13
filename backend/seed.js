@@ -19,14 +19,43 @@ const seedDatabase = async () => {
     console.log("✅ Admin Reset");
 
     // --- 2. STAFF ---
-    const staffEmails = ['canteen@sliit.lk', 'library@sliit.lk', 'shuttle@sliit.lk', 'facility@sliit.lk'];
+    // Updated email list: Removed 'library@sliit.lk', added 'academic@sliit.lk'
+    const staffEmails = [
+      'canteen@sliit.lk', 
+      'academic@sliit.lk', 
+      'shuttle@sliit.lk', 
+      'facility@sliit.lk'
+    ];
+
+    // Delete existing staff to avoid duplicates
     await User.deleteMany({ email: { $in: staffEmails } });
 
     const staffAccounts = [
-      { name: 'Canteen Manager', email: 'canteen@sliit.lk', password: '123', role: 'canteen_admin' },
-      { name: 'Library Manager', email: 'library@sliit.lk', password: '123', role: 'library_admin' },
-      { name: 'Shuttle Manager', email: 'shuttle@sliit.lk', password: '123', role: 'shuttle_admin' },
-      { name: 'Facility Manager', email: 'facility@sliit.lk', password: '123', role: 'facility_admin' }
+      { 
+        name: 'Canteen Manager', 
+        email: 'canteen@sliit.lk', 
+        password: '123', 
+        role: 'canteen_admin' 
+      },
+      
+      { 
+        name: 'Academic Space Manager', 
+        email: 'academic@sliit.lk', 
+        password: '123', 
+        role: 'academic_admin' 
+      },
+      { 
+        name: 'Shuttle Manager', 
+        email: 'shuttle@sliit.lk', 
+        password: '123', 
+        role: 'shuttle_admin' 
+      },
+      { 
+        name: 'Facility Manager', 
+        email: 'facility@sliit.lk', 
+        password: '123', 
+        role: 'facility_admin' 
+      }
     ];
 
     for (const staff of staffAccounts) {

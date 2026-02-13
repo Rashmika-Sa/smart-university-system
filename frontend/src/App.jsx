@@ -13,7 +13,7 @@ import AdminDashboard from './pages/AuthFunction/AdminDashboard';
 // 3. Import Sub-Admin Dashboards (The new ones you created)
 import CanteenDashboard from './pages/AuthFunction/CanteenDashboard';
 import ShuttleDashboard from './pages/AuthFunction/ShuttleDashboard';
-import LibraryDashboard from './pages/AuthFunction/LibraryDashboard';
+import AcedmicSpaceDashboard from './pages/AuthFunction/AcedmicSpaceDashboard';
 import FacilityDashboard from './pages/AuthFunction/FacilityDashboard';
 
 // 4. Import Route Protectors
@@ -35,7 +35,7 @@ function App() {
           <Route path="/student-dashboard" element={<StudentDashboard />} />
         </Route>
 
-        {/* --- SYSTEM ADMIN (The Boss) --- */}
+       
         {/* Only the main 'admin' role can enter here */}
         <Route element={<AdminRoute />}>
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
@@ -46,7 +46,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/canteen-dashboard" element={<CanteenDashboard />} />
           <Route path="/shuttle-dashboard" element={<ShuttleDashboard />} />
-          <Route path="/library-dashboard" element={<LibraryDashboard />} />
+          <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} />
           <Route path="/facility-dashboard" element={<FacilityDashboard />} />
         </Route>
 
