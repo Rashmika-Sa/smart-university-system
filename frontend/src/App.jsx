@@ -4,21 +4,21 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // 1. Import Public Pages
 import Home from './pages/Home';
 
-// 2. Import Auth & Dashboards (from AuthFunction folder)
-import Login from './pages/AuthFunction/Login';
-import Register from './pages/AuthFunction/Register';
-import StudentDashboard from './pages/AuthFunction/StudentDashboard';
-import AdminDashboard from './pages/AuthFunction/AdminDashboard';
+// 2. Import Auth & Dashboards
+import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
+import StudentDashboard from './pages/Student/StudentDashboard';
+import AdminDashboard from './pages/Admin/AdminDashboard';
 
 // 3. Import Sub-Admin Dashboards (The new ones you created)
-import CanteenDashboard from './pages/AuthFunction/CanteenDashboard';
-import ShuttleDashboard from './pages/AuthFunction/ShuttleDashboard';
-import AcedmicSpaceDashboard from './pages/AuthFunction/AcedmicSpaceDashboard';
-import FacilityDashboard from './pages/AuthFunction/FacilityDashboard';
+import CanteenDashboard from './pages/Canteen/CanteenDashboard';
+import ShuttleDashboard from './pages/Shuttle/ShuttleDashboard';
+import AcedmicSpaceDashboard from './pages/Academic/AcedmicSpaceDashboard';
+import FacilityDashboard from './pages/Facility/FacilityDashboard';
 
 // 4. Import Route Protectors
 import ProtectedRoute from './components/ProtectedRoute';
-import AdminRoute from './pages/AuthFunction/AdminRoute';
+import AdminRoute from './pages/Auth/AdminRoute';
 
 function App() {
   return (
