@@ -2,8 +2,8 @@ const dns = require('dns');
 //  Force Node.js to use IPv4 first 
 dns.setDefaultResultOrder('ipv4first');
 
-const User = require('../models/User');
-const Otp = require('../models/Otp');
+const User = require('../../models/Auth/User');
+const Otp = require('../../models/Auth/Otp');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');

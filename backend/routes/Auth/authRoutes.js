@@ -6,7 +6,7 @@ const {
   loginUser, 
   sendVerificationCode, 
   verifyCode 
-} = require('../controllers/authController');
+} = require('../../controllers/Auth/authController');
 
 // --- Routes ---
 
