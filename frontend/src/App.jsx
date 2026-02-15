@@ -7,16 +7,22 @@ import Home from './pages/Home';
 // 2. Import Auth & Dashboards
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
-import StudentDashboard from './pages/Student/StudentDashboard';
-import AdminDashboard from './pages/Admin/AdminDashboard';
 
-// 3. Import Sub-Admin Dashboards (The new ones you created)
+// 3. Import Student Pages
+import StudentDashboard from './pages/Student/StudentDashboard';
+import CanteenSelection from './pages/Canteen/CanteenSelection'; // 👈 Import Selection Page
+import StudentMenu from './pages/Canteen/StudentMenu'; 
+import Checkout from './pages/Canteen/Checkout';
+
+// 4. Import Admin & Manager Dashboards
+import AdminDashboard from './pages/Admin/AdminDashboard';
 import CanteenDashboard from './pages/Canteen/CanteenDashboard';
+import CanteenAdminManagement from './pages/Canteen/CanteenAdminManagement'; // 👈 New Super Admin Page
 import ShuttleDashboard from './pages/Shuttle/ShuttleDashboard';
 import AcedmicSpaceDashboard from './pages/Academic/AcedmicSpaceDashboard';
 import FacilityDashboard from './pages/Facility/FacilityDashboard';
 
-// 4. Import Route Protectors
+// 5. Import Route Protectors
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './pages/Auth/AdminRoute';
 
@@ -30,24 +36,33 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* --- STUDENT ROUTES --- */}
+        {/* --- PROTECTED ROUTES (Requires Login) --- */}
         <Route element={<ProtectedRoute />}>
+          
+          {/* 🎓 Student Routes */}
           <Route path="/student-dashboard" element={<StudentDashboard />} />
-        </Route>
+          
+          {/* 👇 Canteen Flow for Students */}
+          <Route path="/canteen-selection" element={<CanteenSelection />} />
+          <Route path="/canteen-menu/:canteenName" element={<StudentMenu />} /> {/* 👈 Updated to be dynamic */}
+          <Route path="/checkout" element={<Checkout />} />
 
-       
-        {/* Only the main 'admin' role can enter here */}
-        <Route element={<AdminRoute />}>
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        </Route>
-
-        {/* --- SUB-ADMINS (Service Managers) --- */}
-        {/* For now, we use ProtectedRoute. Later we can add specific checks if needed. */}
-        <Route element={<ProtectedRoute />}>
+          {/* 🍔 Canteen Manager */}
           <Route path="/canteen-dashboard" element={<CanteenDashboard />} />
+          
+          {/* 🍔 Canteen Super Admin - Manage Admins */}
+          <Route path="/canteen-admin-management" element={<CanteenAdminManagement />} />
+
+          {/* 🚌 Other Service Managers */}
           <Route path="/shuttle-dashboard" element={<ShuttleDashboard />} />
           <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} />
           <Route path="/facility-dashboard" element={<FacilityDashboard />} />
+          
+        </Route>
+
+        {/* --- SYSTEM ADMIN ONLY --- */}
+        <Route element={<AdminRoute />}>
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Route>
 
       </Routes>

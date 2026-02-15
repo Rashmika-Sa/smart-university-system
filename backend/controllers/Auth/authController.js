@@ -120,7 +120,15 @@ const registerUser = async (req, res) => {
     const payload = { user: { id: user.id, role: user.role } };
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secretkey', { expiresIn: '1h' });
 
-    res.json({ token, user: { id: user.id, name: user.name, role: user.role } });
+    res.json({ 
+      token, 
+      user: { 
+        id: user.id, 
+        name: user.name, 
+        role: user.role,
+        managedCanteen: user.managedCanteen || null
+      } 
+    });
 
   } catch (err) {
     console.error("❌ Register Error:", err.message);
@@ -155,7 +163,15 @@ const loginUser = async (req, res) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secretkey', { expiresIn: '1h' });
 
     console.log("✅ Login Successful!");
-    res.json({ token, user: { id: user.id, name: user.name, role: user.role } });
+    res.json({ 
+      token, 
+      user: { 
+        id: user.id, 
+        name: user.name, 
+        role: user.role,
+        managedCanteen: user.managedCanteen || null
+      } 
+    });
 
   } catch (err) {
     console.error("❌ Login Server Error:", err.message);
@@ -163,4 +179,133 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, sendVerificationCode, verifyCode };
+// --- 5. CREATE CANTEEN ADMIN (Super Admin Only) ---
+const createCanteenAdmin = async (req, res) => {
+  try {
+    const { name, email, password, managedCanteen } = req.body;
+    const cleanEmail = email.trim().toLowerCase();
+    
+    console.log("-----------------------------------------");
+    console.log("👨‍💼 Creating Canteen Admin:", cleanEmail, "for canteen:", managedCanteen);
+
+    // Validate input
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Please provide name, email, and password' });
+    }
+
+    // Allow both @my.sliit.lk and @sliit.lk for admin accounts
+    if (!cleanEmail.endsWith('@my.sliit.lk') && !cleanEmail.endsWith('@sliit.lk')) {
+      return res.status(400).json({ message: 'Only SLIIT emails are allowed for admin accounts.' });
+    }
+
+    // Check if user already exists
+    let user = await User.findOne({ email: cleanEmail });
+    if (user) {
+      return res.status(400).json({ message: 'Admin already exists with this email' });
+    }
+
+    // Validate canteen name if provided
+    const validCanteens = ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)', 'Barista'];
+    if (managedCanteen && !validCanteens.includes(managedCanteen)) {
+      return res.status(400).json({ 
+        message: `Invalid canteen. Valid options: ${validCanteens.join(', ')}` 
+      });
+    }
+
+    // Create new canteen admin
+    user = new User({
+      name,
+      email: cleanEmail,
+      password: password,
+      role: 'canteen_admin',
+      managedCanteen: managedCanteen || null // null means super admin
+    });
+
+    await user.save();
+
+    console.log("✅ Canteen Admin Created Successfully!");
+    res.status(201).json({ 
+      message: 'Canteen admin created successfully',
+      user: { id: user.id, name: user.name, email: user.email, role: user.role, managedCanteen: user.managedCanteen } 
+    });
+
+  } catch (err) {
+    console.error("❌ Create Canteen Admin Error:", err.message);
+    res.status(500).json({ message: 'Server Error', error: err.message });
+  }
+};
+
+// --- 6. GET ALL CANTEEN ADMINS (Super Admin Only) ---
+const getAllCanteenAdmins = async (req, res) => {
+  try {
+    const admins = await User.find({ role: 'canteen_admin' }).select('-password');
+    res.status(200).json(admins);
+  } catch (err) {
+    console.error("❌ Get Canteen Admins Error:", err.message);
+    res.status(500).json({ message: 'Server Error', error: err.message });
+  }
+};
+
+// --- 7. UPDATE CANTEEN ADMIN (Super Admin Only) ---
+const updateCanteenAdmin = async (req, res) => {
+  try {
+    const { adminId } = req.params;
+    const { managedCanteen } = req.body;
+
+    // Validate canteen
+    const validCanteens = ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)', 'Barista'];
+    if (managedCanteen && !validCanteens.includes(managedCanteen)) {
+      return res.status(400).json({ 
+        message: `Invalid canteen. Valid options: ${validCanteens.join(', ')}` 
+      });
+    }
+
+    const updatedAdmin = await User.findByIdAndUpdate(
+      adminId,
+      { managedCanteen: managedCanteen || null },
+      { new: true }
+    ).select('-password');
+
+    if (!updatedAdmin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    console.log("✅ Canteen Admin Updated!");
+    res.status(200).json({ message: 'Canteen admin updated', user: updatedAdmin });
+
+  } catch (err) {
+    console.error("❌ Update Canteen Admin Error:", err.message);
+    res.status(500).json({ message: 'Server Error', error: err.message });
+  }
+};
+
+// --- 8. DELETE CANTEEN ADMIN (Super Admin Only) ---
+const deleteCanteenAdmin = async (req, res) => {
+  try {
+    const { adminId } = req.params;
+
+    const deletedAdmin = await User.findByIdAndDelete(adminId);
+
+    if (!deletedAdmin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    console.log("✅ Canteen Admin Deleted!");
+    res.status(200).json({ message: 'Canteen admin deleted successfully' });
+
+  } catch (err) {
+    console.error("❌ Delete Canteen Admin Error:", err.message);
+    res.status(500).json({ message: 'Server Error', error: err.message });
+  }
+};
+
+module.exports = { 
+  registerUser, 
+  loginUser, 
+  sendVerificationCode, 
+  verifyCode,
+  createCanteenAdmin,
+  getAllCanteenAdmins,
+  updateCanteenAdmin,
+  deleteCanteenAdmin
+};

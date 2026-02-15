@@ -3,22 +3,81 @@ import { useNavigate } from 'react-router-dom';
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login');
-  };
+  
+  // Get user name safely
+  const user = JSON.parse(localStorage.getItem('user'));
+  const studentName = user ? user.name : 'Student';
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-blue-600">🎓 Student Dashboard</h1>
-        <button onClick={handleLogout} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Logout</button>
+    <div className="min-h-screen bg-gray-50 p-6">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-8 bg-white p-6 rounded-2xl shadow-sm">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">👋 Welcome back, {studentName}!</h1>
+          <p className="text-gray-500">What would you like to do today?</p>
+        </div>
+        <button 
+          onClick={() => {
+            localStorage.clear();
+            navigate('/login');
+          }}
+          className="bg-red-50 text-red-500 px-4 py-2 rounded-lg font-medium hover:bg-red-100 transition"
+        >
+          Logout
+        </button>
       </div>
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">My Labs</h2>
-        <p className="text-gray-600">Welcome, Student. Book labs and check availability here.</p>
+
+      {/* 🚀 Dashboard Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        {/* 🍔 Smart Canteen Card - UPDATED LINK */}
+        <div 
+          onClick={() => navigate('/canteen-selection')} // 👈 THIS IS THE FIX
+          className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition cursor-pointer group"
+        >
+          <div className="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition">
+            🍔
+          </div>
+          <h3 className="text-xl font-bold text-gray-800 mb-2">Smart Canteen</h3>
+          <p className="text-gray-500 text-sm">Order food from Main, Birdnest, or Subway and skip the queue.</p>
+        </div>
+
+        {/* 🚌 Shuttle Service */}
+        <div 
+          onClick={() => navigate('/shuttle-dashboard')}
+          className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition cursor-pointer group"
+        >
+          <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition">
+            🚌
+          </div>
+          <h3 className="text-xl font-bold text-gray-800 mb-2">Shuttle Tracker</h3>
+          <p className="text-gray-500 text-sm">Track university shuttles in real-time and check schedules.</p>
+        </div>
+
+        {/* 📚 Academic Spaces */}
+        <div 
+          onClick={() => navigate('/academic-space-dashboard')}
+          className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition cursor-pointer group"
+        >
+          <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition">
+            📚
+          </div>
+          <h3 className="text-xl font-bold text-gray-800 mb-2">Study Spaces</h3>
+          <p className="text-gray-500 text-sm">Book discussion rooms, labs, or library seats instantly.</p>
+        </div>
+
+        {/* 🛠️ Facility Reporting */}
+        <div 
+          onClick={() => navigate('/facility-dashboard')}
+          className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition cursor-pointer group"
+        >
+          <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition">
+            🔧
+          </div>
+          <h3 className="text-xl font-bold text-gray-800 mb-2">Report Issue</h3>
+          <p className="text-gray-500 text-sm">Report broken ACs, projectors, or other facility issues.</p>
+        </div>
+
       </div>
     </div>
   );

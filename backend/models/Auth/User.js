@@ -32,6 +32,18 @@ const userSchema = new mongoose.Schema({
   },
   universityId: {
     type: String
+  },
+  managedCanteen: {
+    type: String,
+    enum: [
+      'Main Canteen',
+      'Birdnest Canteen',
+      'Perera & Sons (P&S)',
+      'Barista',
+      null
+    ],
+    default: null,
+    description: 'For canteen_admin role: specific canteen they manage. Null means they manage all canteens (super admin)'
   }
 }, {
   timestamps: true

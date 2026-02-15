@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const User = require('./models/User'); 
+const User = require('./models/Auth/User'); 
 
 const seedDatabase = async () => {
   try {
@@ -18,10 +18,13 @@ const seedDatabase = async () => {
     await admin.save();
     console.log("✅ Admin Reset");
 
-    // --- 2. STAFF ---
-    // Updated email list: Removed 'library@sliit.lk', added 'academic@sliit.lk'
+    // --- 2. STAFF & SERVICE MANAGERS ---
     const staffEmails = [
-      'canteen@sliit.lk', 
+      'canteen@sliit.lk',
+      'barista@sliit.lk',
+      'main@sliit.lk',
+      'birdnest@sliit.lk',
+      'ps@sliit.lk',
       'academic@sliit.lk', 
       'shuttle@sliit.lk', 
       'facility@sliit.lk'
@@ -32,10 +35,40 @@ const seedDatabase = async () => {
 
     const staffAccounts = [
       { 
-        name: 'Canteen Manager', 
+        name: 'Chief Canteen Admin', 
         email: 'canteen@sliit.lk', 
-        password: '123', 
-        role: 'canteen_admin' 
+        password: 'SuperAdmin@123', 
+        role: 'canteen_admin',
+        managedCanteen: null
+      },
+      
+      { 
+        name: 'Barista Manager', 
+        email: 'barista@sliit.lk', 
+        password: 'Barista@123', 
+        role: 'canteen_admin',
+        managedCanteen: 'Barista'
+      },
+      { 
+        name: 'Main Canteen Manager', 
+        email: 'main@sliit.lk', 
+        password: 'Main@123', 
+        role: 'canteen_admin',
+        managedCanteen: 'Main Canteen'
+      },
+      { 
+        name: 'Birdnest Canteen Manager', 
+        email: 'birdnest@sliit.lk', 
+        password: 'Birdnest@123', 
+        role: 'canteen_admin',
+        managedCanteen: 'Birdnest Canteen'
+      },
+      { 
+        name: 'P&S Manager', 
+        email: 'ps@sliit.lk', 
+        password: 'PS@123', 
+        role: 'canteen_admin',
+        managedCanteen: 'Perera & Sons (P&S)'
       },
       
       { 
@@ -61,7 +94,7 @@ const seedDatabase = async () => {
     for (const staff of staffAccounts) {
       await new User(staff).save();
     }
-    console.log("✅ Staff Reset");
+    console.log("✅ Admin Accounts & Canteen Managers Reset");
 
     console.log("\n🚀 Database Seeded Successfully!");
     process.exit();
