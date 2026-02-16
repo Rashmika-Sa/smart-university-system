@@ -1,22 +1,33 @@
-// 👇 Notice the path: Up 2 levels -> models -> Canteen -> FoodItem
 const FoodItem = require('../../models/Canteen/FoodItem');
 const User = require('../../models/Auth/User');
+const jwt = require('jsonwebtoken');
 
-// @desc    Get all food items (Menu)
-// @route   GET /api/canteen/menu
-// @access  Public (but respects canteen_admin restrictions if authenticated)
+
 const getMenu = async (req, res) => {
   try {
     const { canteen } = req.query; // Get canteen from URL params
     
     // 🔒 Check if user is authenticated as a canteen_admin (sub admin)
     let userDetails = null;
+    
+    // Try to get user details from middleware (if route is protected)
     if (req.userDetails) {
       userDetails = req.userDetails;
     } else if (req.user) {
       // Fetch user details if user is in request but userDetails not set
-      const User = require('../../models/Auth/User');
       userDetails = await User.findById(req.user.id);
+    } else {
+      // Try to extract token manually for public routes
+      const token = req.header('x-auth-token');
+      if (token) {
+        try {
+          const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey');
+          userDetails = await User.findById(decoded.user.id);
+        } catch (err) {
+          // Token is invalid or expired, continue as public user
+          userDetails = null;
+        }
+      }
     }
 
     // If authenticated user is a sub admin (specific canteen), restrict access
@@ -80,9 +91,7 @@ const addFoodItem = async (req, res) => {
   }
 };
 
-// @desc    Delete a food item
-// @route   DELETE /api/canteen/delete/:id
-// @access  Canteen Admin
+
 const deleteFoodItem = async (req, res) => {
   try {
     const { id } = req.params;
@@ -109,9 +118,7 @@ const deleteFoodItem = async (req, res) => {
   }
 };
 
-// @desc    Toggle Availability
-// @route   PUT /api/canteen/update/:id
-// @access  Canteen Admin
+
 const updateAvailability = async (req, res) => {
   try {
     const { id } = req.params;
@@ -144,9 +151,7 @@ const updateAvailability = async (req, res) => {
   }
 };
 
-// @desc    Update food item details
-// @route   PUT /api/canteen/edit/:id
-// @access  Canteen Admin
+
 const updateFoodItem = async (req, res) => {
   try {
     const { id } = req.params;
@@ -179,9 +184,7 @@ const updateFoodItem = async (req, res) => {
   }
 };
 
-// @desc    Get all canteens (for super admin)
-// @route   GET /api/canteen/all-canteens
-// @access  Canteen Admin (super only)
+
 const getAllCanteens = async (req, res) => {
   try {
     // Check if user is super admin (canteen_admin with no managedCanteen)
@@ -198,9 +201,7 @@ const getAllCanteens = async (req, res) => {
   }
 };
 
-// @desc    Get accessible canteens for logged-in user
-// @route   GET /api/canteen/accessible-canteens
-// @access  Canteen Admin
+
 const getAccessibleCanteens = async (req, res) => {
   try {
     if (!req.userDetails) {
