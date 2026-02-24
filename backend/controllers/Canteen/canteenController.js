@@ -194,7 +194,7 @@ const getAllCanteens = async (req, res) => {
       });
     }
 
-    const canteens = ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)', 'Barista'];
+    const canteens = ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)'];
     res.status(200).json(canteens);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -216,7 +216,7 @@ const getAccessibleCanteens = async (req, res) => {
     }
 
     // If super admin (no managedCanteen), return all canteens
-    const allCanteens = ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)', 'Barista'];
+    const allCanteens = ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)'];
     res.status(200).json(allCanteens);
   } catch (error) {
     res.status(500).json({ message: error.message });

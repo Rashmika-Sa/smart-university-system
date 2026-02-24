@@ -18,19 +18,20 @@ const Home = () => {
         backgroundImage: "url('https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?q=80&w=2070&auto=format&fit=crop')", 
       }}
     >
+      {/* 👇 FIX: Changed bg-primary-dark/80 to bg-black/60 to remove the blue but keep text readable */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
       
       <div className="relative z-10 flex flex-col min-h-screen">
 
         {/* --- HERO SECTION --- */}
         <div className="flex-grow flex flex-col items-center justify-center text-center px-4 py-16">
-          <div className="mb-6 inline-block px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-md animate-fade-in-down">
-            <span className="text-blue-300 text-xs font-bold tracking-widest uppercase">
+          <div className="mb-6 inline-block px-4 py-1.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md animate-fade-in-down">
+            <span className="text-white text-xs font-bold tracking-widest uppercase">
               🚀 The Future of Campus Life
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-white via-blue-100 to-gray-400 bg-clip-text text-transparent drop-shadow-lg">
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent drop-shadow-lg">
             Smart University <br />
             <span className="text-4xl md:text-6xl text-white">System</span>
           </h1>
@@ -43,7 +44,7 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <Link 
               to="/login" 
-              className="px-8 py-4 rounded-xl bg-[#002c5f] hover:bg-[#003e85] text-white font-semibold transition-all duration-300 shadow-lg shadow-blue-900/40 transform hover:scale-105 hover:-translate-y-1 flex items-center justify-center gap-2"
+              className="px-8 py-4 rounded-xl bg-primary hover:bg-accent text-white font-semibold transition-all duration-300 shadow-lg shadow-primary-dark/40 transform hover:scale-105 hover:-translate-y-1 flex items-center justify-center gap-2"
             >
               <span>Student Login</span>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
@@ -51,7 +52,7 @@ const Home = () => {
             
             <Link 
               to="/register" 
-              className="px-8 py-4 rounded-xl border border-white/20 hover:bg-white/10 text-white font-semibold backdrop-blur-md transition-all duration-300 flex items-center justify-center"
+              className="px-8 py-4 rounded-xl border border-white/20 hover:bg-white/20 text-white font-semibold backdrop-blur-md transition-all duration-300 flex items-center justify-center"
             >
               Create Account
             </Link>
@@ -73,15 +74,12 @@ const Home = () => {
               desc="Real-time bus locations." 
               color="from-blue-400 to-indigo-500"
             />
-            
-            {/* --- STATIC CARD: ACADEMIC SPACES (No Link) --- */}
             <FeatureCard 
               icon="📚" 
               title="Academic Spaces" 
               desc="Reserve books & rooms." 
               color="from-green-400 to-emerald-500"
             />
-
             <FeatureCard 
               icon="🏟️" 
               title="Facility Booking" 
@@ -92,15 +90,15 @@ const Home = () => {
         </div>
 
         {/* --- FOOTER --- */}
-        <footer className="border-t border-white/10 bg-black/60 backdrop-blur-xl pt-8 pb-6 mt-auto">
+        <footer className="border-t border-white/10 bg-black/40 backdrop-blur-xl pt-8 pb-6 mt-auto">
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left">
               
               <div className="flex flex-col gap-2">
-                <h4 className="text-xs font-bold text-[#f15a22] tracking-widest uppercase mb-1">
+                <h4 className="text-xs font-bold text-gray-300 tracking-widest uppercase mb-1">
                   Do You Need Any Support?
                 </h4>
-                <a href="https://support.sliit.lk" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold text-white hover:text-[#f15a22] transition-colors">
+                <a href="https://support.sliit.lk" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold text-white hover:text-gray-300 transition-colors">
                   support.sliit.lk
                 </a>
                 <div className="flex items-center justify-center lg:justify-start gap-2 text-gray-300">
@@ -116,27 +114,28 @@ const Home = () => {
                   <SocialLink href="#" icon={<InstagramIcon />} />
                   <SocialLink href="#" icon={<LinkedinIcon />} />
                 </div>
-                <div className="text-gray-500 text-sm">
-                  © 2026 SLIIT Smart Systems. All rights reserved.
+                <div className="text-gray-400 text-sm">
+                  © {today.getFullYear()} SLIIT Smart Systems. All rights reserved.
                 </div>
               </div>
 
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4 min-w-[200px] backdrop-blur-md shadow-2xl">
-                <div className="flex justify-between items-end mb-2 border-b border-white/10 pb-2">
-                  <span className="text-3xl font-bold text-[#f15a22]">{today.getDate()}</span>
+              {/* 👇 CALENDAR WIDGET WITH SLIIT ORANGE RESTORED */}
+              <div className="bg-white/10 border border-white/20 rounded-xl p-4 min-w-[200px] backdrop-blur-md shadow-2xl">
+                <div className="flex justify-between items-end mb-2 border-b border-white/20 pb-2">
+                  <span className="text-3xl font-bold text-accent">{today.getDate()}</span>
                   <div className="flex flex-col text-right">
-                    <span className="text-xs text-[#f15a22] font-bold uppercase">{dayName}</span>
-                    <span className="text-[10px] text-gray-400">{fullDate}</span>
+                    <span className="text-xs text-accent font-bold uppercase">{dayName}</span>
+                    <span className="text-[10px] text-gray-300">{fullDate}</span>
                   </div>
                 </div>
                 <div className="flex justify-between gap-1">
                   {weekDays.map((day, index) => (
                     <div 
                       key={index} 
-                      className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold 
+                      className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold transition-all duration-300
                         ${index === currentDayIndex 
-                          ? 'bg-[#f15a22] text-white shadow-lg scale-110' 
-                          : 'bg-white/5 text-gray-500'}`}
+                          ? 'bg-accent text-white shadow-lg shadow-accent/40 scale-110' 
+                          : 'bg-white/10 text-gray-300 hover:bg-white/20'}`}
                     >
                       {day}
                     </div>
@@ -147,7 +146,6 @@ const Home = () => {
             </div>
           </div>
         </footer>
-
       </div>
     </div>
   );
@@ -155,12 +153,12 @@ const Home = () => {
 
 // --- SUB-COMPONENTS ---
 const FeatureCard = ({ icon, title, desc, color }) => (
-  <div className="group relative p-6 h-full rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-300 hover:bg-white/10 backdrop-blur-sm flex flex-col items-center text-center">
-    <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 rounded-2xl bg-gradient-to-br ${color} transition-opacity duration-500`}></div>
+  <div className="group relative p-6 h-full rounded-2xl bg-white/10 border border-white/20 hover:border-white/40 transition-all duration-300 hover:bg-white/20 backdrop-blur-md flex flex-col items-center text-center overflow-hidden">
+    <div className={`absolute inset-0 opacity-0 group-hover:opacity-30 rounded-2xl bg-gradient-to-br ${color} transition-opacity duration-500`}></div>
     <div className="relative z-10">
       <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">{icon}</div>
       <h3 className="text-xl font-bold text-white mb-2 tracking-wide">{title}</h3>
-      <p className="text-gray-400 text-sm leading-relaxed">{desc}</p>
+      <p className="text-gray-200 text-sm leading-relaxed">{desc}</p>
     </div>
   </div>
 );

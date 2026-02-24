@@ -1,5 +1,4 @@
 const dns = require('dns');
-//  Force Node.js to use IPv4 first 
 dns.setDefaultResultOrder('ipv4first');
 
 const User = require('../../models/Auth/User');
@@ -8,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
-// --- 0. SETUP EMAIL TRANSPORTER (GMAIL CONFIG) ---
+// 0. SETUP EMAIL TRANSPORTER (GMAIL CONFIG) 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com', // Explicit Host
   port: 465,              // Secure Port
@@ -22,25 +21,23 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// --- 1. SEND VERIFICATION CODE ---
+// 1. SEND VERIFICATION CODE 
 const sendVerificationCode = async (req, res) => {
   const { email } = req.body;
-  
-  // 🧹 CLEAN INPUT: Remove extra spaces and force lowercase
   const cleanEmail = email.trim().toLowerCase();
 
-  console.log("-----------------------------------------");
   console.log("📧 Attempting to send OTP to:", cleanEmail);
 
   try {
-    // SLIIT GATEKEEPER: Check if it ends with @my.sliit.lk
-    if (!cleanEmail.endsWith('@my.sliit.lk')) {
-       console.log("⛔ Blocked: Non-SLIIT email detected");
+    //UPDATED SLIIT GATEKEEPER: Check for IT, EN, BM, HS, AR + 8 digits
+    const sliitEmailRegex = /^(it|en|bm|hs|ar)\d{8}@my\.sliit\.lk$/i;
+    
+    if (!sliitEmailRegex.test(cleanEmail)) {
+       console.log("⛔ Blocked: Invalid SLIIT email format detected");
        return res.status(400).json({ 
-         message: 'Access Denied: Only SLIIT Student Emails (xxxx@my.sliit.lk) are allowed.' 
+         message: 'Access Denied: Please use a valid SLIIT student email (e.g., it23836754@my.sliit.lk, en12345678@my.sliit.lk).' 
        });
     }
-
     // Check if user already exists
     const existingUser = await User.findOne({ email: cleanEmail });
     if (existingUser) {
@@ -70,7 +67,7 @@ const sendVerificationCode = async (req, res) => {
   }
 };
 
-// --- 2. VERIFY CODE ---
+//  2. VERIFY CODE
 const verifyCode = async (req, res) => {
   const { email, code } = req.body;
   const cleanEmail = email.trim().toLowerCase();
@@ -87,15 +84,20 @@ const verifyCode = async (req, res) => {
   }
 };
 
-// --- 3. REGISTER & AUTO-LOGIN ---
+// 3. REGISTER & AUTO-LOGIN 
 const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
     const cleanEmail = email.trim().toLowerCase();
+    const universityId = cleanEmail.split('@')[0].toUpperCase();
 
-    // 🛑 SECURITY CHECK
-    if (!cleanEmail.endsWith('@my.sliit.lk')) {
-        return res.status(400).json({ message: 'Only SLIIT emails are allowed.' });
+    // UPDATED SECURITY CHECK
+    const sliitEmailRegex = /^(it|en|bm|hs|ar)\d{8}@my\.sliit\.lk$/i;
+    
+    if (!sliitEmailRegex.test(cleanEmail)) {
+        return res.status(400).json({ 
+          message: 'Invalid email format. Must be a valid SLIIT student email from any faculty.' 
+        });
     }
 
     // Check existing
@@ -108,7 +110,8 @@ const registerUser = async (req, res) => {
   name,
   email: cleanEmail,
   password: password,
-  role: 'student' // 🔒 HARDCODE THIS. No one can register as admin via API.
+  role: 'student', //
+  universityId
 });
 
     await user.save(); 
@@ -136,13 +139,12 @@ const registerUser = async (req, res) => {
   }
 };
 
-// --- 4. LOGIN USER (CLEAN PRODUCTION VERSION) ---
+// 4. LOGIN USER (CLEAN PRODUCTION VERSION)
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const cleanEmail = email.trim().toLowerCase();
     
-    console.log("-----------------------------------------");
     console.log("🔐 Login Attempt:", cleanEmail);
 
     // 1. Find User
@@ -179,13 +181,12 @@ const loginUser = async (req, res) => {
   }
 };
 
-// --- 5. CREATE CANTEEN ADMIN (Super Admin Only) ---
+// 5. CREATE CANTEEN ADMIN (Super Admin Only) 
 const createCanteenAdmin = async (req, res) => {
   try {
     const { name, email, password, managedCanteen } = req.body;
     const cleanEmail = email.trim().toLowerCase();
     
-    console.log("-----------------------------------------");
     console.log("👨‍💼 Creating Canteen Admin:", cleanEmail, "for canteen:", managedCanteen);
 
     // Validate input
@@ -205,7 +206,7 @@ const createCanteenAdmin = async (req, res) => {
     }
 
     // Validate canteen name if provided
-    const validCanteens = ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)', 'Barista'];
+    const validCanteens = ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)', ];
     if (managedCanteen && !validCanteens.includes(managedCanteen)) {
       return res.status(400).json({ 
         message: `Invalid canteen. Valid options: ${validCanteens.join(', ')}` 
@@ -235,7 +236,7 @@ const createCanteenAdmin = async (req, res) => {
   }
 };
 
-// --- 6. GET ALL CANTEEN ADMINS (Super Admin Only) ---
+// 6. GET ALL CANTEEN ADMINS (Super Admin Only) 
 const getAllCanteenAdmins = async (req, res) => {
   try {
     const admins = await User.find({ role: 'canteen_admin' }).select('-password');
@@ -246,14 +247,14 @@ const getAllCanteenAdmins = async (req, res) => {
   }
 };
 
-// --- 7. UPDATE CANTEEN ADMIN (Super Admin Only) ---
+// 7. UPDATE CANTEEN ADMIN (Super Admin Only) 
 const updateCanteenAdmin = async (req, res) => {
   try {
     const { adminId } = req.params;
     const { managedCanteen } = req.body;
 
     // Validate canteen
-    const validCanteens = ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)', 'Barista'];
+    const validCanteens = ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)', ];
     if (managedCanteen && !validCanteens.includes(managedCanteen)) {
       return res.status(400).json({ 
         message: `Invalid canteen. Valid options: ${validCanteens.join(', ')}` 
@@ -279,7 +280,7 @@ const updateCanteenAdmin = async (req, res) => {
   }
 };
 
-// --- 8. DELETE CANTEEN ADMIN (Super Admin Only) ---
+// 8. DELETE CANTEEN ADMIN (Super Admin Only) 
 const deleteCanteenAdmin = async (req, res) => {
   try {
     const { adminId } = req.params;

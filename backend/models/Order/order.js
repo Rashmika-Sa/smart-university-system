@@ -1,36 +1,56 @@
 const mongoose = require('mongoose');
 
-const orderSchema = new mongoose.Schema({
-  items: [
-    {
-      foodId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodItem' },
-      name: String, // Storing name as snapshot in case menu changes
-      qty: Number,
-      price: Number
-    }
-  ],
-  totalAmount: {
+const orderItemSchema = new mongoose.Schema({
+  foodItem: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'FoodItem',
+    required: true
+  },
+  name: String,
+  quantity: {
     type: Number,
+    required: true,
+    min: 1
+  },
+  price: {
+    type: Number,
+    required: true
+  }
+});
+
+const orderSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
   canteen: {
     type: String,
     required: true
   },
-  studentId: {
-    type: String,
+  items: [orderItemSchema],
+  totalAmount: {
+    type: Number,
     required: true
   },
   paymentMethod: {
     type: String,
-    enum: ['Card', 'Cash'],
-    default: 'Cash'
+    enum: ['Card', 'Cash', 'Pre-order'], 
+    required: true
   },
+  //The specific date they want the food
+  preOrderDate: {
+    type: Date,
+    required: true 
+  },
+  //statuses for the approval flow
   status: {
     type: String,
-    enum: ['Pending', 'Preparing', 'Ready', 'Completed', 'Cancelled'],
-    default: 'Pending'
-  }
+    enum: ['Pending', 'Approved', 'Ready', 'Completed', 'Cancelled'],
+    default: 'Pending' 
+  },
+
+  remarks: { type: String, default: '' },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);

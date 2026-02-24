@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../api/axios'; // ✅ Correct path (up 2 levels)
+import axios from '../../api/axios'; 
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -36,7 +36,7 @@ const Login = () => {
           navigate('/canteen-dashboard');
           break;
         case 'academic_admin':
-          navigate('/academic-space-dashboard'); // ✅ Matches your App.jsx route
+          navigate('/academic-space-dashboard'); 
           break;
         case 'shuttle_admin':
           navigate('/shuttle-dashboard');
@@ -55,13 +55,13 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-secondary flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         
         {/* Header */}
-        <div className="bg-[#0f172a] p-8 text-center">
+        <div className="bg-primary p-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-2">System Login</h2>
-          <p className="text-gray-400 text-sm">Access the SLIIT Management Portal</p>
+          <p className="text-primary-dark text-sm opacity-80 text-white">Access the SLIIT Management Portal</p>
         </div>
 
         <div className="p-8">
@@ -79,23 +79,21 @@ const Login = () => {
               <input
                 type="email"
                 name="email"
-        
                 placeholder="Ex: it123@my.sliit.lk" 
-                className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-200 focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none"
                 value={formData.email}
                 onChange={handleChange}
                 required
               />
             </div>
 
-            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
               <input
                 type="password"
                 name="password"
                 placeholder="Enter your password"
-                className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-200 focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none"
                 value={formData.password}
                 onChange={handleChange}
                 required
@@ -105,7 +103,7 @@ const Login = () => {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full bg-[#0f172a] hover:bg-blue-900 text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+              className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
             >
               Secure Login
             </button>
@@ -115,7 +113,7 @@ const Login = () => {
             First time here?{' '}
             <button 
               onClick={() => navigate('/register')}
-              className="text-blue-600 font-semibold hover:underline"
+              className="text-primary font-semibold hover:text-accent hover:underline transition-colors"
             >
               Create Student Account
             </button>

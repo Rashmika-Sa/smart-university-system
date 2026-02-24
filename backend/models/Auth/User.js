@@ -9,7 +9,11 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Please add an email'],
-    unique: true
+    unique: true,
+    match: [
+      /^(it|en|bn|hs|ar)\d{8}@my\.sliit\.lk$/i,
+      'Please use a valid SLIIT student email (e.g., it12345678@my.sliit.lk, en12345678@my.sliit.lk)'
+    ]
   },
   password: {
     type: String,
@@ -17,7 +21,6 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    
     enum: [
       'student', 
       'admin', 
@@ -31,7 +34,11 @@ const userSchema = new mongoose.Schema({
     default: 'student'
   },
   universityId: {
-    type: String
+    type: String,
+    match: [
+      /^(IT|EN|BM|HS|AR)\d{8}$/i, 
+      'Please enter a valid SLIIT Student ID'
+    ]
   },
   managedCanteen: {
     type: String,
@@ -39,23 +46,36 @@ const userSchema = new mongoose.Schema({
       'Main Canteen',
       'Birdnest Canteen',
       'Perera & Sons (P&S)',
-      'Barista',
+      
       null
     ],
-    default: null,
-    description: 'For canteen_admin role: specific canteen they manage. Null means they manage all canteens (super admin)'
-  }
+    default: null
+  },
+  // Store saved cards for the user
+  savedCards: [
+    {
+      brand: { type: String, default: 'Visa' },
+      last4: { type: String, required: true },
+      cardHolderName: String,
+      expiryDate: String // MM/YY
+    }
+  ]
 }, {
   timestamps: true
 });
 
-// Encrypt password using bcrypt before saving
+
 userSchema.pre('save', async function(next) {
+  // 1. If the password was NOT changed (e.g., we are just updating cards), stop here.
   if (!this.isModified('password')) {
-    next();
+    return;
   }
+
+  // 2. Hash the password if it WAS changed
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+     
+  
 });
 
 // Match user entered password to hashed password in database
