@@ -11,6 +11,7 @@ const authRoutes = require('./routes/Auth/authRoutes');
 const userRoutes = require('./routes/Auth/users');
 const canteenRoutes = require('./routes/Canteen/canteenRoutes');
 const orderRoutes = require('./routes/Order/orderRoutes');
+const reviewRoutes = require('./routes/Canteen/reviewRoutes');
 
 // Initialize the App
 const app = express();
@@ -25,6 +26,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/canteen', canteenRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Basic Route
 app.get('/', (req, res) => {

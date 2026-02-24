@@ -16,7 +16,7 @@ const foodItemSchema = new mongoose.Schema({
   },
   canteen: { 
     type: String,
-    enum: ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)', 'Barista'], 
+    enum: ['Main Canteen', 'Birdnest Canteen', 'Perera & Sons (P&S)'], 
     required: true,
   },
   image: {

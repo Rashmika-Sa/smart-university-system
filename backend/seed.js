@@ -21,7 +21,6 @@ const seedDatabase = async () => {
     // --- 2. STAFF & SERVICE MANAGERS ---
     const staffEmails = [
       'canteen@sliit.lk',
-      'barista@sliit.lk',
       'main@sliit.lk',
       'birdnest@sliit.lk',
       'ps@sliit.lk',
@@ -42,13 +41,6 @@ const seedDatabase = async () => {
         managedCanteen: null
       },
       
-      { 
-        name: 'Barista Manager', 
-        email: 'barista@sliit.lk', 
-        password: process.env.BARISTA_PASS, 
-        role: 'canteen_admin',
-        managedCanteen: 'Barista'
-      },
       { 
         name: 'Main Canteen Manager', 
         email: 'main@sliit.lk', 

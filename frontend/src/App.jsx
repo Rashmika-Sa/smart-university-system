@@ -15,6 +15,7 @@ import CanteenSelection from './pages/Canteen/CanteenSelection';
 import StudentMenu from './pages/Canteen/StudentMenu'; 
 import Checkout from './pages/Canteen/Checkout';
 import OrderHistory from './pages/Student/OrderHistory';
+import CanteenReviews from './pages/Canteen/CanteenReviews';
 
 // 4. Import Admin & Manager Dashboards
 import AdminDashboard from './pages/Admin/AdminDashboard';
@@ -27,48 +28,55 @@ import FacilityDashboard from './pages/Facility/FacilityDashboard';
 // 5. Import Route Protectors
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './pages/Auth/AdminRoute';
+import AppFooter from './components/AppFooter';
 
 function App() {
   return (
     <Router>
-      <Routes>
-        
-        {/* --- PUBLIC ROUTES --- */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+      <div className="min-h-screen flex flex-col">
+        <div className="flex-1">
+          <Routes>
+            
+            {/* --- PUBLIC ROUTES --- */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-        {/* --- PROTECTED ROUTES (Requires Login) --- */}
-        <Route element={<ProtectedRoute />}>
-          
-          {/* Student Routes */}
-          <Route path="/student-dashboard" element={<StudentDashboard />} />
-          <Route path="/my-orders" element={<OrderHistory />} />
-          
-          {/*Canteen Flow for Students */}
-          <Route path="/canteen-selection" element={<CanteenSelection />} />
-          <Route path="/canteen-menu/:canteenName" element={<StudentMenu />} /> {/* 👈 Updated to be dynamic */}
-          <Route path="/checkout" element={<Checkout />} />
+            {/* --- PROTECTED ROUTES (Requires Login) --- */}
+            <Route element={<ProtectedRoute />}>
+              
+              {/* Student Routes */}
+              <Route path="/student-dashboard" element={<StudentDashboard />} />
+              <Route path="/my-orders" element={<OrderHistory />} />
+              <Route path="/canteen-reviews" element={<CanteenReviews />} />
+              
+              {/*Canteen Flow for Students */}
+              <Route path="/canteen-selection" element={<CanteenSelection />} />
+              <Route path="/canteen-menu/:canteenName" element={<StudentMenu />} /> {/* 👈 Updated to be dynamic */}
+              <Route path="/checkout" element={<Checkout />} />
 
-          {/* Canteen Manager */}
-          <Route path="/canteen-dashboard" element={<CanteenDashboard />} />
-          
-          {/* Canteen Super Admin - Manage Admins */}
-          <Route path="/canteen-admin-management" element={<CanteenAdminManagement />} />
+              {/* Canteen Manager */}
+              <Route path="/canteen-dashboard" element={<CanteenDashboard />} />
+              
+              {/* Canteen Super Admin - Manage Admins */}
+              <Route path="/canteen-admin-management" element={<CanteenAdminManagement />} />
 
-          {/* Other Service Managers */}
-          <Route path="/shuttle-dashboard" element={<ShuttleDashboard />} />
-          <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} />
-          <Route path="/facility-dashboard" element={<FacilityDashboard />} />
-          
-        </Route>
+              {/* Other Service Managers */}
+              <Route path="/shuttle-dashboard" element={<ShuttleDashboard />} />
+              <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} />
+              <Route path="/facility-dashboard" element={<FacilityDashboard />} />
+              
+            </Route>
 
-        {/* SYSTEM ADMIN ONLY  */}
-        <Route element={<AdminRoute />}>
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        </Route>
+            {/* SYSTEM ADMIN ONLY  */}
+            <Route element={<AdminRoute />}>
+              <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            </Route>
 
-      </Routes>
+          </Routes>
+        </div>
+        <AppFooter />
+      </div>
     </Router>
   );
 }

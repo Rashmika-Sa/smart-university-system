@@ -51,6 +51,10 @@ const userSchema = new mongoose.Schema({
     ],
     default: null
   },
+  profilePhoto: {
+    type: String,
+    default: ''
+  },
   // Store saved cards for the user
   savedCards: [
     {

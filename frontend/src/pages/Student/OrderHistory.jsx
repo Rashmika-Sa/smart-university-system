@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
+import StudentTopNav from '../../components/StudentTopNav';
 
 const OrderHistory = () => {
   const navigate = useNavigate();
@@ -93,104 +94,88 @@ const OrderHistory = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 pb-12">
-      {/* Header */}
-      <div className="bg-primary-dark text-white p-6 shadow-md sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button onClick={() => navigate('/canteen-selection')} className="hover:bg-white/10 p-2 rounded-full transition-colors">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-            </button>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">My Pre-Orders</h1>
-              <p className="text-xs text-accent uppercase tracking-wider font-bold">Track & Manage</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-secondary pb-16">
+      <StudentTopNav active="My Orders" showLogout={true} />
 
       <div className="max-w-5xl mx-auto px-6 py-8">
+        {/* Page Header */}
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-2xl">🧾</div>
+            <div>
+              <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Track &amp; Manage</span>
+              <h1 className="text-2xl font-black text-white tracking-tight">
+                My{' '}
+                <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Pre-Orders</span>
+              </h1>
+              <p className="text-slate-400 text-xs mt-0.5">Review status, totals, and cancellation windows.</p>
+            </div>
+          </div>
+          <button
+            onClick={() => navigate('/canteen-selection')}
+            className="px-5 py-2.5 rounded-xl bg-accent text-white font-bold text-sm hover:bg-accent/90 transition shadow-lg shadow-accent/20 shrink-0"
+          >
+            + New Order
+          </button>
+        </div>
+
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 text-slate-400">
-            <svg className="animate-spin h-10 w-10 text-accent mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <p className="font-medium animate-pulse">Loading your orders...</p>
+          <div className="space-y-4">
+            {[1,2,3].map(i => <div key={i} className="h-32 bg-white border border-slate-100 rounded-2xl animate-pulse" />)}
           </div>
         ) : error ? (
-          <div className="bg-red-50 text-red-600 p-4 rounded-xl text-center border border-red-200">
-            {error}
-          </div>
+          <div className="bg-red-50 text-red-600 p-4 rounded-2xl text-center border border-red-200">{error}</div>
         ) : orders.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-12 text-center">
-            <div className="text-6xl mb-4">🍽️</div>
-            <h2 className="text-xl font-bold text-primary-dark mb-2">No orders yet</h2>
-            <p className="text-slate-500 mb-6">Looks like you haven't pre-ordered any meals.</p>
-            <button 
-              onClick={() => navigate('/canteen-selection')}
-              className="bg-accent text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:bg-orange-500 transition"
-            >
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-14 text-center shadow-xl">
+            <div className="text-5xl mb-4">🍽️</div>
+            <h2 className="text-xl font-bold text-white mb-2">No orders yet</h2>
+            <p className="text-slate-400 text-sm mb-6">You haven&apos;t pre-ordered any meals yet.</p>
+            <button onClick={() => navigate('/canteen-selection')} className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-bold shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:opacity-90 transition-opacity">
               Start Ordering
             </button>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-5">
             {orders.map((order) => (
-              <div key={order._id} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                {/* Order Card Header */}
-                <div className="bg-slate-50/80 p-5 border-b border-slate-200 flex flex-wrap justify-between items-center gap-4">
+              <div key={order._id} className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                {/* Card Header */}
+                <div className="bg-slate-50 border-b border-slate-100 px-6 py-4 flex flex-wrap justify-between items-center gap-3">
                   <div>
-                    <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">
-                      Pre-Order For
-                    </p>
-                    <p className="text-lg font-bold text-primary-dark">
-                      {new Date(order.preOrderDate).toDateString()}
-                    </p>
-                    <p className="text-sm text-slate-600 mt-1">
-                      📍 {order.canteen}
-                    </p>
+                    <span className="text-xs text-cyan-600 uppercase tracking-widest font-bold">Pre-Order For</span>
+                    <p className="font-bold text-slate-900 mt-0.5">{new Date(order.preOrderDate).toDateString()}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">📍 {order.canteen}</p>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className={`px-4 py-1.5 rounded-full text-sm font-bold border ${getStatusColor(order.status)}`}>
-                      {order.status}
-                    </span>
-                  </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${getStatusColor(order.status)}`}>
+                    {order.status}
+                  </span>
                 </div>
 
-                {/* Order Items */}
-                <div className="p-5">
-                  <div className="space-y-3 mb-6">
+                {/* Items */}
+                <div className="px-6 py-5">
+                  <div className="space-y-2 mb-5">
                     {order.items.map((item, index) => (
                       <div key={index} className="flex justify-between items-center text-sm">
                         <span className="text-slate-700 font-medium">
-                          <span className="text-slate-400 mr-2">{item.quantity || item.qty}x</span> 
-                          {item.name}
+                          <span className="text-slate-400 mr-2">{item.quantity || item.qty}×</span>{item.name}
                         </span>
                         <span className="text-slate-600 font-bold">LKR {item.price * (item.quantity || item.qty)}</span>
                       </div>
                     ))}
                   </div>
-                  
                   <div className="flex justify-between items-center pt-4 border-t border-slate-100">
                     <div>
-                      <p className="text-sm text-slate-500">Total Amount</p>
-                      <p className="text-xl font-extrabold text-primary-dark">LKR {order.totalAmount.toFixed(2)}</p>
+                      <p className="text-xs text-slate-400">Total Amount</p>
+                      <p className="text-xl font-black text-accent">LKR {order.totalAmount.toFixed(2)}</p>
                     </div>
-                    
-                    {/* Action Button: Only show if they are allowed to cancel */}
                     {canCancel(order.preOrderDate, order.status) && (
                       <button
                         onClick={() => handleCancelOrder(order._id)}
                         disabled={cancellingId === order._id}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-bold transition border border-red-200 disabled:opacity-50"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 px-4 py-2 rounded-xl text-sm font-bold transition border border-red-200 disabled:opacity-50"
                       >
                         {cancellingId === order._id ? 'Cancelling...' : 'Cancel Pre-Order'}
                       </button>
                     )}
-                    {/* Message if they can't cancel but it's not completed/cancelled yet */}
                     {!canCancel(order.preOrderDate, order.status) && ['Pending', 'Approved'].includes(order.status) && (
                       <span className="text-xs text-slate-400 italic">Past cancellation deadline (5 PM)</span>
                     )}

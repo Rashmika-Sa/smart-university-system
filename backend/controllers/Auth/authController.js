@@ -128,8 +128,11 @@ const registerUser = async (req, res) => {
       user: { 
         id: user.id, 
         name: user.name, 
+        email: user.email,
         role: user.role,
-        managedCanteen: user.managedCanteen || null
+        universityId: user.universityId || '',
+        managedCanteen: user.managedCanteen || null,
+        profilePhoto: user.profilePhoto || ''
       } 
     });
 
@@ -170,8 +173,11 @@ const loginUser = async (req, res) => {
       user: { 
         id: user.id, 
         name: user.name, 
+        email: user.email,
         role: user.role,
-        managedCanteen: user.managedCanteen || null
+        universityId: user.universityId || '',
+        managedCanteen: user.managedCanteen || null,
+        profilePhoto: user.profilePhoto || ''
       } 
     });
 

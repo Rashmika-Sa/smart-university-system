@@ -8,8 +8,10 @@ import {
   FaBuilding,      // Facilities (Halls/Grounds)
   FaBullhorn,      // Notices
   FaSignOutAlt, 
-  FaBars 
+  FaBars,
+  FaStar           // Reviews
 } from 'react-icons/fa';
+import AdminReviews from './AdminReviews';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -25,13 +27,18 @@ const AdminDashboard = () => {
   return (
     <div className="flex h-screen bg-secondary font-sans">
       
-      {/* --- SIDEBAR (60% Primary) --- */}
-      <div className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-primary text-white transition-all duration-300 flex flex-col shadow-xl`}>
+      {/* --- SIDEBAR --- */}
+      <div className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-slate-900 border-r border-slate-800 text-white transition-all duration-300 flex flex-col shadow-xl`}>
         
         {/* Sidebar Header */}
-        <div className="p-5 flex items-center justify-between font-bold border-b border-primary-dark">
-          {isSidebarOpen && <span className="text-lg tracking-wider text-accent">SMART ADMIN</span>}
-          <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-primary-dark rounded-lg transition">
+        <div className="p-5 flex items-center justify-between font-bold border-b border-slate-800">
+          {isSidebarOpen && (
+            <span className="text-lg tracking-wider font-black">
+              <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">SLIIT SMART</span>
+              <span className="text-slate-400 text-sm font-medium ml-1">ADMIN</span>
+            </span>
+          )}
+          <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-slate-800 rounded-lg transition text-slate-400 hover:text-white">
             <FaBars />
           </button>
         </div>
@@ -45,6 +52,10 @@ const AdminDashboard = () => {
           <SidebarItem 
             icon={<FaUtensils />} text="Canteen" 
             active={activeTab === 'canteen'} onClick={() => setActiveTab('canteen')} expanded={isSidebarOpen} 
+          />
+          <SidebarItem 
+            icon={<FaStar />} text="Reviews" 
+            active={activeTab === 'reviews'} onClick={() => setActiveTab('reviews')} expanded={isSidebarOpen} 
           />
           <SidebarItem 
             icon={<FaBus />} text="Shuttle Service" 
@@ -65,10 +76,10 @@ const AdminDashboard = () => {
         </nav>
 
         {/* Logout Button */}
-        <div className="p-4 border-t border-primary-dark">
-          <button onClick={handleLogout} className="flex items-center gap-3 w-full p-3 hover:bg-red-600 rounded-lg transition text-left text-red-100 hover:text-white">
+        <div className="p-4 border-t border-slate-800">
+          <button onClick={handleLogout} className="flex items-center gap-3 w-full p-3 hover:bg-red-600/20 rounded-xl transition text-left text-slate-400 hover:text-red-400">
             <FaSignOutAlt />
-            {isSidebarOpen && <span className="font-medium">Logout</span>}
+            {isSidebarOpen && <span className="font-medium text-sm">Logout</span>}
           </button>
         </div>
       </div>
@@ -77,32 +88,37 @@ const AdminDashboard = () => {
       <div className="flex-1 overflow-auto bg-secondary p-8">
         
         {/* Top Header */}
-        <header className="flex justify-between items-center mb-8 bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+        <header className="flex justify-between items-center mb-8 bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl">
           <div>
-            <h1 className="text-2xl font-extrabold text-primary uppercase tracking-wide">
-              {activeTab === 'overview' ? 'Dashboard Overview' : `${activeTab} Management`}
+            <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Admin Portal</span>
+            <h1 className="text-xl font-black text-white mt-0.5 tracking-tight">
+              {activeTab === 'overview' ? 'Dashboard ' : `${activeTab} `}
+              <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent capitalize">
+                {activeTab === 'overview' ? 'Overview' : 'Management'}
+              </span>
             </h1>
-            <p className="text-sm text-gray-500 mt-1">Manage your smart campus services here.</p>
+            <p className="text-sm text-slate-400 mt-0.5">Manage your smart campus services.</p>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <span className="block text-sm font-bold text-gray-700">System Admin</span>
-              <span className="block text-xs text-green-600">● Online</span>
+              <span className="block text-sm font-bold text-slate-200">System Admin</span>
+              <span className="block text-xs text-emerald-400">● Online</span>
             </div>
-            <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-md">
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-cyan-500 text-white rounded-full flex items-center justify-center font-bold shadow-md">
               A
             </div>
           </div>
         </header>
 
         {/* Dynamic Content Container */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 min-h-[600px]">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-8 min-h-[600px]">
           
           {activeTab === 'overview' && (
-            <div className="text-center py-20">
-              <h2 className="text-3xl font-bold text-gray-300">Welcome to the Command Center 🚀</h2>
-              <p className="text-gray-400 mt-2">Select a service from the sidebar to manage.</p>
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="text-6xl mb-4">🚀</div>
+              <h2 className="text-2xl font-black text-white">Welcome to the <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Command Centre</span></h2>
+              <p className="text-slate-400 mt-2 text-sm">Select a service from the sidebar to manage.</p>
             </div>
           )}
 
@@ -110,9 +126,11 @@ const AdminDashboard = () => {
           {activeTab === 'canteen' && (
             <div>
               <h2 className="text-xl font-bold mb-4 text-accent">🍔 Canteen Management</h2>
-              <p className="text-gray-500">Manage daily menus, prices, and pre-orders.</p>
+              <p className="text-slate-400">Manage daily menus, prices, and pre-orders.</p>
             </div>
           )}
+
+          {activeTab === 'reviews' && <AdminReviews />}
           
         </div>
       </div>
@@ -126,10 +144,10 @@ const SidebarItem = ({ icon, text, active, onClick, expanded }) => (
     onClick={onClick}
     className={`flex items-center gap-4 w-full p-3 rounded-xl transition-all duration-200 group
     ${active 
-      ? 'bg-accent text-white shadow-lg font-bold' 
-      : 'text-gray-300 hover:bg-primary-dark hover:text-white'}`}
+      ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white shadow-[0_0_20px_rgba(99,102,241,0.3)] font-bold' 
+      : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}
   >
-    <span className={`text-xl ${active ? 'text-white' : 'group-hover:text-accent'}`}>
+    <span className={`text-xl ${active ? 'text-white' : 'group-hover:text-cyan-400'}`}>
       {icon}
     </span>
     {expanded && <span className="text-sm tracking-wide">{text}</span>}

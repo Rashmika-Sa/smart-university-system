@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../api/axios';
 import { useNavigate, useParams } from 'react-router-dom'; 
+import StudentTopNav from '../../components/StudentTopNav';
 
 const StudentMenu = () => {
   const navigate = useNavigate();
@@ -102,24 +103,25 @@ const StudentMenu = () => {
   });
 
   return (
-    <div className="min-h-screen bg-secondary relative overflow-hidden font-sans text-gray-800">
+    <div className="min-h-screen bg-secondary font-sans">
+      <StudentTopNav active="Canteen" />
       
       {/* ================= HEADER ================= */}
-      <div className="bg-primary shadow-xl sticky top-0 z-40 border-b border-primary-dark">
+      <div className="bg-slate-900 border-b border-slate-800 sticky top-[65px] z-40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           
           <div className="flex items-center gap-4">
             <button 
-                onClick={() => navigate('/canteen-selection')} 
-                className="text-white/70 hover:text-white hover:bg-white/10 p-2 rounded-xl transition"
+              onClick={() => navigate('/canteen-selection')} 
+              className="text-white/70 hover:text-white hover:bg-white/10 p-2 rounded-xl transition"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
               </svg>
             </button>
             <div>
-                <p className="text-[10px] text-accent font-bold uppercase tracking-widest">Ordering From</p>
-                <h1 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-none">
+                <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Ordering From</span>
+                <h1 className="text-xl md:text-2xl font-black text-white tracking-tight leading-none">
                 {canteenName ? decodeURIComponent(canteenName) : 'Canteen'}
                 </h1>
             </div>
@@ -154,7 +156,7 @@ const StudentMenu = () => {
                 placeholder="Search for rice, short eats, beverages..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl bg-primary-dark/50 text-white placeholder-white/50 border border-primary-dark focus:ring-2 focus:ring-accent/50 focus:bg-primary-dark outline-none transition-all backdrop-blur-sm"
+                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-800 text-white placeholder-slate-500 border border-slate-700 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all"
             />
           </div>
           
@@ -165,8 +167,8 @@ const StudentMenu = () => {
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300 border ${
                   selectedCategory === cat 
-                    ? 'bg-accent text-white border-accent shadow-lg shadow-accent/20' 
-                    : 'bg-transparent text-white/70 border-white/20 hover:bg-primary-dark hover:text-white'
+                    ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white border-transparent shadow-lg shadow-indigo-500/20' 
+                    : 'bg-transparent text-slate-400 border-slate-700 hover:bg-slate-800 hover:text-white'
                 }`}
               >
                 {cat}
@@ -177,7 +179,7 @@ const StudentMenu = () => {
       </div>
 
       {/* ================= MENU GRID ================= */}
-      <div className="max-w-7xl mx-auto px-6 py-8 pb-32">
+      <div className="max-w-7xl mx-auto px-6 py-8 pb-32 relative z-10">
         {loading ? (
           <div className="flex flex-col items-center justify-center mt-20 text-gray-400">
              <div className="w-10 h-10 border-4 border-primary-dark border-t-accent rounded-full animate-spin mb-4"></div>
@@ -188,10 +190,10 @@ const StudentMenu = () => {
             {filteredItems.map((item) => (
               <div 
                 key={item._id} 
-                className={`bg-white rounded-2xl p-4 shadow-sm border border-gray-200 hover:shadow-xl hover:border-accent/50 transition-all duration-300 flex flex-col h-full group ${!item.isAvailable ? 'opacity-75 grayscale-[0.8]' : ''}`}
+                className={`bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow-lg hover:border-indigo-200 transition-all duration-300 flex flex-col h-full group ${!item.isAvailable ? 'opacity-70 grayscale-[0.5]' : ''}`}
               >
                 {/* Image */}
-                <div className="h-44 bg-secondary rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
+                <div className="h-44 bg-secondary rounded-2xl mb-4 flex items-center justify-center relative overflow-hidden">
                   {item.image && item.image.startsWith('http') ? (
                     <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                   ) : (
@@ -200,7 +202,7 @@ const StudentMenu = () => {
                   
                   {!item.isAvailable && (
                     <div className="absolute inset-0 bg-primary-dark/60 backdrop-blur-[2px] flex items-center justify-center z-10">
-                      <span className="bg-red-500 text-white px-4 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-lg transform -rotate-3 border border-white/20">
+                      <span className="bg-red-500 text-white px-4 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-lg transform -rotate-3">
                         Sold Out
                       </span>
                     </div>
@@ -210,13 +212,13 @@ const StudentMenu = () => {
                 {/* Details */}
                 <div className="flex-1 flex flex-col">
                     <div className="mb-3">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider bg-gray-100 px-2 py-0.5 rounded-md">{item.category}</span>
-                        <h3 className="font-bold text-primary text-lg leading-tight mt-2 line-clamp-2">{item.name}</h3>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-md">{item.category}</span>
+                      <h3 className="font-bold text-slate-900 text-lg leading-tight mt-2 line-clamp-2">{item.name}</h3>
                     </div>
                     
-                    <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                        <span className="font-extrabold text-xl text-gray-700">
-                            <span className="text-xs font-bold text-gray-400 mr-1 align-top">LKR</span>
+                    <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span className="font-extrabold text-xl text-accent">
+                            <span className="text-xs font-bold text-slate-400 mr-1 align-top">LKR</span>
                             {item.price}
                         </span>
                     </div>
@@ -226,10 +228,10 @@ const StudentMenu = () => {
                 <button 
                   onClick={() => addToCart(item)}
                   disabled={!item.isAvailable}
-                  className={`w-full py-3 rounded-xl font-bold mt-4 transition-all duration-200 flex items-center justify-center gap-2 text-sm shadow-sm active:scale-[0.98] ${
+                  className={`w-full py-3 rounded-xl font-bold mt-4 transition-all duration-200 flex items-center justify-center gap-2 text-sm active:scale-[0.98] ${
                     item.isAvailable 
-                      ? 'bg-primary text-white hover:bg-accent hover:text-white hover:shadow-accent/30' 
-                      : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
+                      ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white hover:opacity-90 shadow-[0_0_15px_rgba(99,102,241,0.25)]' 
+                      : 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
                   }`}
                 >
                   {item.isAvailable ? (
@@ -247,11 +249,11 @@ const StudentMenu = () => {
         )}
 
         {!loading && filteredItems.length === 0 && (
-            <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
+            <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-slate-300">
                 <div className="text-5xl mb-4 opacity-50">🍽️</div>
-                <h3 className="text-xl font-bold text-gray-700">Menu Empty</h3>
-                <p className="text-gray-400 text-sm mt-1">Try changing the category or search term.</p>
-                <button onClick={() => {setSearchTerm(''); setSelectedCategory('All')}} className="mt-4 text-accent font-bold text-sm hover:underline">Clear Filters</button>
+                <h3 className="text-xl font-bold text-slate-700">Menu Empty</h3>
+                <p className="text-slate-400 text-sm mt-1">Try changing the category or search term.</p>
+                <button onClick={() => {setSearchTerm(''); setSelectedCategory('All')}} className="mt-4 text-indigo-500 font-bold text-sm hover:underline">Clear Filters</button>
             </div>
         )}
       </div>
@@ -261,7 +263,7 @@ const StudentMenu = () => {
         
         {/* Backdrop */}
         <div 
-            className={`absolute inset-0 bg-primary-dark/50 backdrop-blur-sm transition-opacity duration-300 ${isCartOpen ? 'opacity-100' : 'opacity-0'}`} 
+            className={`absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 ${isCartOpen ? 'opacity-100' : 'opacity-0'}`} 
             onClick={() => setIsCartOpen(false)}
         ></div>
 
@@ -269,10 +271,10 @@ const StudentMenu = () => {
         <div className="absolute top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
             
             {/* Cart Header */}
-            <div className="bg-primary p-6 flex items-center justify-between text-white">
+            <div className="bg-slate-900 border-b border-slate-800 p-6 flex items-center justify-between">
                 <div>
-                    <h2 className="text-xl font-bold">Your Tray</h2>
-                    <p className="text-xs text-white/70">{canteenName}</p>
+                    <h2 className="text-xl font-bold text-white">Your Tray</h2>
+                    <p className="text-xs text-slate-400">{canteenName}</p>
                 </div>
                 <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
@@ -300,7 +302,7 @@ const StudentMenu = () => {
                             
                             {/* Item Info */}
                             <div className="flex-1 min-w-0">
-                                <h4 className="font-bold text-primary text-sm truncate">{item.name}</h4>
+                                <h4 className="font-bold text-slate-900 text-sm truncate">{item.name}</h4>
                                 <p className="text-xs text-gray-400 font-medium">{item.category}</p>
                                 <div className="mt-2 flex items-center justify-between">
                                     <p className="text-sm font-bold text-gray-700">LKR {item.price * item.qty}</p>
@@ -321,8 +323,8 @@ const StudentMenu = () => {
             {/* Cart Footer */}
             <div className="p-6 bg-white border-t border-gray-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
                 <div className="flex justify-between items-end mb-4">
-                    <span className="text-gray-500 text-sm font-medium">Total Amount</span>
-                    <span className="text-2xl font-extrabold text-primary">LKR {cartTotal.toFixed(2)}</span>
+                    <span className="text-slate-500 text-sm font-medium">Total Amount</span>
+                    <span className="text-2xl font-extrabold text-accent">LKR {cartTotal.toFixed(2)}</span>
                 </div>
                 <button 
                     onClick={handleCheckout}

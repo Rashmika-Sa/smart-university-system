@@ -1,89 +1,100 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 
 const AcademicSpaces = () => {
   return (
-    <div 
-      className="min-h-screen flex flex-col text-white relative overflow-hidden bg-cover bg-center bg-fixed"
-      style={{ 
-        backgroundImage: "url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop')", // Library Image
-      }}
-    >
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-[#00152e]/80 backdrop-blur-sm"></div>
+    <div className="min-h-screen bg-secondary pb-16">
 
-      <div className="relative z-10 p-6 md:p-10 max-w-7xl mx-auto w-full">
-        
-        {/* --- Header / Navigation --- */}
-        <div className="flex justify-between items-center mb-10">
-          <Link to="/" className="flex items-center gap-2 text-gray-300 hover:text-[#f15a22] transition-colors">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            <span className="font-semibold tracking-wide">Back to Home</span>
-          </Link>
-          <div className="text-right">
-            <h1 className="text-3xl font-bold">Academic Spaces</h1>
-            <p className="text-sm text-gray-400">Library & Study Area Management</p>
+      {/* Header */}
+      <div className="bg-slate-900 border-b border-slate-800 px-6 py-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Learning & Research</span>
+              <h1 className="text-3xl font-black text-white mt-1 tracking-tight">
+                 Academic{' '}
+                <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Spaces</span>
+              </h1>
+              <p className="text-slate-400 text-sm mt-1">Library & Study Area Management</p>
+            </div>
+            <Link
+              to="/"
+              className="hidden sm:flex items-center gap-2 text-slate-400 hover:text-cyan-400 transition-colors text-sm font-semibold"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+              Back to Home
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+            <StatCard label="Study Rooms Available" value="08" color="text-emerald-400" />
+            <StatCard label="Library Occupancy" value="45%" color="text-cyan-400" />
+            <StatCard label="Quiet Zone Seats" value="12" color="text-accent" />
           </div>
         </div>
+      </div>
 
-        {/* --- Stats Row --- */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <StatCard label="Study Rooms Available" value="08" color="text-green-400" />
-          <StatCard label="Library Occupancy" value="45%" color="text-blue-400" />
-          <StatCard label="Quiet Zone Seats" value="12" color="text-[#f15a22]" />
-        </div>
+      {/* Cards */}
+      <div className="max-w-6xl mx-auto px-6 mt-8">
+        <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold mb-3">Campus Resources</p>
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent mb-6" />
 
-        {/* --- Main Action Grid --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          
-          {/* Card 1: Study Room Booking */}
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-[#f15a22]/50 transition-all duration-300 group">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          {/* Discussion Rooms */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-7 shadow-xl hover:border-indigo-500/40 transition-all duration-300 group">
             <div className="flex items-center gap-4 mb-4">
-              <span className="text-4xl">🗝️</span>
-              <h2 className="text-2xl font-bold group-hover:text-[#f15a22] transition-colors">Discussion Rooms</h2>
+              <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-2xl"></div>
+              <h2 className="text-xl font-bold text-white group-hover:text-indigo-400 transition-colors">Discussion Rooms</h2>
             </div>
-            <p className="text-gray-300 mb-6">Book a private room for group studies or project discussions. Maximum 6 students per room.</p>
-            <button className="w-full py-3 rounded-lg bg-[#002c5f] hover:bg-[#003e85] text-white font-semibold transition-colors shadow-lg">
+            <p className="text-slate-400 text-sm mb-6 leading-relaxed">
+              Book a private room for group studies or project discussions. Maximum 6 students per room.
+            </p>
+            <button className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:opacity-90 transition-opacity">
               Reserve a Room
             </button>
           </div>
 
-          {/* Card 2: Digital Catalog */}
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-green-400/50 transition-all duration-300 group">
+          {/* Digital Catalog */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-7 shadow-xl hover:border-cyan-500/40 transition-all duration-300 group">
             <div className="flex items-center gap-4 mb-4">
-              <span className="text-4xl">💻</span>
-              <h2 className="text-2xl font-bold group-hover:text-green-400 transition-colors">Digital Catalog</h2>
+              <div className="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center text-2xl"></div>
+              <h2 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">Digital Catalog</h2>
             </div>
-            <p className="text-gray-300 mb-6">Search for physical books, e-books, and past papers. Reserve books for pickup.</p>
+            <p className="text-slate-400 text-sm mb-6 leading-relaxed">
+              Search for physical books, e-books, and past papers. Reserve books for pickup.
+            </p>
             <div className="relative">
-              <input 
-                type="text" 
-                placeholder="Search by Title, Author or ISBN..." 
-                className="w-full bg-black/40 border border-white/20 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-green-400"
+              <input
+                type="text"
+                placeholder="Search by Title, Author or ISBN..."
+                className="w-full bg-slate-800 border border-slate-700 rounded-xl py-3 px-4 pr-12 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 text-sm"
               />
-              <button className="absolute right-2 top-2 p-1 text-gray-400 hover:text-white">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              <button className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-cyan-400 transition-colors">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
               </button>
             </div>
           </div>
 
-          {/* Card 3: Quiet Zone Check-in */}
-          <div className="md:col-span-2 bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/10">
-             <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          {/* Quiet Zone full width */}
+          <div className="md:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-7 shadow-xl">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center text-2xl shrink-0"></div>
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">🤫 Quiet Study Zone</h2>
-                  <p className="text-gray-300">Level 3, West Wing. Strictly no talking.</p>
+                  <h2 className="text-xl font-bold text-white">Quiet Study Zone</h2>
+                  <p className="text-slate-400 text-sm mt-1">Level 3, West Wing  Strictly no talking.</p>
                 </div>
-                <div className="flex gap-4">
-                  <div className="text-center bg-black/30 p-3 rounded-lg min-w-[100px]">
-                    <span className="block text-2xl font-bold text-green-400">Open</span>
-                    <span className="text-xs text-gray-400 uppercase">Status</span>
-                  </div>
-                  <button className="px-6 py-3 rounded-lg border border-[#f15a22] text-[#f15a22] hover:bg-[#f15a22] hover:text-white font-semibold transition-all">
-                    Check-in Now
-                  </button>
+              </div>
+              <div className="flex items-center gap-4 shrink-0">
+                <div className="text-center bg-slate-800 border border-slate-700 px-5 py-3 rounded-xl">
+                  <span className="block text-lg font-bold text-emerald-400">Open</span>
+                  <span className="text-xs text-slate-500 uppercase tracking-wider">Status</span>
                 </div>
-             </div>
+                <button className="px-6 py-3 rounded-xl border border-accent text-accent hover:bg-accent hover:text-white font-bold text-sm transition-all">
+                  Check-in Now
+                </button>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -92,11 +103,10 @@ const AcademicSpaces = () => {
   );
 };
 
-// Simple Stat Component
 const StatCard = ({ label, value, color }) => (
-  <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border-l-4 border-white/20">
-    <h3 className="text-gray-400 text-sm font-medium uppercase tracking-wider mb-1">{label}</h3>
-    <p className={`text-4xl font-bold ${color}`}>{value}</p>
+  <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
+    <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">{label}</p>
+    <p className={`text-3xl font-black ${color}`}>{value}</p>
   </div>
 );
 
