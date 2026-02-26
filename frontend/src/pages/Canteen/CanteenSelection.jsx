@@ -5,7 +5,7 @@ import StudentTopNav from '../../components/StudentTopNav';
 const CanteenSelection = () => {
   const navigate = useNavigate();
 
-  // 🏪 Canteen Data Configuration (Barista Removed!)
+  // 🍽 Canteen Data Configuration (Barista Removed!)
   const canteens = [
     { 
       id: 1,
@@ -34,102 +34,108 @@ const CanteenSelection = () => {
     navigate(`/canteen-menu/${encodeURIComponent(canteenName)}`);
   };
 
+  // Color variants per canteen
+  const accentVariants = [
+    { bg: 'bg-cyan-500/15', border: 'border-cyan-500/30', text: 'text-cyan-400', hoverBorder: 'hover:border-cyan-500/50' },
+    { bg: 'bg-emerald-500/15', border: 'border-emerald-500/30', text: 'text-emerald-400', hoverBorder: 'hover:border-emerald-500/50' },
+    { bg: 'bg-violet-500/15', border: 'border-violet-500/30', text: 'text-violet-400', hoverBorder: 'hover:border-violet-500/50' },
+  ];
+
   return (
-    <div className="min-h-screen bg-secondary flex flex-col p-6 relative overflow-hidden font-sans text-gray-800">
+    <div className="min-h-screen bg-white flex flex-col font-sans">
       <StudentTopNav active="Canteen" />
-      
-      {/* 🏛️ SLIIT Themed Background Elements */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary rounded-full mix-blend-multiply filter blur-3xl opacity-5 animate-pulse"></div>
-      <div className="absolute top-[10%] right-[-5%] w-[400px] h-[400px] bg-accent rounded-full mix-blend-multiply filter blur-3xl opacity-5 animate-pulse" style={{ animationDelay: '2s' }}></div>
-      <div className="absolute bottom-[-10%] left-[20%] w-[400px] h-[400px] bg-primary-dark rounded-full mix-blend-multiply filter blur-3xl opacity-5 animate-pulse" style={{ animationDelay: '4s' }}></div>
 
-      {/* 🚀 Content Container */}
-        <div className="relative z-10 max-w-7xl w-full mx-auto mt-8">
-        
-        {/* Header Section */}
-        <div className="text-center mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
-            {/* Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 rounded-full bg-white/70 border border-white/60 shadow-sm backdrop-blur">
-            <span className="text-accent font-bold text-xs tracking-widest uppercase">SLIIT Dining Services</span>
-          </div>
-            
-          <h1 className="text-4xl md:text-6xl font-extrabold text-primary tracking-tight mb-4">
-            Select Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-orange-400">Dining Spot</span>
-          </h1>
-            
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-            Skip the queue. Pre-order meals from SLIIT's top food outlets in seconds.
-          </p>
-        </div>
-
-        {/* 🍱 Cards Grid - 👇 Changed to md:grid-cols-3 to perfectly balance the 3 cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {canteens.map((canteen, index) => (
-            <div 
-              key={canteen.id}
-              onClick={() => handleSelect(canteen.name)}
-              className="group relative bg-white/95 h-[420px] rounded-3xl shadow-lg border border-white/70 overflow-hidden cursor-pointer hover:shadow-2xl hover:border-accent/50 transition-all duration-500 hover:-translate-y-2 flex flex-col animate-in fade-in slide-in-from-bottom-8"
-              style={{ animationDelay: `${index * 150}ms`, animationFillMode: 'both' }} // Staggered entrance
+      {/* ═══ HEADER ═══ */}
+      <div className="bg-slate-900 border-b border-slate-800 px-6 py-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">SLIIT Dining Services</span>
+              <h1 className="text-2xl sm:text-3xl font-black text-white mt-1 tracking-tight">
+                Select Your{' '}
+                <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Dining Spot</span>
+              </h1>
+              <p className="text-slate-400 text-sm mt-1">Skip the queue. Pre-order meals from SLIIT's top food outlets in seconds.</p>
+            </div>
+            <button
+              onClick={() => navigate('/my-orders')}
+              className="px-5 py-2.5 rounded-xl bg-accent text-white font-bold text-sm shadow-[0_0_20px_rgba(255,107,53,0.3)] hover:opacity-90 transition-opacity whitespace-nowrap"
             >
-              
-              {/* Card Header / Image Area */}
-              <div className="h-40 bg-secondary relative flex items-center justify-center group-hover:bg-primary/5 transition-colors duration-500 border-b border-gray-100 overflow-hidden">
-                {/* Floating Logo */}
-                <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center shadow-md border border-gray-100 transform group-hover:scale-110 group-hover:border-accent transition-all duration-500 relative z-10">
-                    <img 
-                        src={canteen.logo} 
-                        alt={canteen.name} 
-                        className="w-14 h-14 object-contain"
-                        onError={(e) => {e.target.src = 'https://cdn-icons-png.flaticon.com/512/1377/1377194.png'}}
+              View My Orders
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ CANTEEN CARDS ═══ */}
+      <div className="max-w-6xl mx-auto px-6 mt-8 pb-10 w-full">
+        <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold mb-3">Available Outlets</p>
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent mb-6" />
+
+        <div className="space-y-5">
+          {canteens.map((canteen, index) => {
+            const variant = accentVariants[index % accentVariants.length];
+            return (
+              <div
+                key={canteen.id}
+                onClick={() => handleSelect(canteen.name)}
+                className={`group bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden cursor-pointer ${variant.hoverBorder} transition-all duration-300 flex flex-col sm:flex-row`}
+              >
+                {/* Left accent stripe + logo area */}
+                <div className="relative sm:w-56 flex-shrink-0 bg-slate-800 border-b sm:border-b-0 sm:border-r border-slate-700 flex items-center justify-center p-8">
+                  <div className="absolute top-0 left-0 w-1 sm:w-1 h-full bg-gradient-to-b from-indigo-500 via-cyan-400 to-indigo-500/40 rounded-r-full" />
+                  <div className={`w-20 h-20 ${variant.bg} rounded-2xl flex items-center justify-center border ${variant.border} transform group-hover:scale-110 transition-all duration-500`}>
+                    <img
+                      src={canteen.logo}
+                      alt={canteen.name}
+                      className="w-12 h-12 object-contain"
+                      onError={(e) => { e.target.src = 'https://cdn-icons-png.flaticon.com/512/1377/1377194.png'; }}
                     />
+                  </div>
                 </div>
-                
-                {/* Background Pattern using Tailwind */}
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary-dark to-transparent background-size-[16px_16px]"></div>
-              </div>
 
-              {/* Card Body */}
-              <div className="p-6 flex-1 flex flex-col items-center text-center">
-                
-                {/* Category Tag */}
-                <span className="text-[10px] font-bold tracking-wider uppercase text-primary bg-accent/10 px-3 py-1 rounded-full mb-3">
-                    {canteen.category}
-                </span>
+                {/* Content area */}
+                <div className="flex-1 p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2.5 mb-2">
+                      <span className={`text-[10px] font-bold tracking-wider uppercase ${variant.text} ${variant.bg} border ${variant.border} px-2.5 py-0.5 rounded-lg`}>
+                        {canteen.category}
+                      </span>
+                      <span className="text-[10px] text-slate-500 font-medium">#{String(canteen.id).padStart(2, '0')}</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white group-hover:text-indigo-400 transition-colors">
+                      {canteen.name}
+                    </h3>
+                    <p className="text-sm text-slate-400 leading-relaxed mt-1.5 max-w-lg">
+                      {canteen.desc}
+                    </p>
+                  </div>
 
-                <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-primary-dark transition-colors">
-                  {canteen.name}
-                </h3>
-                
-                <p className="text-sm text-gray-500 leading-relaxed mb-6">
-                  {canteen.desc}
-                </p>
-
-                {/* Bottom Action Area */}
-                <div className="mt-auto w-full space-y-2">
-                    <button className="w-full py-3 rounded-xl font-bold text-sm transition-all duration-300 bg-white border border-gray-200 text-gray-600 shadow-sm group-hover:bg-accent group-hover:text-white group-hover:border-transparent group-hover:shadow-lg">
-                        View Menu
+                  {/* Action buttons */}
+                  <div className="flex sm:flex-col gap-2.5 flex-shrink-0 sm:w-40">
+                    <button className="flex-1 sm:w-full py-2.5 rounded-xl font-bold text-sm transition-all duration-300 bg-accent text-white shadow-[0_0_20px_rgba(255,107,53,0.25)] hover:opacity-90">
+                      View Menu
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); navigate(`/canteen-reviews?canteen=${encodeURIComponent(canteen.name)}`); }}
-                      className="w-full py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 bg-white border border-gray-200 text-indigo-500 hover:bg-indigo-50 hover:border-indigo-200 flex items-center justify-center gap-1.5"
+                      className="flex-1 sm:w-full py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white flex items-center justify-center gap-1.5"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
-                      See Reviews
+                      Reviews
                     </button>
+                  </div>
                 </div>
               </div>
-
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        {/* Footer Text */}
-        <div className="text-center mt-12 animate-in fade-in duration-1000 delay-500">
-            <p className="text-slate-400 text-sm font-medium">
-                Powered by Sliit Smart Uni © {new Date().getFullYear()}
-            </p>
+        {/* Footer */}
+        <div className="text-center mt-12">
+          <p className="text-slate-500 text-sm font-medium">
+            Powered by Sliit Smart Uni © {new Date().getFullYear()}
+          </p>
         </div>
-
       </div>
     </div>
   );

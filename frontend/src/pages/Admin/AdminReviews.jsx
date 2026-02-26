@@ -116,7 +116,7 @@ const AdminReviews = ({ initialCanteen }) => {
             onClick={() => { setSelectedCanteen(c); setFilterCat(''); setFilterStar(0); }}
             className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all duration-200
               ${selectedCanteen === c
-                ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white border-transparent shadow-lg'
+                ? 'bg-accent text-white border-transparent shadow-lg'
                 : 'bg-slate-800 text-slate-400 border-slate-700 hover:border-indigo-500/50 hover:text-white'
               }`}
           >

@@ -1,14 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const StudentTopNav = ({ active = 'Home', showLogout = true }) => {
+const StudentTopNav = ({ active = 'Home' }) => {
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login');
-  };
 
   const NavBtn = ({ label, route }) => {
     const isActive = active === label;
@@ -17,7 +11,7 @@ const StudentTopNav = ({ active = 'Home', showLogout = true }) => {
         onClick={() => navigate(route)}
         className={`px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
           isActive
-            ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white shadow-[0_0_12px_rgba(99,102,241,0.35)]'
+            ? 'bg-accent text-white shadow-[0_0_12px_rgba(255,107,53,0.35)]'
             : 'text-slate-600 hover:text-indigo-600 hover:bg-indigo-50'
         }`}
       >
@@ -39,15 +33,6 @@ const StudentTopNav = ({ active = 'Home', showLogout = true }) => {
           <NavBtn label="Canteen" route="/canteen-selection" />
           <NavBtn label="Shuttle" route="/shuttle-dashboard" />
           <NavBtn label="Facilities" route="/facility-dashboard" />
-          <NavBtn label="My Orders" route="/my-orders" />
-          {showLogout && (
-            <button
-              onClick={handleLogout}
-              className="px-3 py-2 rounded-xl text-sm font-semibold text-red-500 hover:bg-red-50 transition-all duration-200"
-            >
-              Logout
-            </button>
-          )}
         </div>
       </div>
     </nav>

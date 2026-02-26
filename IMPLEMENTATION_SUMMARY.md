@@ -153,7 +153,7 @@ Added new protected route:
    - Managed Canteen: "Barista"
 4. **Submit** → Admin created and can now only manage Barista items
 
-### 🏪 Using as Canteen-Specific Admin
+### 🍽 Using as Canteen-Specific Admin
 
 1. **Login with your canteen admin account** (e.g., barista@sliit.lk)
 2. **Go to** `/canteen-dashboard`

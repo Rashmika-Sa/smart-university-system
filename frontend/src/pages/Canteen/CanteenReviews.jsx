@@ -144,7 +144,7 @@ const CanteenReviews = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary">
+    <div className="min-h-screen bg-white">
       <StudentTopNav active="Canteen" />
 
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
@@ -166,7 +166,7 @@ const CanteenReviews = () => {
               onClick={() => { setSelectedCanteen(c); setFilterCat(''); setFilterStar(0); }}
               className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all duration-200
                 ${selectedCanteen === c
-                  ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white border-transparent shadow-lg'
+                  ? 'bg-accent text-white border-transparent shadow-lg'
                   : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:text-indigo-600'
                 }`}
             >
@@ -213,7 +213,7 @@ const CanteenReviews = () => {
               {!user?.id ? (
                 <div className="text-center py-4">
                   <p className="text-slate-400 text-sm mb-3">Sign in to leave a review</p>
-                  <button onClick={() => navigate('/login')} className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 text-white text-sm font-semibold">
+                  <button onClick={() => navigate('/login')} className="px-4 py-2 rounded-xl bg-accent text-white text-sm font-semibold">
                     Sign In
                   </button>
                 </div>
@@ -295,10 +295,10 @@ const CanteenReviews = () => {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="relative w-full overflow-hidden py-3 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-indigo-500 to-cyan-500 shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_35px_rgba(99,102,241,0.5)] transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 group"
+                    className="relative w-full overflow-hidden py-3 rounded-xl font-bold text-sm text-white bg-accent shadow-[0_0_20px_rgba(255,107,53,0.3)] hover:shadow-[0_0_35px_rgba(255,107,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 group"
                   >
                     <span className="relative z-10">{submitting ? 'Submitting...' : 'Submit Review'}</span>
-                    <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <span className="absolute inset-0 bg-accent/80 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
                 </form>
               )}

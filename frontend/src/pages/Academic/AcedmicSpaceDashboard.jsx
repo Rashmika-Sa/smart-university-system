@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const AcademicSpaces = () => {
   return (
-    <div className="min-h-screen bg-secondary pb-16">
+    <div className="min-h-screen bg-white pb-16">
 
       {/* Header */}
       <div className="bg-slate-900 border-b border-slate-800 px-6 py-8">
@@ -49,7 +49,7 @@ const AcademicSpaces = () => {
             <p className="text-slate-400 text-sm mb-6 leading-relaxed">
               Book a private room for group studies or project discussions. Maximum 6 students per room.
             </p>
-            <button className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:opacity-90 transition-opacity">
+            <button className="w-full py-3 rounded-xl bg-accent text-white font-bold text-sm shadow-[0_0_20px_rgba(255,107,53,0.3)] hover:opacity-90 transition-opacity">
               Reserve a Room
             </button>
           </div>

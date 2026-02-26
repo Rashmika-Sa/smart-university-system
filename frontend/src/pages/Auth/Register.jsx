@@ -79,7 +79,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
 
       <div className="relative w-full max-w-md">
 
@@ -149,11 +149,11 @@ const Register = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <button disabled={loading} className="relative w-full overflow-hidden py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-indigo-500 to-cyan-500 shadow-[0_0_30px_rgba(99,102,241,0.35)] hover:shadow-[0_0_45px_rgba(99,102,241,0.55)] transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 group">
+              <button disabled={loading} className="relative w-full overflow-hidden py-3.5 rounded-xl font-bold text-sm text-white bg-accent shadow-[0_0_30px_rgba(255,107,53,0.35)] hover:shadow-[0_0_45px_rgba(255,107,53,0.55)] transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 group">
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   {loading ? 'Sending...' : <>Send Verification Code <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></>}
                 </span>
-                <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="absolute inset-0 bg-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </button>
             </form>
           )}
@@ -174,9 +174,9 @@ const Register = () => {
                 />
                 <p className="text-xs text-center text-slate-600">Check your inbox and spam folder</p>
               </div>
-              <button disabled={loading} className="relative w-full overflow-hidden py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-indigo-500 to-cyan-500 shadow-[0_0_30px_rgba(99,102,241,0.35)] hover:shadow-[0_0_45px_rgba(99,102,241,0.55)] transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 group">
+              <button disabled={loading} className="relative w-full overflow-hidden py-3.5 rounded-xl font-bold text-sm text-white bg-accent shadow-[0_0_30px_rgba(255,107,53,0.35)] hover:shadow-[0_0_45px_rgba(255,107,53,0.55)] transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 group">
                 <span className="relative z-10">{loading ? 'Verifying...' : 'Confirm Identity'}</span>
-                <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="absolute inset-0 bg-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </button>
               <button type="button" onClick={() => { setStep(1); setError(''); setMsg(''); }} className="w-full text-slate-600 text-sm hover:text-cyan-400 transition-colors">
                 ← Back to Email

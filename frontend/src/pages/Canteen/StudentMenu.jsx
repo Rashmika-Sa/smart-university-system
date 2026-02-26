@@ -103,7 +103,7 @@ const StudentMenu = () => {
   });
 
   return (
-    <div className="min-h-screen bg-secondary font-sans">
+    <div className="min-h-screen bg-white font-sans">
       <StudentTopNav active="Canteen" />
       
       {/* ================= HEADER ================= */}
@@ -167,7 +167,7 @@ const StudentMenu = () => {
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300 border ${
                   selectedCategory === cat 
-                    ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white border-transparent shadow-lg shadow-indigo-500/20' 
+                    ? 'bg-accent text-white border-transparent shadow-lg shadow-accent/20' 
                     : 'bg-transparent text-slate-400 border-slate-700 hover:bg-slate-800 hover:text-white'
                 }`}
               >
@@ -230,7 +230,7 @@ const StudentMenu = () => {
                   disabled={!item.isAvailable}
                   className={`w-full py-3 rounded-xl font-bold mt-4 transition-all duration-200 flex items-center justify-center gap-2 text-sm active:scale-[0.98] ${
                     item.isAvailable 
-                      ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white hover:opacity-90 shadow-[0_0_15px_rgba(99,102,241,0.25)]' 
+                      ? 'bg-accent text-white hover:opacity-90 shadow-[0_0_15px_rgba(255,107,53,0.25)]' 
                       : 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
                   }`}
                 >

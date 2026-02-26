@@ -161,7 +161,7 @@ const Checkout = () => {
 
   // 5.Checkout Form View
   return (
-    <div className="min-h-screen bg-secondary pb-12">
+    <div className="min-h-screen bg-white pb-12">
       <StudentTopNav active="Canteen" />
       
       {/* Header */}

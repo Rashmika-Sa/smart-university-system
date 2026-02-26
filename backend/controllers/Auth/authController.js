@@ -148,7 +148,7 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
     const cleanEmail = email.trim().toLowerCase();
     
-    console.log("🔐 Login Attempt:", cleanEmail);
+    console.log("🛡 Login Attempt:", cleanEmail);
 
     // 1. Find User
     let user = await User.findOne({ email: cleanEmail });
@@ -193,7 +193,7 @@ const createCanteenAdmin = async (req, res) => {
     const { name, email, password, managedCanteen } = req.body;
     const cleanEmail = email.trim().toLowerCase();
     
-    console.log("👨‍💼 Creating Canteen Admin:", cleanEmail, "for canteen:", managedCanteen);
+    console.log("👤‍💼 Creating Canteen Admin:", cleanEmail, "for canteen:", managedCanteen);
 
     // Validate input
     if (!name || !email || !password) {

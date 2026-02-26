@@ -94,8 +94,8 @@ const OrderHistory = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary pb-16">
-      <StudentTopNav active="My Orders" showLogout={true} />
+    <div className="min-h-screen bg-white pb-16">
+      <StudentTopNav active="My Orders" />
 
       <div className="max-w-5xl mx-auto px-6 py-8">
         {/* Page Header */}
@@ -130,7 +130,7 @@ const OrderHistory = () => {
             <div className="text-5xl mb-4">🍽️</div>
             <h2 className="text-xl font-bold text-white mb-2">No orders yet</h2>
             <p className="text-slate-400 text-sm mb-6">You haven&apos;t pre-ordered any meals yet.</p>
-            <button onClick={() => navigate('/canteen-selection')} className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-bold shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:opacity-90 transition-opacity">
+            <button onClick={() => navigate('/canteen-selection')} className="px-6 py-3 rounded-xl bg-accent text-white font-bold shadow-[0_0_20px_rgba(255,107,53,0.3)] hover:opacity-90 transition-opacity">
               Start Ordering
             </button>
           </div>

@@ -12,14 +12,17 @@ const userRoutes = require('./routes/Auth/users');
 const canteenRoutes = require('./routes/Canteen/canteenRoutes');
 const orderRoutes = require('./routes/Order/orderRoutes');
 const reviewRoutes = require('./routes/Canteen/reviewRoutes');
+const noticeRoutes = require('./routes/General/noticeRoutes');
 
 // Initialize the App
 const app = express();
 const PORT = process.env.PORT || 5000;
+const BODY_LIMIT = process.env.BODY_LIMIT || '10mb';
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: BODY_LIMIT }));
+app.use(express.urlencoded({ extended: true, limit: BODY_LIMIT }));
 
 // --- ROUTES ---
 app.use('/api/auth', authRoutes);
@@ -27,6 +30,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/canteen', canteenRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/notices', noticeRoutes);
 
 // Basic Route
 app.get('/', (req, res) => {
@@ -45,7 +49,7 @@ const connectWithFallback = async () => {
   } catch (err) {
     console.log('❌ MongoDB primary connection failed:', err.message || err);
     if (process.env.FALLBACK_TO_LOCAL === 'true') {
-      console.log('➡️ Attempting fallback to local MongoDB...');
+      console.log('👇️ Attempting fallback to local MongoDB...');
       try {
         await mongoose.connect(fallbackUri, opts);
         console.log('✅ MongoDB Connected (fallback local)');

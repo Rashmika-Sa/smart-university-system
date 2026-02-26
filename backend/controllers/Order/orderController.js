@@ -275,7 +275,7 @@ exports.updateOrderStatus = async (req, res) => {
         if (status === 'Ready' && order.user?.email) {
             await sendEmail(
                 order.user.email,
-                '🍲 Your Order is Ready!',
+                '🍛 Your Order is Ready!',
                 `Hello ${order.user.name},\n\nYour pre-order at ${order.canteen} is ready for pickup!\n\nSee you soon!`
             );
         }

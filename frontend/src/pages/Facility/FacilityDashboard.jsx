@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 const facilities = [
   { id: 1, name: 'Basketball Court', icon: '🏀', location: 'Block C Ground Floor', capacity: 10, status: 'Available', slots: ['08:00–10:00', '10:00–12:00', '14:00–16:00'] },
-  { id: 2, name: 'Football Ground', icon: '⚽', location: 'Main Campus Field', capacity: 22, status: 'Booked', slots: ['08:00–10:00', '16:00–18:00'] },
-  { id: 3, name: 'Badminton Hall', icon: '🏸', location: 'Block B Level 1', capacity: 4, status: 'Available', slots: ['09:00–11:00', '13:00–15:00', '17:00–19:00'] },
+  { id: 2, name: 'Football Ground', icon: '🏀', location: 'Main Campus Field', capacity: 22, status: 'Booked', slots: ['08:00–10:00', '16:00–18:00'] },
+  { id: 3, name: 'Badminton Hall', icon: '🎾', location: 'Block B Level 1', capacity: 4, status: 'Available', slots: ['09:00–11:00', '13:00–15:00', '17:00–19:00'] },
   { id: 4, name: 'Swimming Pool', icon: '🏊', location: 'Aquatic Centre', capacity: 20, status: 'Maintenance', slots: [] },
   { id: 5, name: 'Conference Room A', icon: '🏛️', location: 'Admin Block Level 3', capacity: 30, status: 'Available', slots: ['09:00–11:00', '11:00–13:00', '15:00–17:00'] },
   { id: 6, name: 'Gym & Fitness Centre', icon: '🏋️', location: 'Student Zone', capacity: 15, status: 'Available', slots: ['06:00–08:00', '12:00–14:00', '18:00–20:00'] },
@@ -21,7 +21,7 @@ const FacilityDashboard = () => {
   const available = facilities.filter(f => f.status === 'Available').length;
 
   return (
-    <div className="min-h-screen bg-secondary pb-16">
+    <div className="min-h-screen bg-white pb-16">
       {/* Header */}
       <div className="bg-slate-900 border-b border-slate-800 px-6 py-8">
         <div className="max-w-6xl mx-auto">
@@ -80,7 +80,7 @@ const FacilityDashboard = () => {
                         onClick={() => { setSelected(facility.id); setBookedSlot(slot); }}
                         className={`text-xs px-2.5 py-1 rounded-lg border font-medium transition-all ${
                           selected === facility.id && bookedSlot === slot
-                            ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white border-transparent shadow'
+                            ? 'bg-accent text-white border-transparent shadow'
                             : 'border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'
                         }`}
                       >
@@ -93,7 +93,7 @@ const FacilityDashboard = () => {
                   <button
                     disabled={selected !== facility.id}
                     onClick={() => alert(`Booked ${facility.name} at ${bookedSlot}!`)}
-                    className="mt-auto w-full py-2 text-sm font-bold rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 text-white opacity-90 hover:opacity-100 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity shadow-[0_0_20px_rgba(99,102,241,0.25)]"
+                    className="mt-auto w-full py-2 text-sm font-bold rounded-xl bg-accent text-white opacity-90 hover:opacity-100 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity shadow-[0_0_20px_rgba(255,107,53,0.25)]"
                   >
                     {selected === facility.id ? `Book ${bookedSlot}` : 'Select a Slot'}
                   </button>
