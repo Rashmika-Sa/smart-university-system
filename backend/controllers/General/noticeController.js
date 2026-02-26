@@ -3,6 +3,11 @@ const User = require('../../models/Auth/User');
 
 const ADMIN_ROLES = ['admin', 'canteen_admin', 'academic_admin', 'shuttle_admin', 'facility_admin'];
 
+const isSuperAdmin = (user) => {
+  // Main admin role or canteen super admin (no specific canteen assigned)
+  return user.role === 'admin' || (user.role === 'canteen_admin' && !user.managedCanteen);
+};
+
 const getNotices = async (req, res) => {
   try {
     const { includeUnpublished = 'false', audience = 'students', limit = 10 } = req.query;
@@ -15,6 +20,14 @@ const getNotices = async (req, res) => {
 
     if (audience && audience !== 'all') {
       query.$or = [{ targetAudience: 'all' }, { targetAudience: audience }];
+    }
+
+    // Sub-admins only see their own notices
+    if (req.user && ADMIN_ROLES.includes(req.user.role)) {
+      const user = await User.findById(req.user.id);
+      if (user && !isSuperAdmin(user)) {
+        query.postedBy = user._id;
+      }
     }
 
     const notices = await Notice.find(query)
@@ -71,6 +84,12 @@ const updateNotice = async (req, res) => {
       return res.status(404).json({ message: 'Notice not found.' });
     }
 
+    // Sub-admins can only edit their own notices
+    const user = await User.findById(req.user.id);
+    if (user && !isSuperAdmin(user) && notice.postedBy.toString() !== user._id.toString()) {
+      return res.status(403).json({ message: 'You can only edit your own notices.' });
+    }
+
     notice.title = title ?? notice.title;
     notice.content = content ?? notice.content;
     notice.priority = priority ?? notice.priority;
@@ -93,6 +112,12 @@ const deleteNotice = async (req, res) => {
 
     if (!notice) {
       return res.status(404).json({ message: 'Notice not found.' });
+    }
+
+    // Sub-admins can only delete their own notices
+    const user = await User.findById(req.user.id);
+    if (user && !isSuperAdmin(user) && notice.postedBy.toString() !== user._id.toString()) {
+      return res.status(403).json({ message: 'You can only delete your own notices.' });
     }
 
     await notice.deleteOne();

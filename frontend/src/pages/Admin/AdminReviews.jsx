@@ -47,16 +47,29 @@ const RatingBar = ({ label, count, total, color }) => {
 };
 
 const AdminReviews = ({ initialCanteen }) => {
+  const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+  const isSubCanteenAdmin = currentUser?.role === 'canteen_admin' && !!currentUser?.managedCanteen;
+  const allowedCanteens = isSubCanteenAdmin
+    ? CANTEENS.filter((c) => c === currentUser.managedCanteen)
+    : CANTEENS;
+
   const [selectedCanteen, setSelectedCanteen] = useState(
-    initialCanteen && CANTEENS.includes(initialCanteen) ? initialCanteen : CANTEENS[0]
+    isSubCanteenAdmin
+      ? currentUser.managedCanteen
+      : (initialCanteen && CANTEENS.includes(initialCanteen) ? initialCanteen : CANTEENS[0])
   );
 
   // Sync when parent changes the canteen (e.g. super admin switches canteen in CanteenDashboard)
   useEffect(() => {
+    if (isSubCanteenAdmin) {
+      setSelectedCanteen(currentUser.managedCanteen);
+      return;
+    }
+
     if (initialCanteen && CANTEENS.includes(initialCanteen)) {
       setSelectedCanteen(initialCanteen);
     }
-  }, [initialCanteen]);
+  }, [initialCanteen, isSubCanteenAdmin, currentUser?.managedCanteen]);
   const [reviews, setReviews] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -110,7 +123,7 @@ const AdminReviews = ({ initialCanteen }) => {
 
       {/* Canteen Tabs */}
       <div className="flex flex-wrap gap-2">
-        {CANTEENS.map((c) => (
+        {allowedCanteens.map((c) => (
           <button
             key={c}
             onClick={() => { setSelectedCanteen(c); setFilterCat(''); setFilterStar(0); }}

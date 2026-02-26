@@ -1,6 +1,28 @@
 const Review = require('../../models/Canteen/Review');
 const FoodItem = require('../../models/Canteen/FoodItem');
 const User = require('../../models/Auth/User');
+const jwt = require('jsonwebtoken');
+
+const getOptionalUserFromToken = async (req) => {
+  try {
+    const token = req.header('x-auth-token');
+    if (!token) return null;
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey');
+    if (!decoded?.user?.id) return null;
+
+    const user = await User.findById(decoded.user.id).select('role managedCanteen');
+    return user || null;
+  } catch {
+    return null;
+  }
+};
+
+const applyCanteenScopeForSubAdmin = (query, user) => {
+  if (user?.role === 'canteen_admin' && user.managedCanteen) {
+    query.canteen = user.managedCanteen;
+  }
+};
 
 // POST /api/reviews — submit a review (authenticated student)
 const submitReview = async (req, res) => {
@@ -56,11 +78,13 @@ const submitReview = async (req, res) => {
 const getReviews = async (req, res) => {
   try {
     const { canteen, foodItemId, category, page = 1, limit = 20 } = req.query;
+    const requestUser = await getOptionalUserFromToken(req);
 
     const query = {};
     if (canteen) query.canteen = canteen;
     if (foodItemId) query.foodItem = foodItemId;
     if (category) query.category = category;
+    applyCanteenScopeForSubAdmin(query, requestUser);
 
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
@@ -90,7 +114,9 @@ const getReviews = async (req, res) => {
 const getReviewStats = async (req, res) => {
   try {
     const { canteen } = req.query;
+    const requestUser = await getOptionalUserFromToken(req);
     const match = canteen ? { canteen } : {};
+    applyCanteenScopeForSubAdmin(match, requestUser);
 
     const stats = await Review.aggregate([
       { $match: match },
@@ -123,7 +149,14 @@ const deleteReview = async (req, res) => {
     if (!review) return res.status(404).json({ message: 'Review not found.' });
 
     const isOwner = review.author.toString() === req.user.id;
-    const isAdmin = ['admin', 'canteen_admin'].includes(req.user.role);
+    let isAdmin = ['admin', 'canteen_admin'].includes(req.user.role);
+
+    if (req.user.role === 'canteen_admin') {
+      const adminUser = await User.findById(req.user.id).select('managedCanteen');
+      if (adminUser?.managedCanteen && review.canteen !== adminUser.managedCanteen) {
+        isAdmin = false;
+      }
+    }
 
     if (!isOwner && !isAdmin) {
       return res.status(403).json({ message: 'Not authorised.' });

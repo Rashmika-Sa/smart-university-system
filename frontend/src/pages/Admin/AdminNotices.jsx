@@ -24,6 +24,12 @@ const AdminNotices = () => {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(initialForm);
 
+  // Get current user info for ownership checks
+  const currentUser = useMemo(() => {
+    try { return JSON.parse(localStorage.getItem('user') || '{}'); } catch { return {}; }
+  }, []);
+  const isSuperAdmin = currentUser.role === 'admin' || (currentUser.role === 'canteen_admin' && !currentUser.managedCanteen);
+
   const submitLabel = useMemo(() => (editingId ? 'Update Notice' : 'Post Notice'), [editingId]);
 
   const loadNotices = async () => {
@@ -119,9 +125,13 @@ const AdminNotices = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-xs text-accent uppercase tracking-widest font-bold">Admin Broadcast</p>
-          <h2 className="text-xl font-black text-white mt-0.5">Notices & News Center</h2>
-          <p className="text-sm text-slate-400 mt-1">Post updates for students and manage published announcements.</p>
+          <p className="text-xs text-accent uppercase tracking-widest font-bold">{isSuperAdmin ? 'Admin Broadcast' : 'My Notices'}</p>
+          <h2 className="text-xl font-black text-white mt-0.5">{isSuperAdmin ? 'Notices & News Center' : 'My Published Notices'}</h2>
+          <p className="text-sm text-slate-400 mt-1">
+            {isSuperAdmin
+              ? 'Post updates for students and manage published announcements.'
+              : 'Post and manage your own notices for students.'}
+          </p>
         </div>
         <button
           onClick={loadNotices}
@@ -257,20 +267,23 @@ const AdminNotices = () => {
                         By {notice.postedByName || 'Admin'} • {new Date(notice.updatedAt || notice.createdAt).toLocaleString()}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleEdit(notice)}
-                        className="px-2.5 py-1.5 rounded-lg border border-accent/25 bg-accent/10 text-accent text-xs font-semibold hover:bg-accent/20 transition"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(notice._id)}
-                        className="px-2.5 py-1.5 rounded-lg border border-red-500/25 bg-red-500/10 text-red-400 text-xs font-semibold hover:bg-red-500/20 transition"
-                      >
-                        Delete
-                      </button>
-                    </div>
+                    {/* Super admin can edit/delete any notice; sub-admins only their own */}
+                    {(isSuperAdmin || notice.postedBy === (currentUser._id || currentUser.id)) && (
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleEdit(notice)}
+                          className="px-2.5 py-1.5 rounded-lg border border-accent/25 bg-accent/10 text-accent text-xs font-semibold hover:bg-accent/20 transition"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(notice._id)}
+                          className="px-2.5 py-1.5 rounded-lg border border-red-500/25 bg-red-500/10 text-red-400 text-xs font-semibold hover:bg-red-500/20 transition"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

@@ -42,13 +42,15 @@ const connectWithFallback = async () => {
   const opts = { serverSelectionTimeoutMS: 5000 };
   const primaryUri = process.env.MONGO_URI;
   const fallbackUri = process.env.LOCAL_MONGO_URI || 'mongodb://127.0.0.1:27017/uni-system';
+  const isDev = (process.env.NODE_ENV || 'development') !== 'production';
+  const fallbackEnabled = process.env.FALLBACK_TO_LOCAL === 'true' || isDev;
 
   try {
     await mongoose.connect(primaryUri, opts);
     console.log('✅ MongoDB Connected (primary)');
   } catch (err) {
     console.log('❌ MongoDB primary connection failed:', err.message || err);
-    if (process.env.FALLBACK_TO_LOCAL === 'true') {
+    if (fallbackEnabled) {
       console.log('👇️ Attempting fallback to local MongoDB...');
       try {
         await mongoose.connect(fallbackUri, opts);
