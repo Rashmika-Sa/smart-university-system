@@ -250,6 +250,10 @@ const StudentDashboard = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleRemovePhoto = () => {
+    setProfileForm((prev) => ({ ...prev, profilePhoto: '' }));
+  };
+
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     try {
@@ -340,7 +344,7 @@ const StudentDashboard = () => {
   ];
 
   const displayName = userProfile?.name || 'Student';
-  const displayPhoto = profileForm.profilePhoto || userProfile?.profilePhoto || '';
+  const displayPhoto = profileForm.profilePhoto ?? userProfile?.profilePhoto ?? '';
   const todayKey = getTodayKey();
   const todayClasses = (timetable[todayKey] || []).sort((a, b) => parseTimeToMinutes(a.startTime) - parseTimeToMinutes(b.startTime));
   const nextClassToday = (() => {
@@ -829,7 +833,17 @@ const StudentDashboard = () => {
                       {displayName.charAt(0).toUpperCase()}
                     </div>
                   )}
-                  <input type="file" accept="image/*" onChange={handlePhotoUpload} className="text-sm text-slate-300 file:mr-3 file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-indigo-500/20 file:text-indigo-400 file:font-semibold hover:file:bg-indigo-500/30" />
+                  <div className="space-y-2">
+                    <input type="file" accept="image/*" onChange={handlePhotoUpload} className="text-sm text-slate-300 file:mr-3 file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-indigo-500/20 file:text-indigo-400 file:font-semibold hover:file:bg-indigo-500/30" />
+                    <button
+                      type="button"
+                      onClick={handleRemovePhoto}
+                      disabled={!displayPhoto}
+                      className="px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 font-semibold hover:bg-red-500/10 hover:border-red-500/20 hover:text-red-400 transition text-xs disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Remove Photo
+                    </button>
+                  </div>
                 </div>
 
                 <div>
