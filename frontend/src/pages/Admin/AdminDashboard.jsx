@@ -34,10 +34,17 @@ const AdminDashboard = () => {
         {/* Sidebar Header */}
         <div className="p-5 flex items-center justify-between font-bold border-b border-slate-800">
           {isSidebarOpen && (
-            <span className="text-lg tracking-wider font-black">
-              <span className="bg-gradient-to-r from-indigo-500 to-cyan-500 bg-clip-text text-transparent">SLIIT SMART</span>
-              <span className="text-slate-500 text-sm font-medium ml-1">ADMIN</span>
-            </span>
+            <div className="flex items-center gap-2">
+              <img
+                src="/sliit-official-logo.png"
+                alt="SLIIT Logo"
+                className="h-8 w-auto object-contain"
+              />
+              <div className="flex flex-col leading-tight">
+                <span className="text-slate-200 text-xs font-semibold tracking-wide">SLIIT Smart Portal</span>
+                <span className="text-slate-500 text-[10px] font-semibold tracking-wider">ADMIN</span>
+              </div>
+            </div>
           )}
           <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-slate-800 rounded-lg transition text-slate-500 hover:text-white">
             <FaBars />

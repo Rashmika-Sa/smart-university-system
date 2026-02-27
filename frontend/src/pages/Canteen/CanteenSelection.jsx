@@ -133,7 +133,7 @@ const CanteenSelection = () => {
         {/* Footer */}
         <div className="text-center mt-12">
           <p className="text-slate-500 text-sm font-medium">
-            Powered by Sliit Smart Uni © {new Date().getFullYear()}
+            Powered by SLIIT Smart University Portal © {new Date().getFullYear()}
           </p>
         </div>
       </div>

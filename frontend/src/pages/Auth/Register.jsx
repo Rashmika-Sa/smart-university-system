@@ -85,14 +85,16 @@ const Register = () => {
 
         {/* Brand */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-400 shadow-[0_0_40px_rgba(99,102,241,0.5)] mb-4">
-            <span className="text-white text-2xl font-black">SU</span>
-          </div>
+          <img
+            src="/sliit-official-logo.png"
+            alt="SLIIT Logo"
+            className="h-14 mx-auto mb-4 object-contain"
+          />
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">
             Student{' '}
             <span className="bg-gradient-to-r from-indigo-500 to-cyan-500 bg-clip-text text-transparent">Registration</span>
           </h1>
-          <p className="text-slate-500 text-sm mt-1 font-mono tracking-widest uppercase"><span className="bg-gradient-to-r from-indigo-500 to-cyan-500 bg-clip-text text-transparent font-bold">Sliit Smart</span> Uni</p>
+          <p className="text-slate-500 text-sm mt-1 font-mono tracking-widest uppercase"><span className="bg-gradient-to-r from-indigo-500 to-cyan-500 bg-clip-text text-transparent font-bold">SLIIT Smart University Portal</span></p>
         </div>
 
         {/* Card */}

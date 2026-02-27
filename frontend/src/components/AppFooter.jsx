@@ -27,10 +27,11 @@ const AppFooter = () => {
 
           {/* Brand + social */}
           <div className="flex flex-col items-center gap-4">
-            <div className="text-2xl font-black tracking-tight">
-              <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Sliit Smart</span>
-              <span className="text-slate-300"> Uni</span>
-            </div>
+            <img
+              src="/sliit-official-logo.png"
+              alt="SLIIT Logo"
+              className="h-12 w-auto object-contain"
+            />
             <div className="flex items-center gap-5">
               <SocialLink href="#" icon={<FacebookIcon />} />
               <SocialLink href="#" icon={<TwitterIcon />} />

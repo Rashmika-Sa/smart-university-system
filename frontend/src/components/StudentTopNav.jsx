@@ -23,9 +23,13 @@ const StudentTopNav = ({ active = 'Home' }) => {
   return (
     <nav className="bg-white sticky top-0 z-50 shadow-sm border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-        <div className="font-black text-lg tracking-tight">
-          <span className="bg-gradient-to-r from-indigo-500 to-cyan-500 bg-clip-text text-transparent">Sliit Smart</span>
-          <span className="text-slate-800"> Uni</span>
+        <div className="font-black text-lg tracking-tight flex items-center gap-2">
+          <img
+            src="/sliit-official-logo.png"
+            alt="SLIIT Logo"
+            className="h-10 w-auto object-contain"
+          />
+          <span className="text-slate-800">SLIIT Smart Portal</span>
         </div>
         <div className="flex flex-wrap items-center gap-1.5 text-sm">
           <NavBtn label="Home" route="/student-dashboard" />
