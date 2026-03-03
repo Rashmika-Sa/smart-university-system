@@ -8,6 +8,7 @@ import Home from './pages/Home';
 // 2. Import Auth & Dashboards
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
+import ForgotPassword from './pages/Auth/ForgotPassword';
 
 // 3. Import Student Pages
 import StudentDashboard from './pages/Student/StudentDashboard';
@@ -41,6 +42,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
 
             {/* --- PROTECTED ROUTES (Requires Login) --- */}
             <Route element={<ProtectedRoute />}>

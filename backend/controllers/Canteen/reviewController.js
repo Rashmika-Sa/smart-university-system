@@ -170,4 +170,108 @@ const deleteReview = async (req, res) => {
   }
 };
 
-module.exports = { submitReview, getReviews, getReviewStats, deleteReview };
+// POST /api/reviews/:id/reply — admin replies to a review
+const replyToReview = async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text || !text.trim()) {
+      return res.status(400).json({ message: 'Reply text is required.' });
+    }
+
+    const review = await Review.findById(req.params.id);
+    if (!review) return res.status(404).json({ message: 'Review not found.' });
+
+    // Scope check for sub-admins
+    if (req.user.role === 'canteen_admin') {
+      const adminUser = await User.findById(req.user.id).select('managedCanteen');
+      if (adminUser?.managedCanteen && review.canteen !== adminUser.managedCanteen) {
+        return res.status(403).json({ message: 'Not authorised for this canteen.' });
+      }
+    }
+
+    const replier = await User.findById(req.user.id).select('name');
+    review.reply = {
+      text: text.trim(),
+      repliedBy: req.user.id,
+      repliedByName: replier?.name || 'Admin',
+      repliedAt: new Date(),
+    };
+    await review.save();
+
+    res.json(review);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
+// PUT /api/reviews/:id/reply — update an existing reply
+const updateReply = async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text || !text.trim()) {
+      return res.status(400).json({ message: 'Reply text is required.' });
+    }
+
+    const review = await Review.findById(req.params.id);
+    if (!review) return res.status(404).json({ message: 'Review not found.' });
+    if (!review.reply?.text) return res.status(404).json({ message: 'No reply to update.' });
+
+    // Scope check for sub-admins
+    if (req.user.role === 'canteen_admin') {
+      const adminUser = await User.findById(req.user.id).select('managedCanteen');
+      if (adminUser?.managedCanteen && review.canteen !== adminUser.managedCanteen) {
+        return res.status(403).json({ message: 'Not authorised for this canteen.' });
+      }
+    }
+
+    // Only the original replier or a super admin can update
+    const isOriginalReplier = review.reply.repliedBy?.toString() === req.user.id;
+    const isSuperAdmin = req.user.role === 'admin';
+    if (!isOriginalReplier && !isSuperAdmin) {
+      return res.status(403).json({ message: 'Not authorised.' });
+    }
+
+    review.reply.text = text.trim();
+    review.reply.repliedAt = new Date();
+    await review.save();
+
+    res.json(review);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
+// DELETE /api/reviews/:id/reply — remove a reply
+const deleteReply = async (req, res) => {
+  try {
+    const review = await Review.findById(req.params.id);
+    if (!review) return res.status(404).json({ message: 'Review not found.' });
+    if (!review.reply?.text) return res.status(404).json({ message: 'No reply to delete.' });
+
+    // Scope check for sub-admins
+    if (req.user.role === 'canteen_admin') {
+      const adminUser = await User.findById(req.user.id).select('managedCanteen');
+      if (adminUser?.managedCanteen && review.canteen !== adminUser.managedCanteen) {
+        return res.status(403).json({ message: 'Not authorised for this canteen.' });
+      }
+    }
+
+    const isOriginalReplier = review.reply.repliedBy?.toString() === req.user.id;
+    const isSuperAdmin = req.user.role === 'admin';
+    if (!isOriginalReplier && !isSuperAdmin) {
+      return res.status(403).json({ message: 'Not authorised.' });
+    }
+
+    review.reply = { text: null, repliedBy: null, repliedByName: null, repliedAt: null };
+    await review.save();
+
+    res.json({ message: 'Reply deleted.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
+module.exports = { submitReview, getReviews, getReviewStats, deleteReview, replyToReview, updateReply, deleteReply };

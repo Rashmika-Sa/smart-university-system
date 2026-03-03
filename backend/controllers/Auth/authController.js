@@ -187,6 +187,75 @@ const loginUser = async (req, res) => {
   }
 };
 
+// FORGOT PASSWORD - Step 1: Send OTP to existing user's email
+const forgotPasswordSendCode = async (req, res) => {
+  const { email } = req.body;
+  const cleanEmail = email.trim().toLowerCase();
+
+  try {
+    // Check if user exists
+    const user = await User.findOne({ email: cleanEmail });
+    if (!user) {
+      return res.status(404).json({ message: 'No account found with this email.' });
+    }
+
+    // Generate & Save OTP
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    await Otp.deleteMany({ email: cleanEmail });
+    await new Otp({ email: cleanEmail, code }).save();
+
+    // Send Email
+    await transporter.sendMail({
+      from: '"Smart Uni System" <no-reply@sliit.lk>',
+      to: cleanEmail,
+      subject: 'Password Reset Code',
+      text: `Your password reset code is: ${code}\n\nThis code expires in 5 minutes. If you did not request this, please ignore this email.`
+    });
+
+    console.log("✅ Password reset OTP sent to:", cleanEmail);
+    res.json({ message: 'Reset code sent to your email!' });
+  } catch (err) {
+    console.error("❌ Forgot Password Error:", err);
+    res.status(500).json({ message: 'Failed to send reset code. Try again later.' });
+  }
+};
+
+// FORGOT PASSWORD - Step 2: Verify OTP & Reset Password
+const forgotPasswordVerifyAndReset = async (req, res) => {
+  const { email, code, newPassword } = req.body;
+  const cleanEmail = email.trim().toLowerCase();
+
+  try {
+    if (!newPassword || newPassword.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters.' });
+    }
+
+    // Verify OTP
+    const record = await Otp.findOne({ email: cleanEmail, code });
+    if (!record) {
+      return res.status(400).json({ message: 'Invalid or expired reset code.' });
+    }
+
+    // Find user and update password
+    const user = await User.findOne({ email: cleanEmail });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    user.password = newPassword; // pre-save hook will hash it
+    await user.save();
+
+    // Cleanup OTP
+    await Otp.deleteMany({ email: cleanEmail });
+
+    console.log("✅ Password reset successful for:", cleanEmail);
+    res.json({ message: 'Password reset successful! You can now login.' });
+  } catch (err) {
+    console.error("❌ Reset Password Error:", err);
+    res.status(500).json({ message: 'Server error. Try again later.' });
+  }
+};
+
 // 5. CREATE CANTEEN ADMIN (Super Admin Only) 
 const createCanteenAdmin = async (req, res) => {
   try {
@@ -270,7 +339,7 @@ const updateCanteenAdmin = async (req, res) => {
     const updatedAdmin = await User.findByIdAndUpdate(
       adminId,
       { managedCanteen: managedCanteen || null },
-      { new: true }
+      { returnDocument: 'after' }
     ).select('-password');
 
     if (!updatedAdmin) {
@@ -311,6 +380,8 @@ module.exports = {
   loginUser, 
   sendVerificationCode, 
   verifyCode,
+  forgotPasswordSendCode,
+  forgotPasswordVerifyAndReset,
   createCanteenAdmin,
   getAllCanteenAdmins,
   updateCanteenAdmin,

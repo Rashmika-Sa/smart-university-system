@@ -6,6 +6,8 @@ const {
   loginUser, 
   sendVerificationCode, 
   verifyCode,
+  forgotPasswordSendCode,
+  forgotPasswordVerifyAndReset,
   createCanteenAdmin,
   getAllCanteenAdmins,
   updateCanteenAdmin,
@@ -13,8 +15,6 @@ const {
 } = require('../../controllers/Auth/authController');
 
 const { protect, authorize } = require('../../middleware/authMiddleware');
-
-// --- Routes ---
 
 // 1. Send OTP (Step 1)
 router.post('/send-code', sendVerificationCode);
@@ -27,6 +27,10 @@ router.post('/register', registerUser);
 
 // 4. Login User
 router.post('/login', loginUser);
+
+// --- FORGOT PASSWORD ROUTES ---
+router.post('/forgot-password/send-code', forgotPasswordSendCode);
+router.post('/forgot-password/reset', forgotPasswordVerifyAndReset);
 
 // --- CANTEEN ADMIN MANAGEMENT ROUTES (Super Admin Only) ---
 

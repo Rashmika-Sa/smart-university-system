@@ -401,6 +401,20 @@ const CanteenReviews = () => {
                       <p className="mt-3 text-sm text-slate-700 leading-relaxed">{review.comment}</p>
                     )}
 
+                    {/* Admin Reply Display */}
+                    {review.reply?.text && (
+                      <div className="mt-3 bg-indigo-50 border border-indigo-100 rounded-xl p-3.5">
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <div className="w-5 h-5 rounded-full bg-indigo-500/20 flex items-center justify-center">
+                            <svg className="w-3 h-3 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
+                          </div>
+                          <span className="text-xs font-bold text-indigo-600">{review.reply.repliedByName || 'Admin'}</span>
+                          <span className="text-[10px] text-slate-400">{review.reply.repliedAt ? timeAgo(review.reply.repliedAt) : ''}</span>
+                        </div>
+                        <p className="text-sm text-indigo-900/80 leading-relaxed pl-7">{review.reply.text}</p>
+                      </div>
+                    )}
+
                     {review.foodItemName && (
                       <div className="mt-3 flex items-center gap-1.5 text-xs text-orange-500 font-semibold">
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

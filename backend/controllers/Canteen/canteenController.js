@@ -142,7 +142,7 @@ const updateAvailability = async (req, res) => {
     const updatedItem = await FoodItem.findByIdAndUpdate(
       id, 
       { isAvailable }, 
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     res.status(200).json(updatedItem);
@@ -175,7 +175,7 @@ const updateFoodItem = async (req, res) => {
     const updatedItem = await FoodItem.findByIdAndUpdate(
       id,
       { name, price, category, image },
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     res.status(200).json(updatedItem);

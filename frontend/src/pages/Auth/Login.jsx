@@ -142,15 +142,25 @@ const Login = () => {
 
           <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent my-6" />
 
-          <p className="text-center text-sm text-slate-500">
-            New to the system?{' '}
-            <button
-              onClick={() => navigate('/register')}
-              className="text-cyan-400 font-semibold hover:text-cyan-300 transition-colors"
-            >
-              Create Student Account
-            </button>
-          </p>
+          <div className="text-center space-y-2">
+            <p className="text-sm text-slate-500">
+              <button
+                onClick={() => navigate('/forgot-password')}
+                className="text-cyan-400 font-semibold hover:text-cyan-300 transition-colors"
+              >
+                Forgot Password?
+              </button>
+            </p>
+            <p className="text-sm text-slate-500">
+              New to the system?{' '}
+              <button
+                onClick={() => navigate('/register')}
+                className="text-cyan-400 font-semibold hover:text-cyan-300 transition-colors"
+              >
+                Create Student Account
+              </button>
+            </p>
+          </div>
         </div>
 
         <p className="text-center text-slate-700 text-xs mt-6 font-mono">SLIIT · SMART UNIVERSITY SYSTEM · v2.0</p>

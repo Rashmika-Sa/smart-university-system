@@ -53,6 +53,8 @@ const AdminReviews = ({ initialCanteen }) => {
     ? CANTEENS.filter((c) => c === currentUser.managedCanteen)
     : CANTEENS;
 
+  const isAdmin = ['admin', 'canteen_admin'].includes(currentUser?.role);
+
   const [selectedCanteen, setSelectedCanteen] = useState(
     isSubCanteenAdmin
       ? currentUser.managedCanteen
@@ -76,6 +78,13 @@ const AdminReviews = ({ initialCanteen }) => {
   const [filterCat, setFilterCat] = useState('');
   const [filterStar, setFilterStar] = useState(0);
 
+  // Reply state
+  const [replyingTo, setReplyingTo] = useState(null);
+  const [replyText, setReplyText] = useState('');
+  const [editingReply, setEditingReply] = useState(null);
+  const [editReplyText, setEditReplyText] = useState('');
+  const [replyLoading, setReplyLoading] = useState(false);
+
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
@@ -98,6 +107,47 @@ const AdminReviews = ({ initialCanteen }) => {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
+  // Reply handlers
+  const handleReply = async (reviewId) => {
+    if (!replyText.trim()) return;
+    setReplyLoading(true);
+    try {
+      await axiosInstance.post(`/reviews/${reviewId}/reply`, { text: replyText });
+      setReplyingTo(null);
+      setReplyText('');
+      fetchData();
+    } catch (err) {
+      console.error('Reply failed:', err);
+    } finally {
+      setReplyLoading(false);
+    }
+  };
+
+  const handleUpdateReply = async (reviewId) => {
+    if (!editReplyText.trim()) return;
+    setReplyLoading(true);
+    try {
+      await axiosInstance.put(`/reviews/${reviewId}/reply`, { text: editReplyText });
+      setEditingReply(null);
+      setEditReplyText('');
+      fetchData();
+    } catch (err) {
+      console.error('Update reply failed:', err);
+    } finally {
+      setReplyLoading(false);
+    }
+  };
+
+  const handleDeleteReply = async (reviewId) => {
+    if (!window.confirm('Delete this reply?')) return;
+    try {
+      await axiosInstance.delete(`/reviews/${reviewId}/reply`);
+      fetchData();
+    } catch (err) {
+      console.error('Delete reply failed:', err);
+    }
+  };
+
   const timeAgo = (dateStr) => {
     const diff = Date.now() - new Date(dateStr).getTime();
     const mins = Math.floor(diff / 60000);
@@ -113,12 +163,12 @@ const AdminReviews = ({ initialCanteen }) => {
 
       {/* Section Header */}
       <div>
-        <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Read-Only</p>
+        <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Manage & Reply</p>
         <h2 className="text-xl font-black text-white mt-0.5">
           Canteen{' '}
           <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Reviews</span>
         </h2>
-        <p className="text-slate-400 text-sm mt-1">View all student feedback across canteens. Admin view only — no modifications allowed.</p>
+        <p className="text-slate-400 text-sm mt-1">View student feedback and reply to reviews across canteens.</p>
       </div>
 
       {/* Canteen Tabs */}
@@ -206,12 +256,12 @@ const AdminReviews = ({ initialCanteen }) => {
           </div>
 
           {/* Admin Notice */}
-          <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4">
+          <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-2xl p-4">
             <div className="flex items-start gap-3">
-              <span className="text-amber-400 text-lg mt-0.5">🔒</span>
+              <span className="text-cyan-400 text-lg mt-0.5">💬</span>
               <div>
-                <p className="text-amber-400 text-xs font-bold uppercase tracking-widest">Admin View</p>
-                <p className="text-amber-300/70 text-xs mt-1 leading-relaxed">You are viewing reviews in read-only mode. Students submit and manage their own reviews.</p>
+                <p className="text-cyan-400 text-xs font-bold uppercase tracking-widest">Admin View</p>
+                <p className="text-cyan-300/70 text-xs mt-1 leading-relaxed">You can reply to student reviews. Your replies will be visible to all students.</p>
               </div>
             </div>
           </div>
@@ -279,8 +329,113 @@ const AdminReviews = ({ initialCanteen }) => {
 
               {review.comment && (
                 <p className="mt-3 text-slate-300 text-sm leading-relaxed pl-12">
-                  "{review.comment}"
+                  &ldquo;{review.comment}&rdquo;
                 </p>
+              )}
+
+              {/* Existing Reply Display */}
+              {review.reply?.text && editingReply !== review._id && (
+                <div className="mt-4 ml-12 bg-cyan-500/10 border border-cyan-500/20 rounded-xl p-4">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-cyan-500/30 flex items-center justify-center">
+                        <svg className="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
+                      </div>
+                      <span className="text-xs font-bold text-cyan-400">{review.reply.repliedByName || 'Admin'}</span>
+                      <span className="text-[10px] text-slate-500">{review.reply.repliedAt ? timeAgo(review.reply.repliedAt) : ''}</span>
+                    </div>
+                    {isAdmin && (
+                      <div className="flex gap-1">
+                        <button
+                          onClick={() => { setEditingReply(review._id); setEditReplyText(review.reply.text); }}
+                          className="text-slate-500 hover:text-cyan-400 transition-colors p-1"
+                          title="Edit reply"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                        </button>
+                        <button
+                          onClick={() => handleDeleteReply(review._id)}
+                          className="text-slate-500 hover:text-red-400 transition-colors p-1"
+                          title="Delete reply"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-sm text-cyan-100/80 leading-relaxed">{review.reply.text}</p>
+                </div>
+              )}
+
+              {/* Edit Reply Form */}
+              {editingReply === review._id && (
+                <div className="mt-4 ml-12">
+                  <textarea
+                    value={editReplyText}
+                    onChange={(e) => setEditReplyText(e.target.value)}
+                    rows={2}
+                    maxLength={500}
+                    className="w-full px-3 py-2 rounded-xl bg-slate-700 border border-slate-600 text-white placeholder-slate-500 text-sm focus:ring-2 focus:ring-cyan-400/40 outline-none resize-none"
+                    placeholder="Update your reply..."
+                  />
+                  <div className="flex gap-2 mt-2">
+                    <button
+                      onClick={() => handleUpdateReply(review._id)}
+                      disabled={replyLoading}
+                      className="px-4 py-1.5 rounded-lg bg-cyan-500 text-white text-xs font-bold hover:bg-cyan-600 transition-colors disabled:opacity-50"
+                    >
+                      {replyLoading ? 'Saving...' : 'Save'}
+                    </button>
+                    <button
+                      onClick={() => { setEditingReply(null); setEditReplyText(''); }}
+                      className="px-4 py-1.5 rounded-lg bg-slate-700 text-slate-300 text-xs font-semibold hover:bg-slate-600 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Reply Button & Form (only if no existing reply) */}
+              {isAdmin && !review.reply?.text && replyingTo !== review._id && (
+                <div className="mt-3 pl-12">
+                  <button
+                    onClick={() => { setReplyingTo(review._id); setReplyText(''); }}
+                    className="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1.5 transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
+                    Reply
+                  </button>
+                </div>
+              )}
+
+              {replyingTo === review._id && (
+                <div className="mt-3 ml-12">
+                  <textarea
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    rows={2}
+                    maxLength={500}
+                    className="w-full px-3 py-2 rounded-xl bg-slate-700 border border-slate-600 text-white placeholder-slate-500 text-sm focus:ring-2 focus:ring-cyan-400/40 outline-none resize-none"
+                    placeholder="Write a reply to this review..."
+                    autoFocus
+                  />
+                  <div className="flex gap-2 mt-2">
+                    <button
+                      onClick={() => handleReply(review._id)}
+                      disabled={replyLoading}
+                      className="px-4 py-1.5 rounded-lg bg-cyan-500 text-white text-xs font-bold hover:bg-cyan-600 transition-colors disabled:opacity-50"
+                    >
+                      {replyLoading ? 'Sending...' : 'Send Reply'}
+                    </button>
+                    <button
+                      onClick={() => { setReplyingTo(null); setReplyText(''); }}
+                      className="px-4 py-1.5 rounded-lg bg-slate-700 text-slate-300 text-xs font-semibold hover:bg-slate-600 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           ))}

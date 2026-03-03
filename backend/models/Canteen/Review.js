@@ -49,6 +49,12 @@ const reviewSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  reply: {
+    text: { type: String, default: null },
+    repliedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+    repliedByName: { type: String, default: null },
+    repliedAt: { type: Date, default: null },
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Review', reviewSchema);
