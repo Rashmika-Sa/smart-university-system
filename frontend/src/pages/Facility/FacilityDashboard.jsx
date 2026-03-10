@@ -28,18 +28,18 @@ const FacilityDashboard = () => {
           <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Campus Services</span>
           <h1 className="text-3xl font-black text-white mt-1 tracking-tight">
             🏟️ Facility{' '}
-            <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Booking</span>
+            <span className="bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">Booking</span>
           </h1>
-          <p className="text-slate-400 text-sm mt-2">Reserve sports courts, meeting rooms and campus facilities.</p>
+          <p className="text-white/70 text-sm mt-2">Reserve sports courts, meeting rooms and campus facilities.</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
             {[
-              { label: 'Total Facilities', value: facilities.length, color: 'text-cyan-400' },
-              { label: 'Available Now', value: available, color: 'text-emerald-400' },
+              { label: 'Total Facilities', value: facilities.length, color: 'text-cyan-600' },
+              { label: 'Available Now', value: available, color: 'text-emerald-500' },
               { label: 'Unavailable', value: facilities.length - available, color: 'text-accent' },
             ].map(s => (
-              <div key={s.label} className="bg-slate-800 border border-slate-700 rounded-xl p-4 text-center">
+              <div key={s.label} className="bg-white/10 border border-white/20 rounded-xl p-4 text-center">
                 <div className={`text-2xl font-black ${s.color}`}>{s.value}</div>
-                <div className="text-xs text-slate-400 mt-1">{s.label}</div>
+                <div className="text-xs text-white/60 mt-1">{s.label}</div>
               </div>
             ))}
           </div>
@@ -48,8 +48,8 @@ const FacilityDashboard = () => {
 
       {/* Grid */}
       <div className="max-w-6xl mx-auto px-6 mt-8">
-        <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold mb-3">All Facilities</p>
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent mb-6" />
+        <p className="text-xs text-primary uppercase tracking-widest font-bold mb-3">All Facilities</p>
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent mb-6" />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {facilities.map(facility => {
             const sc = statusConfig[facility.status];
@@ -81,7 +81,7 @@ const FacilityDashboard = () => {
                         className={`text-xs px-2.5 py-1 rounded-lg border font-medium transition-all ${
                           selected === facility.id && bookedSlot === slot
                             ? 'bg-accent text-white border-transparent shadow'
-                            : 'border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'
+                            : 'border-slate-200 text-slate-600 hover:border-primary hover:text-primary'
                         }`}
                       >
                         {slot}

@@ -386,9 +386,9 @@ const StudentDashboard = () => {
             <div className="flex items-center gap-4 min-w-0">
               <div className="relative flex-shrink-0">
                 {displayPhoto ? (
-                  <img src={displayPhoto} alt="Profile" className="w-14 h-14 rounded-full object-cover ring-2 ring-cyan-400/30 ring-offset-2 ring-offset-slate-900" />
+                  <img src={displayPhoto} alt="Profile" className="w-14 h-14 rounded-full object-cover ring-2 ring-white/30 ring-offset-2 ring-offset-slate-900" />
                 ) : (
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-500 text-white flex items-center justify-center font-bold text-xl">
+                  <div className="w-14 h-14 rounded-full bg-white/20 text-white flex items-center justify-center font-bold text-xl">
                     {displayName.charAt(0).toUpperCase()}
                   </div>
                 )}
@@ -398,13 +398,13 @@ const StudentDashboard = () => {
                 <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Student Portal</span>
                 <h1 className="text-2xl sm:text-3xl font-black text-white mt-1 tracking-tight truncate">
                   {new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 17 ? 'Good afternoon' : 'Good evening'},{' '}
-                  <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">{displayName}</span>
+                  <span className="bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">{displayName}</span>
                 </h1>
-                <p className="text-slate-400 text-sm mt-1">Your smart campus dashboard</p>
+                <p className="text-white/70 text-sm mt-1">Your smart campus dashboard</p>
               </div>
             </div>
             <div className="flex items-center gap-2.5 flex-shrink-0">
-              <span className="inline-flex items-center gap-2 bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-1.5 text-sm text-slate-300 font-medium">
+              <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-xl px-3.5 py-1.5 text-sm text-white font-medium">
                 📅 {currentDateLabel}
               </span>
               <button onClick={() => setIsProfileDrawerOpen(true)} className="px-4 py-2 rounded-xl bg-accent text-white font-bold text-sm shadow-[0_0_20px_rgba(255,107,53,0.3)] hover:opacity-90 transition-opacity">
@@ -414,31 +414,31 @@ const StudentDashboard = () => {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
-              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Today</p>
-              <p className="text-3xl font-black text-cyan-400">{todayClasses.length}</p>
-              <p className="text-xs text-slate-500 mt-0.5">classes</p>
+            <div className="bg-white/10 border border-white/20 rounded-xl p-4">
+              <p className="text-xs text-white/60 uppercase tracking-wider mb-1">Today</p>
+              <p className="text-3xl font-black text-cyan-300">{todayClasses.length}</p>
+              <p className="text-xs text-white/50 mt-0.5">classes</p>
             </div>
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
-              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">This Week</p>
-              <p className="text-3xl font-black text-indigo-400">{totalClassesThisWeek}</p>
-              <p className="text-xs text-slate-500 mt-0.5">total classes</p>
+            <div className="bg-white/10 border border-white/20 rounded-xl p-4">
+              <p className="text-xs text-white/60 uppercase tracking-wider mb-1">This Week</p>
+              <p className="text-3xl font-black text-cyan-300">{totalClassesThisWeek}</p>
+              <p className="text-xs text-white/50 mt-0.5">total classes</p>
             </div>
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
-              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Activity</p>
+            <div className="bg-white/10 border border-white/20 rounded-xl p-4">
+              <p className="text-xs text-white/60 uppercase tracking-wider mb-1">Activity</p>
               <p className="text-3xl font-black text-emerald-400">{recentActivityCount}</p>
-              <p className="text-xs text-slate-500 mt-0.5">items</p>
+              <p className="text-xs text-white/50 mt-0.5">items</p>
             </div>
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
-              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Student ID</p>
+            <div className="bg-white/10 border border-white/20 rounded-xl p-4">
+              <p className="text-xs text-white/60 uppercase tracking-wider mb-1">Student ID</p>
               <p className="text-xl font-black text-accent truncate mt-1">{userProfile?.universityId || '—'}</p>
             </div>
           </div>
 
           {nextClassToday && (
-            <div className="mt-4 bg-slate-800 border border-slate-700 rounded-xl px-5 py-3 flex items-center justify-between gap-3">
+            <div className="mt-4 bg-white/10 border border-white/20 rounded-xl px-5 py-3 flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-xl flex-shrink-0">⏰</div>
+                <div className="w-10 h-10 rounded-xl bg-cyan-400/20 flex items-center justify-center text-xl flex-shrink-0">⏰</div>
                 <div className="min-w-0">
                   <p className="text-xs text-cyan-400 font-bold uppercase tracking-wider">Up Next</p>
                   <p className="text-sm text-white font-semibold truncate mt-0.5">
@@ -454,22 +454,22 @@ const StudentDashboard = () => {
 
       {/* ═══ SERVICES ═══ */}
       <div className="max-w-6xl mx-auto px-6 mt-8">
-        <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold mb-3">Campus Services</p>
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent mb-6" />
+        <p className="text-xs text-primary uppercase tracking-widest font-bold mb-3">Campus Services</p>
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent mb-6" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {serviceModules.map((service) => (
             <div
               key={service.id}
               onClick={() => navigate(service.route)}
-              className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl hover:border-indigo-500/40 transition-all duration-300 group cursor-pointer"
+              className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-primary transition-all duration-300 group cursor-pointer"
             >
-              <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-2xl mb-4">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-2xl mb-4">
                 {service.icon}
               </div>
-              <h3 className="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">{service.title}</h3>
-              <p className="text-[11px] text-cyan-400/70 font-semibold mt-0.5 uppercase tracking-wide">{service.subtitle}</p>
-              <p className="text-slate-400 text-sm mt-3 leading-relaxed line-clamp-2">{service.description}</p>
+              <h3 className="text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">{service.title}</h3>
+              <p className="text-[11px] text-primary/70 font-semibold mt-0.5 uppercase tracking-wide">{service.subtitle}</p>
+              <p className="text-slate-500 text-sm mt-3 leading-relaxed line-clamp-2">{service.description}</p>
               <button className="mt-5 w-full py-2.5 rounded-xl bg-accent text-white font-bold text-sm shadow-[0_0_20px_rgba(255,107,53,0.3)] hover:opacity-90 transition-opacity">
                 {service.cta}
               </button>
@@ -480,41 +480,41 @@ const StudentDashboard = () => {
 
       {/* ═══ ACTIVITY + NOTICES ═══ */}
       <div className="max-w-6xl mx-auto px-6 mt-8">
-        <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold mb-3">Live Feed</p>
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent mb-6" />
+        <p className="text-xs text-primary uppercase tracking-widest font-bold mb-3">Live Feed</p>
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent mb-6" />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Activity */}
-          <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+          <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-bold text-white">Activity</h2>
-              <span className="text-xs text-slate-400 font-medium">{recentActivityCount} items</span>
+              <h2 className="text-xl font-bold text-slate-900">Activity</h2>
+              <span className="text-xs text-slate-500 font-medium">{recentActivityCount} items</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
               {systemSignals.map((signal) => (
-                <div key={signal.id} className="bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-3">
+                <div key={signal.id} className="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-3">
                   <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{signal.label}</p>
-                  <p className="text-sm text-slate-300 mt-1 font-medium leading-snug">{signal.detail}</p>
+                  <p className="text-sm text-slate-700 mt-1 font-medium leading-snug">{signal.detail}</p>
                 </div>
               ))}
             </div>
 
             {loadingActivity ? (
               <div className="space-y-3">
-                {[1,2,3].map(i => <div key={i} className="h-16 bg-slate-800 animate-pulse rounded-xl"></div>)}
+                {[1,2,3].map(i => <div key={i} className="h-16 bg-slate-50 animate-pulse rounded-xl"></div>)}
               </div>
             ) : (
               <div className="space-y-2">
                 {activityFeed.slice(0, 4).map((activity) => (
-                  <div key={activity.id} className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-800/60 transition-colors">
-                    <span className="w-9 h-9 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-lg flex-shrink-0">{activity.icon}</span>
+                  <div key={activity.id} className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+                    <span className="w-9 h-9 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-lg flex-shrink-0">{activity.icon}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="font-semibold text-white text-sm truncate">{activity.title}</p>
-                        <span className="text-[11px] text-slate-500 whitespace-nowrap flex-shrink-0">{activity.time}</span>
+                        <p className="font-semibold text-slate-900 text-sm truncate">{activity.title}</p>
+                        <span className="text-[11px] text-slate-400 whitespace-nowrap flex-shrink-0">{activity.time}</span>
                       </div>
-                      <p className="text-xs text-slate-400 mt-0.5 truncate">{activity.description}</p>
+                      <p className="text-xs text-slate-500 mt-0.5 truncate">{activity.description}</p>
                     </div>
                   </div>
                 ))}
@@ -523,33 +523,36 @@ const StudentDashboard = () => {
           </div>
 
           {/* Notices */}
-          <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+          <div className="lg:col-span-5 bg-white border-2 border-primary/20 rounded-2xl p-6 shadow-sm ring-1 ring-primary/10">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-bold text-white">Notices</h2>
-              <span className="text-[10px] text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 rounded-lg px-2.5 py-1 font-bold uppercase tracking-wider">Admin</span>
+              <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                <span className="w-2 h-6 bg-primary rounded-full"></span>
+                Notices
+              </h2>
+              <span className="text-[10px] text-white bg-primary rounded-lg px-2.5 py-1 font-bold uppercase tracking-wider">Admin</span>
             </div>
 
             {loadingNotices ? (
               <div className="space-y-3">
-                {[1,2].map(i => <div key={i} className="h-20 bg-slate-800 animate-pulse rounded-xl"></div>)}
+                {[1,2].map(i => <div key={i} className="h-20 bg-slate-50 animate-pulse rounded-xl"></div>)}
               </div>
             ) : notices.length === 0 ? (
               <div className="text-center py-8">
-                <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-2xl mx-auto mb-3">📋</div>
-                <p className="text-sm text-slate-400">No notices yet</p>
+                <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-2xl mx-auto mb-3">📋</div>
+                <p className="text-sm text-slate-500">No notices yet</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {notices.map((notice) => (
-                  <div key={notice._id} className="rounded-xl bg-slate-800 border border-slate-700 p-3.5 hover:border-indigo-500/30 transition-colors">
+                  <div key={notice._id} className="rounded-xl bg-primary/5 border border-primary/15 p-3.5 hover:border-primary/40 hover:bg-primary/10 transition-all">
                     <div className="flex items-start justify-between gap-2">
-                      <p className="text-sm font-semibold text-white leading-snug">{notice.title}</p>
+                      <p className="text-sm font-semibold text-slate-900 leading-snug">{notice.title}</p>
                       {notice.priority === 'high' && (
-                        <span className="text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded-md bg-red-500/15 border border-red-500/30 text-red-400 flex-shrink-0">High</span>
+                        <span className="text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded-md bg-red-500/15 border border-red-500/30 text-red-500 flex-shrink-0">Urgent</span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-400 mt-1.5 leading-relaxed line-clamp-2">{notice.content}</p>
-                    <p className="text-[10px] text-slate-500 mt-2 font-medium">{new Date(notice.createdAt).toLocaleDateString()}</p>
+                    <p className="text-xs text-slate-600 mt-1.5 leading-relaxed line-clamp-2">{notice.content}</p>
+                    <p className="text-[10px] text-primary/60 mt-2 font-medium">{new Date(notice.createdAt).toLocaleDateString()}</p>
                   </div>
                 ))}
               </div>
@@ -566,16 +569,16 @@ const StudentDashboard = () => {
           visibleSections['timetable'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
 
           {/* Header */}
           <div className="flex items-center justify-between mb-5">
             <div>
-              <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Weekly Schedule</p>
-              <h2 className="text-xl font-bold text-white mt-1">Timetable</h2>
+              <p className="text-xs text-primary uppercase tracking-widest font-bold">Weekly Schedule</p>
+              <h2 className="text-xl font-bold text-slate-900 mt-1">Timetable</h2>
             </div>
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-2 bg-slate-800 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-300 font-bold tracking-widest">
+              <span className="inline-flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-700 font-bold tracking-widest">
                 {DAY_FULL[selectedDay]?.toUpperCase()}
               </span>
               <button
@@ -602,7 +605,7 @@ const StudentDashboard = () => {
                       ? 'bg-accent text-white border-transparent shadow-[0_0_12px_rgba(255,107,53,0.3)]'
                       : isToday
                       ? 'bg-accent/15 border-accent/40 text-accent hover:bg-accent/25'
-                      : 'bg-slate-800 border-slate-700 text-slate-400 hover:bg-slate-700 hover:text-white'
+                      : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100 hover:text-slate-700'
                   }`}
                 >
                   {DAY_LABELS[day]}
@@ -622,9 +625,9 @@ const StudentDashboard = () => {
             if (dayClasses.length === 0) {
               return (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
-                  <div className="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-2xl mb-3">📅</div>
-                  <p className="text-slate-400 font-semibold">No classes on {DAY_FULL[selectedDay]}</p>
-                  <p className="text-slate-600 text-sm mt-1">Click <span className="text-accent font-bold">+ Edit</span> to add your schedule</p>
+                  <div className="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-2xl mb-3">📅</div>
+                  <p className="text-slate-500 font-semibold">No classes on {DAY_FULL[selectedDay]}</p>
+                  <p className="text-slate-400 text-sm mt-1">Click <span className="text-accent font-bold">+ Edit</span> to add your schedule</p>
                 </div>
               );
             }
@@ -641,18 +644,18 @@ const StudentDashboard = () => {
                       } ${
                         isNext
                           ? 'bg-accent/10 border-accent/40 shadow-lg shadow-accent/10'
-                          : 'bg-slate-800 border-slate-700 hover:border-slate-600'
+                          : 'bg-slate-50 border-slate-200 hover:border-slate-300'
                       }`}
                       style={{ transitionDelay: visibleSections['timetable'] ? `${idx * 100}ms` : '0ms' }}
                     >
                       <div className="flex items-start justify-between mb-3">
-                        <span className={`text-lg font-mono font-bold ${isNext ? 'text-accent' : 'text-slate-300'}`}>
+                        <span className={`text-lg font-mono font-bold ${isNext ? 'text-accent' : 'text-slate-700'}`}>
                           {cls.startTime}{cls.endTime ? ` – ${cls.endTime}` : ''}
                         </span>
                         {isNext && <span className="text-[10px] bg-accent text-white px-2 py-0.5 rounded-lg font-black tracking-wider animate-pulse">NEXT</span>}
                       </div>
-                      <h3 className="font-bold text-white">{cls.subject}</h3>
-                      {cls.instructor && <p className="text-sm text-slate-400 mt-2">{cls.instructor}</p>}
+                      <h3 className="font-bold text-slate-900">{cls.subject}</h3>
+                      {cls.instructor && <p className="text-sm text-slate-500 mt-2">{cls.instructor}</p>}
                       {cls.location && (
                         <p className="text-xs text-slate-500 mt-2 flex items-center gap-1">
                           <span className="text-accent">◈</span> {cls.location}
@@ -811,12 +814,12 @@ const StudentDashboard = () => {
       <div className={`fixed inset-0 z-[60] transition-opacity duration-300 ${isProfileDrawerOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" onClick={() => setIsProfileDrawerOpen(false)}></div>
           <div className={`absolute top-0 right-0 h-full w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl p-6 overflow-y-auto transform transition-transform duration-300 ease-out ${isProfileDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-indigo-500/40 via-cyan-400/20 to-transparent"></div>
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-primary/40 via-cyan-400/20 to-transparent"></div>
 
             <div className="relative flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
               <div>
                 <p className="text-[10px] uppercase tracking-[0.2em] text-cyan-400 font-bold">Account</p>
-                <h2 className="text-2xl font-extrabold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent mt-0.5">Edit Profile</h2>
+                <h2 className="text-2xl font-extrabold bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent mt-0.5">Edit Profile</h2>
               </div>
               <button onClick={() => setIsProfileDrawerOpen(false)} className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-700 transition flex items-center justify-center">✕</button>
             </div>
@@ -829,12 +832,12 @@ const StudentDashboard = () => {
                   {displayPhoto ? (
                     <img src={displayPhoto} alt="Profile" className="w-16 h-16 rounded-2xl object-cover border border-slate-700 shadow-sm" />
                   ) : (
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-white flex items-center justify-center font-bold text-xl shadow-sm">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-cyan-500 text-white flex items-center justify-center font-bold text-xl shadow-sm">
                       {displayName.charAt(0).toUpperCase()}
                     </div>
                   )}
                   <div className="space-y-2">
-                    <input type="file" accept="image/*" onChange={handlePhotoUpload} className="text-sm text-slate-300 file:mr-3 file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-indigo-500/20 file:text-indigo-400 file:font-semibold hover:file:bg-indigo-500/30" />
+                    <input type="file" accept="image/*" onChange={handlePhotoUpload} className="text-sm text-slate-300 file:mr-3 file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-primary/20 file:text-primary file:font-semibold hover:file:bg-primary/30" />
                     <button
                       type="button"
                       onClick={handleRemovePhoto}
@@ -848,17 +851,17 @@ const StudentDashboard = () => {
 
                 <div>
                   <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Name</label>
-                  <input name="name" value={profileForm.name} onChange={handleProfileChange} className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-800 focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/40 outline-none transition text-white" />
+                  <input name="name" value={profileForm.name} onChange={handleProfileChange} className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-800 focus:ring-2 focus:ring-primary/30 focus:border-primary/40 outline-none transition text-white" />
                 </div>
 
                 <div>
                   <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Email</label>
-                  <input name="email" type="email" value={profileForm.email} onChange={handleProfileChange} className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-800 focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/40 outline-none transition text-white" />
+                  <input name="email" type="email" value={profileForm.email} onChange={handleProfileChange} className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-800 focus:ring-2 focus:ring-primary/30 focus:border-primary/40 outline-none transition text-white" />
                 </div>
 
                 <div>
                   <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">University ID</label>
-                  <input name="universityId" value={profileForm.universityId} onChange={handleProfileChange} className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-800 focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/40 outline-none transition text-white" />
+                  <input name="universityId" value={profileForm.universityId} onChange={handleProfileChange} className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-800 focus:ring-2 focus:ring-primary/30 focus:border-primary/40 outline-none transition text-white" />
                 </div>
 
                 {message && <p className="text-sm text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-lg px-3 py-2">{message}</p>}

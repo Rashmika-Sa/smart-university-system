@@ -164,7 +164,7 @@ const CanteenAdminManagement = () => {
       <div className="bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-indigo-500 to-cyan-500 p-2.5 rounded-xl text-white shadow-lg shadow-indigo-500/30">
+            <div className="bg-gradient-to-br from-slate-800 to-cyan-500 p-2.5 rounded-xl text-white shadow-lg shadow-slate-900/30">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
@@ -188,8 +188,8 @@ const CanteenAdminManagement = () => {
         {/* Create Button & Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h3 className="text-3xl font-bold text-white">Manage Canteen Admins</h3>
-            <p className="text-slate-400 mt-1">Create and assign admins to specific canteens</p>
+            <h3 className="text-3xl font-bold text-slate-900">Manage Canteen Admins</h3>
+            <p className="text-slate-500 mt-1">Create and assign admins to specific canteens</p>
           </div>
           <button
             onClick={() => setShowForm(true)}
@@ -201,59 +201,59 @@ const CanteenAdminManagement = () => {
 
         {/* FORM */}
         {showForm && (
-          <div className="bg-slate-900 rounded-3xl shadow-xl p-8 mb-8 border border-slate-800">
-            <h4 className="text-2xl font-bold text-white mb-6">
+          <div className="bg-white rounded-3xl shadow-sm p-8 mb-8 border border-slate-200">
+            <h4 className="text-2xl font-bold text-slate-900 mb-6">
               {editingId ? 'Edit Admin' : 'Create New Admin'}
             </h4>
 
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-bold text-slate-400 mb-2">Name *</label>
+                <label className="block text-sm font-bold text-slate-500 mb-2">Name *</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Admin Name"
-                  className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-accent outline-none transition"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-accent outline-none transition"
                   disabled={editingId !== null}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-400 mb-2">Email *</label>
+                <label className="block text-sm font-bold text-slate-500 mb-2">Email *</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="admin@sliit.lk"
-                  className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-accent outline-none transition"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-accent outline-none transition"
                   disabled={editingId !== null}
                 />
               </div>
 
               {!editingId && (
                 <div>
-                  <label className="block text-sm font-bold text-slate-400 mb-2">Password *</label>
+                  <label className="block text-sm font-bold text-slate-500 mb-2">Password *</label>
                   <input
                     type="password"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="Strong password"
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-accent outline-none transition"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-accent outline-none transition"
                   />
                 </div>
               )}
 
               <div>
-                <label className="block text-sm font-bold text-slate-400 mb-2">Managed Canteen</label>
+                <label className="block text-sm font-bold text-slate-500 mb-2">Managed Canteen</label>
                 <select
                   name="managedCanteen"
                   value={formData.managedCanteen}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-accent outline-none transition"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:ring-2 focus:ring-accent outline-none transition"
                 >
                   {canteenOptions.map((canteen) => (
                     <option key={canteen} value={canteen}>
@@ -274,7 +274,7 @@ const CanteenAdminManagement = () => {
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="flex-1 bg-slate-800 border border-slate-700 text-slate-300 px-6 py-3 rounded-lg font-bold hover:bg-slate-700 transition"
+                  className="flex-1 bg-slate-50 border border-slate-200 text-slate-600 px-6 py-3 rounded-lg font-bold hover:bg-slate-100 transition"
                 >
                   Cancel
                 </button>
@@ -297,16 +297,16 @@ const CanteenAdminManagement = () => {
         ) : (
           <div className="grid grid-cols-1 gap-4">
             {admins.length === 0 ? (
-              <div className="bg-slate-900 rounded-2xl p-12 text-center border border-slate-800 shadow-xl">
-                <p className="text-slate-400">No canteen admins created yet.</p>
+              <div className="bg-white rounded-2xl p-12 text-center border border-slate-200 shadow-sm">
+                <p className="text-slate-500">No canteen admins created yet.</p>
               </div>
             ) : (
               admins.map((admin) => (
-                <div key={admin._id} className="bg-slate-900 rounded-2xl p-6 border border-slate-800 hover:shadow-lg hover:border-slate-700 transition">
+                <div key={admin._id} className="bg-white rounded-2xl p-6 border border-slate-200 hover:shadow-md hover:border-primary/40 transition">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <h4 className="font-bold text-lg text-white">{admin.name}</h4>
-                      <p className="text-sm text-slate-400 mb-2">{admin.email}</p>
+                      <h4 className="font-bold text-lg text-slate-900">{admin.name}</h4>
+                      <p className="text-sm text-slate-500 mb-2">{admin.email}</p>
                       <div className="flex gap-2 flex-wrap">
                         <span className="text-xs bg-accent/15 text-accent px-3 py-1 rounded-full font-bold border border-accent/30">
                           {admin.managedCanteen ? `Manages: ${admin.managedCanteen}` : 'Super Admin'}
@@ -317,7 +317,7 @@ const CanteenAdminManagement = () => {
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleEdit(admin)}
-                        className="px-4 py-2 bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 rounded-lg font-bold hover:bg-indigo-500/25 transition"
+                        className="px-4 py-2 bg-primary/15 text-primary border border-primary/30 rounded-lg font-bold hover:bg-primary/25 transition"
                       >
                         Edit
                       </button>

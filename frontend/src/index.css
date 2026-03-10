@@ -10,7 +10,7 @@
 
 @layer base {
   body {
-    @apply bg-secondary text-gray-800; 
+    @apply bg-white text-gray-800; 
   }
 }
 

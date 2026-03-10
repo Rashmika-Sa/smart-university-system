@@ -107,7 +107,7 @@ const StudentMenu = () => {
       <StudentTopNav active="Canteen" />
       
       {/* ================= HEADER ================= */}
-      <div className="bg-slate-900 border-b border-slate-800 sticky top-[65px] z-40">
+        <div className="bg-slate-900 border-b border-slate-800 sticky top-[65px] z-40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           
           <div className="flex items-center gap-4">
@@ -136,7 +136,7 @@ const StudentMenu = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 5c.07.286.074.58.012.868l-.56 2.228c-.287 1.15-.35 2.023-.35 2.474v2.918a1.5 1.5 0 01-1.5 1.5H5.625a1.5 1.5 0 01-1.5-1.5v-3.098c0-.966-.351-1.878-.965-2.583l.516-2.062a4.436 4.436 0 011.309-2.14m12 0c.325.226.65.45.965.683" />
             </svg>
             {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-extrabold w-5 h-5 flex items-center justify-center rounded-full shadow-sm ring-2 ring-primary">
+                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-extrabold w-5 h-5 flex items-center justify-center rounded-full shadow-sm ring-2 ring-slate-900">
                     {cartCount}
                 </span>
             )}
@@ -156,7 +156,7 @@ const StudentMenu = () => {
                 placeholder="Search for rice, short eats, beverages..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-800 text-white placeholder-slate-500 border border-slate-700 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all"
+                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-800 text-white placeholder-white/50 border border-white/20 focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 outline-none transition-all"
             />
           </div>
           
@@ -168,7 +168,7 @@ const StudentMenu = () => {
                 className={`px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300 border ${
                   selectedCategory === cat 
                     ? 'bg-accent text-white border-transparent shadow-lg shadow-accent/20' 
-                    : 'bg-transparent text-slate-400 border-slate-700 hover:bg-slate-800 hover:text-white'
+                    : 'bg-transparent text-white/60 border-white/20 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 {cat}
@@ -182,7 +182,7 @@ const StudentMenu = () => {
       <div className="max-w-7xl mx-auto px-6 py-8 pb-32 relative z-10">
         {loading ? (
           <div className="flex flex-col items-center justify-center mt-20 text-gray-400">
-             <div className="w-10 h-10 border-4 border-primary-dark border-t-accent rounded-full animate-spin mb-4"></div>
+             <div className="w-10 h-10 border-4 border-slate-800 border-t-accent rounded-full animate-spin mb-4"></div>
              <p className="animate-pulse font-medium text-sm tracking-widest uppercase">Loading Menu...</p>
           </div>
         ) : (
@@ -190,7 +190,7 @@ const StudentMenu = () => {
             {filteredItems.map((item) => (
               <div 
                 key={item._id} 
-                className={`bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow-lg hover:border-indigo-200 transition-all duration-300 flex flex-col h-full group ${!item.isAvailable ? 'opacity-70 grayscale-[0.5]' : ''}`}
+                className={`bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow-lg hover:border-primary/40 transition-all duration-300 flex flex-col h-full group ${!item.isAvailable ? 'opacity-70 grayscale-[0.5]' : ''}`}
               >
                 {/* Image */}
                 <div className="h-44 bg-secondary rounded-2xl mb-4 flex items-center justify-center relative overflow-hidden">
@@ -201,7 +201,7 @@ const StudentMenu = () => {
                   )}
                   
                   {!item.isAvailable && (
-                    <div className="absolute inset-0 bg-primary-dark/60 backdrop-blur-[2px] flex items-center justify-center z-10">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] flex items-center justify-center z-10">
                       <span className="bg-red-500 text-white px-4 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-lg transform -rotate-3">
                         Sold Out
                       </span>
@@ -253,7 +253,7 @@ const StudentMenu = () => {
                 <div className="text-5xl mb-4 opacity-50">🍽️</div>
                 <h3 className="text-xl font-bold text-slate-700">Menu Empty</h3>
                 <p className="text-slate-400 text-sm mt-1">Try changing the category or search term.</p>
-                <button onClick={() => {setSearchTerm(''); setSelectedCategory('All')}} className="mt-4 text-indigo-500 font-bold text-sm hover:underline">Clear Filters</button>
+                <button onClick={() => {setSearchTerm(''); setSelectedCategory('All')}} className="mt-4 text-primary font-bold text-sm hover:underline">Clear Filters</button>
             </div>
         )}
       </div>

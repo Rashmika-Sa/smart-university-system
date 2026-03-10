@@ -147,16 +147,19 @@ const CanteenReviews = () => {
     <div className="min-h-screen bg-white">
       <StudentTopNav active="Canteen" />
 
-      <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
-
-        {/* Page Header */}
-        <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+      {/* Page Header */}
+      <div className="bg-slate-900 border-b border-slate-800 px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Student Feedback</span>
+          <h1 className="text-2xl font-black text-white tracking-tight mt-1">
             Canteen{' '}
-            <span className="bg-gradient-to-r from-indigo-500 to-cyan-500 bg-clip-text text-transparent">Reviews</span>
+            <span className="bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">Reviews</span>
           </h1>
-          <p className="text-slate-500 text-sm mt-1">Rate your experience — anonymous feedback is welcome</p>
+          <p className="text-white/70 text-sm mt-1">Rate your experience — anonymous feedback is welcome</p>
         </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
 
         {/* Canteen Tabs */}
         <div className="flex flex-wrap gap-2">
@@ -167,7 +170,7 @@ const CanteenReviews = () => {
               className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all duration-200
                 ${selectedCanteen === c
                   ? 'bg-accent text-white border-transparent shadow-lg'
-                  : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:text-indigo-600'
+                  : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'
                 }`}
             >
               {c}
@@ -181,13 +184,13 @@ const CanteenReviews = () => {
           <div className="space-y-6">
 
             {/* Stats Card */}
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-              <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold mb-4">Rating Overview</p>
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <p className="text-xs text-primary uppercase tracking-widest font-bold mb-4">Rating Overview</p>
 
               {stats ? (
                 <>
                   <div className="flex items-end gap-3 mb-5">
-                    <span className="text-5xl font-black text-white">{stats.avgRating.toFixed(1)}</span>
+                    <span className="text-5xl font-black text-slate-900">{stats.avgRating.toFixed(1)}</span>
                     <div className="pb-1">
                       <StarRow value={Math.round(stats.avgRating)} size="md" />
                       <p className="text-slate-500 text-xs mt-1">{stats.totalReviews} review{stats.totalReviews !== 1 ? 's' : ''}</p>
@@ -207,12 +210,12 @@ const CanteenReviews = () => {
             </div>
 
             {/* Submit Review Form */}
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-              <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold mb-4">Write a Review</p>
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <p className="text-xs text-primary uppercase tracking-widest font-bold mb-4">Write a Review</p>
 
               {!user?.id ? (
                 <div className="text-center py-4">
-                  <p className="text-slate-400 text-sm mb-3">Sign in to leave a review</p>
+                  <p className="text-slate-500 text-sm mb-3">Sign in to leave a review</p>
                   <button onClick={() => navigate('/login')} className="px-4 py-2 rounded-xl bg-accent text-white text-sm font-semibold">
                     Sign In
                   </button>
@@ -256,7 +259,7 @@ const CanteenReviews = () => {
                       placeholder="Share your experience... (optional)"
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/40 outline-none resize-none transition-all"
+                      className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:ring-2 focus:ring-primary/40 focus:border-primary/40 outline-none resize-none transition-all"
                     />
                     <p className="text-right text-[10px] text-slate-700 mt-0.5">{comment.length}/500</p>
                   </div>
@@ -267,8 +270,8 @@ const CanteenReviews = () => {
                     onClick={() => setIsAnonymous((v) => !v)}
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border transition-all
                       ${isAnonymous
-                        ? 'bg-violet-500/15 border-violet-500/30 text-violet-300'
-                        : 'bg-white/5 border-white/10 text-slate-500 hover:border-white/20'
+                        ? 'bg-violet-50 border-violet-200 text-violet-600'
+                        : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300'
                       }`}
                   >
                     <span className="text-sm font-semibold flex items-center gap-2">
@@ -277,7 +280,7 @@ const CanteenReviews = () => {
                       </svg>
                       Post Anonymously
                     </span>
-                    <div className={`w-10 h-5 rounded-full transition-all duration-300 relative ${isAnonymous ? 'bg-violet-500' : 'bg-slate-700'}`}>
+                    <div className={`w-10 h-5 rounded-full transition-all duration-300 relative ${isAnonymous ? 'bg-violet-500' : 'bg-slate-300'}`}>
                       <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all duration-300 ${isAnonymous ? 'left-5' : 'left-0.5'}`} />
                     </div>
                   </button>
@@ -366,7 +369,7 @@ const CanteenReviews = () => {
                       <div className="flex items-center gap-3">
                         {/* Avatar */}
                         <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold shrink-0
-                          ${review.isAnonymous ? 'bg-violet-100 text-violet-600' : 'bg-indigo-100 text-indigo-600'}`}>
+                          ${review.isAnonymous ? 'bg-violet-100 text-violet-600' : 'bg-primary/10 text-primary'}`}>
                           {review.isAnonymous ? '?' : review.authorName.charAt(0).toUpperCase()}
                         </div>
                         <div>
@@ -403,15 +406,15 @@ const CanteenReviews = () => {
 
                     {/* Admin Reply Display */}
                     {review.reply?.text && (
-                      <div className="mt-3 bg-indigo-50 border border-indigo-100 rounded-xl p-3.5">
+                      <div className="mt-3 bg-primary/5 border border-primary/15 rounded-xl p-3.5">
                         <div className="flex items-center gap-2 mb-1.5">
-                          <div className="w-5 h-5 rounded-full bg-indigo-500/20 flex items-center justify-center">
-                            <svg className="w-3 h-3 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
+                          <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                            <svg className="w-3 h-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
                           </div>
-                          <span className="text-xs font-bold text-indigo-600">{review.reply.repliedByName || 'Admin'}</span>
+                          <span className="text-xs font-bold text-primary">{review.reply.repliedByName || 'Admin'}</span>
                           <span className="text-[10px] text-slate-400">{review.reply.repliedAt ? timeAgo(review.reply.repliedAt) : ''}</span>
                         </div>
-                        <p className="text-sm text-indigo-900/80 leading-relaxed pl-7">{review.reply.text}</p>
+                        <p className="text-sm text-slate-700 leading-relaxed pl-7">{review.reply.text}</p>
                       </div>
                     )}
 

@@ -36,9 +36,9 @@ const CanteenSelection = () => {
 
   // Color variants per canteen
   const accentVariants = [
-    { bg: 'bg-cyan-500/15', border: 'border-cyan-500/30', text: 'text-cyan-400', hoverBorder: 'hover:border-cyan-500/50' },
-    { bg: 'bg-emerald-500/15', border: 'border-emerald-500/30', text: 'text-emerald-400', hoverBorder: 'hover:border-emerald-500/50' },
-    { bg: 'bg-violet-500/15', border: 'border-violet-500/30', text: 'text-violet-400', hoverBorder: 'hover:border-violet-500/50' },
+    { bg: 'bg-primary/10', border: 'border-primary/20', text: 'text-primary', hoverBorder: 'hover:border-primary' },
+    { bg: 'bg-primary/10', border: 'border-primary/20', text: 'text-primary', hoverBorder: 'hover:border-primary' },
+    { bg: 'bg-primary/10', border: 'border-primary/20', text: 'text-primary', hoverBorder: 'hover:border-primary' },
   ];
 
   return (
@@ -53,9 +53,9 @@ const CanteenSelection = () => {
               <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">SLIIT Dining Services</span>
               <h1 className="text-2xl sm:text-3xl font-black text-white mt-1 tracking-tight">
                 Select Your{' '}
-                <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Dining Spot</span>
+                <span className="bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">Dining Spot</span>
               </h1>
-              <p className="text-slate-400 text-sm mt-1">Skip the queue. Pre-order meals from SLIIT's top food outlets in seconds.</p>
+              <p className="text-white/70 text-sm mt-1">Skip the queue. Pre-order meals from SLIIT's top food outlets in seconds.</p>
             </div>
             <button
               onClick={() => navigate('/my-orders')}
@@ -69,8 +69,8 @@ const CanteenSelection = () => {
 
       {/* ═══ CANTEEN CARDS ═══ */}
       <div className="max-w-6xl mx-auto px-6 mt-8 pb-10 w-full">
-        <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold mb-3">Available Outlets</p>
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent mb-6" />
+        <p className="text-xs text-primary uppercase tracking-widest font-bold mb-3">Available Outlets</p>
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent mb-6" />
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {canteens.map((canteen, index) => {
@@ -79,11 +79,11 @@ const CanteenSelection = () => {
               <div
                 key={canteen.id}
                 onClick={() => handleSelect(canteen.name)}
-                className={`group bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden cursor-pointer ${variant.hoverBorder} transition-all duration-300 flex flex-col`}
+                className={`group bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden cursor-pointer ${variant.hoverBorder} transition-all duration-300 flex flex-col hover:shadow-md`}
               >
                 {/* Top accent stripe + logo area */}
-                <div className="relative flex-shrink-0 bg-slate-800 border-b border-slate-700 flex items-center justify-center p-8">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-cyan-400 to-indigo-500/40 rounded-b-full" />
+                <div className="relative flex-shrink-0 bg-slate-50 border-b border-slate-200 flex items-center justify-center p-8">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-cyan-400 to-primary/40 rounded-b-full" />
                   <div className={`w-20 h-20 ${variant.bg} rounded-2xl flex items-center justify-center border ${variant.border} transform group-hover:scale-110 transition-all duration-500`}>
                     <img
                       src={canteen.logo}
@@ -102,10 +102,10 @@ const CanteenSelection = () => {
                     </span>
                     <span className="text-[10px] text-slate-500 font-medium">#{String(canteen.id).padStart(2, '0')}</span>
                   </div>
-                  <h3 className="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">
+                  <h3 className="text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">
                     {canteen.name}
                   </h3>
-                  <p className="text-sm text-slate-400 leading-relaxed mt-1.5">
+                  <p className="text-sm text-slate-500 leading-relaxed mt-1.5">
                     {canteen.desc}
                   </p>
 
@@ -116,7 +116,7 @@ const CanteenSelection = () => {
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); navigate(`/canteen-reviews?canteen=${encodeURIComponent(canteen.name)}`); }}
-                      className="w-full py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white flex items-center justify-center gap-1.5"
+                      className="w-full py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200 hover:text-slate-900 flex items-center justify-center gap-1.5"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
                       Reviews

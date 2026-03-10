@@ -11,7 +11,7 @@ const initialForm = {
 
 const priorityStyle = {
   low: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-  normal: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30',
+  normal: 'bg-primary/15 text-primary border-primary/30',
   high: 'bg-rose-500/15 text-rose-400 border-rose-500/30'
 };
 
@@ -126,8 +126,8 @@ const AdminNotices = () => {
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-xs text-accent uppercase tracking-widest font-bold">{isSuperAdmin ? 'Admin Broadcast' : 'My Notices'}</p>
-          <h2 className="text-xl font-black text-white mt-0.5">{isSuperAdmin ? 'Notices & News Center' : 'My Published Notices'}</h2>
-          <p className="text-sm text-slate-400 mt-1">
+          <h2 className="text-xl font-black text-slate-900 mt-0.5">{isSuperAdmin ? 'Notices & News Center' : 'My Published Notices'}</h2>
+          <p className="text-sm text-slate-500 mt-1">
             {isSuperAdmin
               ? 'Post updates for students and manage published announcements.'
               : 'Post and manage your own notices for students.'}
@@ -135,47 +135,47 @@ const AdminNotices = () => {
         </div>
         <button
           onClick={loadNotices}
-          className="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-700 text-slate-400 hover:border-accent/40 hover:text-accent transition"
+          className="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 text-slate-400 hover:border-accent/40 hover:text-accent transition"
         >
           Refresh
         </button>
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-5">
-        <form onSubmit={handleSubmit} className="xl:col-span-5 rounded-2xl border border-slate-700 bg-slate-800 p-5 space-y-3">
+        <form onSubmit={handleSubmit} className="xl:col-span-5 rounded-2xl border border-slate-200 bg-white p-5 space-y-3">
           <p className="text-xs uppercase tracking-widest font-bold text-accent">Compose Notice</p>
 
           <div>
-            <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Title</label>
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Title</label>
             <input
               name="title"
               value={form.title}
               onChange={handleChange}
               placeholder="e.g. Shuttle route update"
-              className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-white placeholder-slate-600 outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/10"
+              className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/10"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Message</label>
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Message</label>
             <textarea
               name="content"
               value={form.content}
               onChange={handleChange}
               rows={5}
               placeholder="Write a clear update for students..."
-              className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-white placeholder-slate-600 outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/10 resize-none"
+              className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/10 resize-none"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Priority</label>
+              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Priority</label>
               <select
                 name="priority"
                 value={form.priority}
                 onChange={handleChange}
-                className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-white outline-none focus:border-accent/40"
+                className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 outline-none focus:border-accent/40"
               >
                 <option value="low">Low</option>
                 <option value="normal">Normal</option>
@@ -184,12 +184,12 @@ const AdminNotices = () => {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Audience</label>
+              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Audience</label>
               <select
                 name="targetAudience"
                 value={form.targetAudience}
                 onChange={handleChange}
-                className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-white outline-none focus:border-accent/40"
+                className="w-full mt-1.5 px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 outline-none focus:border-accent/40"
               >
                 <option value="students">Students</option>
                 <option value="all">All Users</option>
@@ -197,7 +197,7 @@ const AdminNotices = () => {
             </div>
           </div>
 
-          <label className="flex items-center gap-2 text-sm text-slate-400 font-medium">
+          <label className="flex items-center gap-2 text-sm text-slate-500 font-medium">
             <input
               type="checkbox"
               name="isPublished"
@@ -223,7 +223,7 @@ const AdminNotices = () => {
               <button
                 type="button"
                 onClick={resetForm}
-                className="px-4 py-2.5 rounded-xl border border-slate-700 text-slate-400 hover:bg-slate-700 transition font-semibold"
+                className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-100 transition font-semibold"
               >
                 Cancel
               </button>
@@ -231,28 +231,28 @@ const AdminNotices = () => {
           </div>
         </form>
 
-        <div className="xl:col-span-7 rounded-2xl border border-slate-700 bg-slate-800 p-5">
+        <div className="xl:col-span-7 rounded-2xl border border-slate-200 bg-white p-5">
           <p className="text-xs uppercase tracking-widest font-bold text-accent mb-4">Posted Notices</p>
 
           {loading ? (
             <div className="space-y-3">
-              <div className="h-20 rounded-xl bg-slate-700 animate-pulse" />
-              <div className="h-20 rounded-xl bg-slate-700 animate-pulse" />
-              <div className="h-20 rounded-xl bg-slate-700 animate-pulse" />
+              <div className="h-20 rounded-xl bg-slate-100 animate-pulse" />
+              <div className="h-20 rounded-xl bg-slate-100 animate-pulse" />
+              <div className="h-20 rounded-xl bg-slate-100 animate-pulse" />
             </div>
           ) : notices.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-slate-600 px-4 py-8 text-center">
-              <p className="text-slate-300 font-semibold">No notices posted yet</p>
+            <div className="rounded-xl border border-dashed border-slate-300 px-4 py-8 text-center">
+              <p className="text-slate-600 font-semibold">No notices posted yet</p>
               <p className="text-sm text-slate-500 mt-1">Create your first notice using the panel.</p>
             </div>
           ) : (
             <div className="space-y-3 max-h-[580px] overflow-y-auto pr-1">
               {notices.map((notice) => (
-                <div key={notice._id} className="rounded-xl border border-slate-700 bg-slate-900 p-4">
+                <div key={notice._id} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="text-sm font-bold text-white">{notice.title}</h3>
+                        <h3 className="text-sm font-bold text-slate-900">{notice.title}</h3>
                         <span className={`text-[10px] px-2 py-0.5 rounded-full border font-bold uppercase tracking-wider ${priorityStyle[notice.priority] || priorityStyle.normal}`}>
                           {notice.priority || 'normal'}
                         </span>
@@ -262,7 +262,7 @@ const AdminNotices = () => {
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-slate-400 mt-1.5 leading-relaxed">{notice.content}</p>
+                      <p className="text-sm text-slate-500 mt-1.5 leading-relaxed">{notice.content}</p>
                       <p className="text-[11px] text-slate-500 mt-2">
                         By {notice.postedByName || 'Admin'} • {new Date(notice.updatedAt || notice.createdAt).toLocaleString()}
                       </p>

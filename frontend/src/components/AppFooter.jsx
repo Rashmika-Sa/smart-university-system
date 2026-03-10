@@ -11,7 +11,7 @@ const AppFooter = () => {
     <footer className="border-t border-slate-800 bg-slate-900 pt-8 pb-6 mt-auto">
       <div className="max-w-7xl mx-auto px-6">
         {/* scan-line accent */}
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent mb-8" />
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent mb-8" />
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left">
           {/* Support block */}
           <div className="flex flex-col gap-2">
@@ -44,8 +44,8 @@ const AppFooter = () => {
           </div>
 
           {/* Date widget */}
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 min-w-[200px] shadow-xl">
-            <div className="flex justify-between items-end mb-2 border-b border-slate-700 pb-2">
+          <div className="bg-slate-800 border border-white/20 rounded-xl p-4 min-w-[200px] shadow-xl">
+            <div className="flex justify-between items-end mb-2 border-b border-white/20 pb-2">
               <span className="text-3xl font-bold text-accent">{today.getDate()}</span>
               <div className="flex flex-col text-right">
                 <span className="text-xs text-cyan-400 font-bold uppercase">{dayName}</span>
@@ -59,7 +59,7 @@ const AppFooter = () => {
                   className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold transition-all duration-300 ${
                     index === currentDayIndex
                       ? 'bg-accent text-white shadow-lg shadow-accent/40 scale-110'
-                      : 'bg-slate-700 text-slate-400 hover:bg-slate-600'
+                      : 'bg-slate-800 text-white/60 hover:bg-white/10'
                   }`}
                 >
                   {day}

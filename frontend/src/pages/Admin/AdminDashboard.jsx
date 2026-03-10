@@ -96,37 +96,37 @@ const AdminDashboard = () => {
       <div className="flex-1 overflow-auto bg-transparent p-8 relative z-10">
         
         {/* Top Header */}
-        <header className="flex justify-between items-center mb-8 bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl">
+        <header className="flex justify-between items-center mb-8 bg-slate-900 p-5 rounded-2xl shadow-sm">
           <div>
-            <span className="text-xs text-accent uppercase tracking-widest font-bold">Admin Portal</span>
+            <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Admin Portal</span>
             <h1 className="text-xl font-black text-white mt-0.5 tracking-tight">
               {activeTab === 'overview' ? 'Dashboard ' : `${activeTab} `}
-              <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent capitalize">
+              <span className="bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent capitalize">
                 {activeTab === 'overview' ? 'Overview' : 'Management'}
               </span>
             </h1>
-            <p className="text-sm text-slate-400 mt-0.5">Manage your smart campus services.</p>
+            <p className="text-sm text-white/70 mt-0.5">Manage your smart campus services.</p>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <span className="block text-sm font-bold text-slate-300">System Admin</span>
-              <span className="block text-xs text-emerald-400">● Online</span>
+              <span className="block text-sm font-bold text-white">System Admin</span>
+              <span className="block text-xs text-emerald-500">● Online</span>
             </div>
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-cyan-500 text-white rounded-full flex items-center justify-center font-bold shadow-md">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-cyan-500 text-white rounded-full flex items-center justify-center font-bold shadow-md">
               A
             </div>
           </div>
         </header>
 
         {/* Dynamic Content Container */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-8 min-h-[600px]">
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8 min-h-[600px]">
           
           {activeTab === 'overview' && (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <div className="text-6xl mb-4">🚀</div>
-              <h2 className="text-2xl font-black text-white">Welcome to the <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Command Centre</span></h2>
-              <p className="text-slate-400 mt-2 text-sm">Select a service from the sidebar to manage.</p>
+              <h2 className="text-2xl font-black text-slate-900">Welcome to the <span className="bg-gradient-to-r from-primary to-cyan-500 bg-clip-text text-transparent">Command Centre</span></h2>
+              <p className="text-slate-500 mt-2 text-sm">Select a service from the sidebar to manage.</p>
             </div>
           )}
 
@@ -134,7 +134,7 @@ const AdminDashboard = () => {
           {activeTab === 'canteen' && (
             <div>
               <h2 className="text-xl font-bold mb-4 text-accent">🍔 Canteen Management</h2>
-              <p className="text-slate-400">Manage daily menus, prices, and pre-orders.</p>
+              <p className="text-slate-500">Manage daily menus, prices, and pre-orders.</p>
             </div>
           )}
 

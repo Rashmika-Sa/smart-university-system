@@ -63,19 +63,19 @@ const ShuttleDashboard = () => {
           <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Campus Mobility</span>
           <h1 className="text-3xl font-black text-white mt-1 tracking-tight">
             🚌 Shuttle{' '}
-            <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Tracker</span>
+            <span className="bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">Tracker</span>
           </h1>
-          <p className="text-slate-400 text-sm mt-2">Live route status and seat availability for SLIIT campus shuttles.</p>
+          <p className="text-white/70 text-sm mt-2">Live route status and seat availability for SLIIT campus shuttles.</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
             {[
-              { label: 'Total Routes', value: routes.length, color: 'text-cyan-400' },
-              { label: 'On Time', value: onTime, color: 'text-emerald-400' },
+              { label: 'Total Routes', value: routes.length, color: 'text-cyan-600' },
+              { label: 'On Time', value: onTime, color: 'text-emerald-500' },
               { label: 'Delayed', value: delayed, color: 'text-accent' },
-              { label: 'Seats Available', value: totalSeats, color: 'text-white' },
+              { label: 'Seats Available', value: totalSeats, color: 'text-slate-900' },
             ].map(s => (
-              <div key={s.label} className="bg-slate-800 border border-slate-700 rounded-xl p-4 text-center">
+              <div key={s.label} className="bg-white/10 border border-white/20 rounded-xl p-4 text-center">
                 <div className={`text-2xl font-black ${s.color}`}>{s.value}</div>
-                <div className="text-xs text-slate-400 mt-1">{s.label}</div>
+                <div className="text-xs text-white/60 mt-1">{s.label}</div>
               </div>
             ))}
           </div>
@@ -84,8 +84,8 @@ const ShuttleDashboard = () => {
 
       {/* Routes */}
       <div className="max-w-5xl mx-auto px-6 mt-8 space-y-4">
-        <p className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Available Routes</p>
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent" />
+        <p className="text-xs text-primary uppercase tracking-widest font-bold">Available Routes</p>
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
 
         {routes.map(route => {
           const sc = statusConfig[route.status];

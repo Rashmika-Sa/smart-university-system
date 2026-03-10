@@ -99,16 +99,16 @@ const OrderHistory = () => {
 
       <div className="max-w-5xl mx-auto px-6 py-8">
         {/* Page Header */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div className="bg-slate-900 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-2xl">🧾</div>
+            <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center text-2xl">🧶</div>
             <div>
               <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold">Track &amp; Manage</span>
               <h1 className="text-2xl font-black text-white tracking-tight">
                 My{' '}
-                <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Pre-Orders</span>
+                <span className="bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">Pre-Orders</span>
               </h1>
-              <p className="text-slate-400 text-xs mt-0.5">Review status, totals, and cancellation windows.</p>
+              <p className="text-white/70 text-xs mt-0.5">Review status, totals, and cancellation windows.</p>
             </div>
           </div>
           <button
@@ -126,10 +126,10 @@ const OrderHistory = () => {
         ) : error ? (
           <div className="bg-red-50 text-red-600 p-4 rounded-2xl text-center border border-red-200">{error}</div>
         ) : orders.length === 0 ? (
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-14 text-center shadow-xl">
+          <div className="bg-white border border-slate-200 rounded-2xl p-14 text-center shadow-sm">
             <div className="text-5xl mb-4">🍽️</div>
-            <h2 className="text-xl font-bold text-white mb-2">No orders yet</h2>
-            <p className="text-slate-400 text-sm mb-6">You haven&apos;t pre-ordered any meals yet.</p>
+            <h2 className="text-xl font-bold text-slate-900 mb-2">No orders yet</h2>
+            <p className="text-slate-500 text-sm mb-6">You haven&apos;t pre-ordered any meals yet.</p>
             <button onClick={() => navigate('/canteen-selection')} className="px-6 py-3 rounded-xl bg-accent text-white font-bold shadow-[0_0_20px_rgba(255,107,53,0.3)] hover:opacity-90 transition-opacity">
               Start Ordering
             </button>
