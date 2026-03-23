@@ -85,7 +85,9 @@ const Login = () => {
                   type="email"
                   name="email"
                   placeholder="itXXXXXX@my.sliit.lk"
-                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/40 outline-none transition-all duration-200"
+                  autoComplete="username"
+                  spellCheck={false}
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-slate-100 placeholder-slate-500 text-sm caret-white focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/40 outline-none transition-all duration-200"
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -105,7 +107,8 @@ const Login = () => {
                   type={showPassword ? 'text' : 'password'}
                   name="password"
                   placeholder="Enter your password"
-                  className="w-full pl-11 pr-12 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/40 outline-none transition-all duration-200"
+                  autoComplete="current-password"
+                  className="w-full pl-11 pr-12 py-3.5 rounded-xl bg-white/5 border border-white/10 text-slate-100 placeholder-slate-500 text-sm caret-white focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/40 outline-none transition-all duration-200"
                   value={formData.password}
                   onChange={handleChange}
                   required

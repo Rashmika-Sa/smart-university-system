@@ -146,7 +146,7 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const cleanEmail = email.trim().toLowerCase();
+    const cleanEmail = (email || '').trim().toLowerCase();
     
     console.log("🛡 Login Attempt:", cleanEmail);
 
@@ -157,7 +157,13 @@ const loginUser = async (req, res) => {
     }
 
     // 2. Check Password
-    const isMatch = await bcrypt.compare(password, user.password);
+    // Fallback keeps legacy plaintext records usable after pull/seed drift.
+    let isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch && password === user.password) {
+      user.password = password;
+      await user.save();
+      isMatch = true;
+    }
     
     if (!isMatch) {
       return res.status(400).json({ msg: 'Invalid Credentials' });

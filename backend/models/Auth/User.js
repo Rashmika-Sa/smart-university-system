@@ -11,8 +11,8 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please add an email'],
     unique: true,
     match: [
-      /^(it|en|bn|hs|ar)\d{8}@my\.sliit\.lk$/i,
-      'Please use a valid SLIIT student email (e.g., it12345678@my.sliit.lk, en12345678@my.sliit.lk)'
+      /^(?:(it|en|bm|hs|ar)\d{8}@my\.sliit\.lk|[a-z0-9._%+-]+@sliit\.lk)$/i,
+      'Please use a valid SLIIT email (@my.sliit.lk for students or @sliit.lk for staff/admin).'
     ]
   },
   password: {
@@ -69,17 +69,14 @@ const userSchema = new mongoose.Schema({
 });
 
 
-userSchema.pre('save', async function(next) {
-  // 1. If the password was NOT changed (e.g., we are just updating cards), stop here.
+userSchema.pre('save', async function() {
+  // Skip hashing when password is unchanged.
   if (!this.isModified('password')) {
     return;
   }
 
-  // 2. Hash the password if it WAS changed
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
-     
-  
 });
 
 // Match user entered password to hashed password in database

@@ -66,7 +66,7 @@ const seedDatabase = async () => {
       { 
         name: 'Academic Space Manager', 
         email: 'academic@sliit.lk', 
-        password: process.env.ACADEMIC, 
+        password: process.env.ACADEMIC_PASS, 
         role: 'academic_admin' 
       },
       { 

@@ -32,3 +32,14 @@
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
+
+/* Keep auth input text visible on Safari/Chrome autofill (macOS issue). */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgba(15, 23, 42, 0.95) inset !important;
+  -webkit-text-fill-color: #f8fafc !important;
+  caret-color: #f8fafc;
+  transition: background-color 9999s ease-in-out 0s;
+}
