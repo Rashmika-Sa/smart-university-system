@@ -569,15 +569,19 @@ const StudentDashboard = () => {
           visibleSections['timetable'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <div className="bg-gradient-to-br from-primary/5 via-white to-accent/5 border-2 border-primary/20 rounded-2xl p-6 shadow-sm ring-1 ring-accent/20">
 
           {/* Header */}
           <div className="flex items-center justify-between mb-5">
             <div>
               <p className="text-xs text-primary uppercase tracking-widest font-bold">Weekly Schedule</p>
-              <h2 className="text-xl font-bold text-slate-900 mt-1">Timetable</h2>
+              <h2 className="text-xl font-black text-slate-900 mt-1">Timetable Updates</h2>
+              <p className="text-xs text-slate-600 mt-1">Track new classes and today's next session at a glance.</p>
             </div>
             <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1 bg-accent/15 border border-accent/40 rounded-xl px-3 py-1.5 text-[10px] text-accent font-black tracking-widest uppercase">
+                Live
+              </span>
               <span className="inline-flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-700 font-bold tracking-widest">
                 {DAY_FULL[selectedDay]?.toUpperCase()}
               </span>
@@ -604,7 +608,7 @@ const StudentDashboard = () => {
                     isSelected
                       ? 'bg-accent text-white border-transparent shadow-[0_0_12px_rgba(255,107,53,0.3)]'
                       : isToday
-                      ? 'bg-accent/15 border-accent/40 text-accent hover:bg-accent/25'
+                      ? 'bg-primary/10 border-primary/40 text-primary hover:bg-primary/20'
                       : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100 hover:text-slate-700'
                   }`}
                 >
