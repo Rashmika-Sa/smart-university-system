@@ -9,11 +9,12 @@ const reviewSchema = new mongoose.Schema({
   foodItem: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'FoodItem',
-    default: null,  // null = general canteen review
+    default: null,  
+    
   },
   foodItemName: {
     type: String,
-    default: null,  // snapshot of name at review time
+    default: null,  
   },
   rating: {
     type: Number,

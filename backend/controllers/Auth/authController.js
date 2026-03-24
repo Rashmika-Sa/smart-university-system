@@ -9,19 +9,19 @@ const nodemailer = require('nodemailer');
 
 // 0. SETUP EMAIL TRANSPORTER (GMAIL CONFIG) 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com', // Explicit Host
-  port: 465,              // Secure Port
-  secure: true,           // Use SSL
+  host: 'smtp.gmail.com', 
+  port: 465,              
+  secure: true,          
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
   },
   tls: {
-    rejectUnauthorized: false // Helps prevent certificate errors
+    rejectUnauthorized: false
   }
 });
 
-// 1. SEND VERIFICATION CODE 
+// 1.SEND VERIFICATION CODE 
 const sendVerificationCode = async (req, res) => {
   const { email } = req.body;
   const cleanEmail = email.trim().toLowerCase();
@@ -29,7 +29,7 @@ const sendVerificationCode = async (req, res) => {
   console.log("📧 Attempting to send OTP to:", cleanEmail);
 
   try {
-    //UPDATED SLIIT GATEKEEPER: Check for IT, EN, BM, HS, AR + 8 digits
+    //Check for IT, EN, BM, HS, AR + 8 digits
     const sliitEmailRegex = /^(it|en|bm|hs|ar)\d{8}@my\.sliit\.lk$/i;
     
     if (!sliitEmailRegex.test(cleanEmail)) {
