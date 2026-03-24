@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 
 // 2. Import Auth & Dashboards
-import Login from './pages/Auth/Login';
+import Login from './pages/Auth/Login.jsx';
 import Register from './pages/Auth/Register';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 
