@@ -31,6 +31,23 @@ const getAllBuses = async (req, res) => {
   }
 };
 
+// @desc    Update a bus
+// @route   PUT /api/shuttles/bus/:id
+// @access  shuttle_admin
+const updateBus = async (req, res) => {
+  try {
+    const bus = await Bus.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!bus) return res.status(404).json({ msg: 'Bus not found' });
+    res.json(bus);
+  } catch (err) {
+    res.status(400).json({ msg: err.message });
+  }
+};
+
 // @desc    Delete a bus
 // @route   DELETE /api/shuttles/bus/:id
 // @access  shuttle_admin
@@ -68,6 +85,36 @@ const getAllRoutes = async (req, res) => {
   }
 };
 
+// @desc    Update a route
+// @route   PUT /api/shuttles/route/:id
+// @access  shuttle_admin
+const updateRoute = async (req, res) => {
+  try {
+    const route = await Route.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!route) return res.status(404).json({ msg: 'Route not found' });
+    res.json(route);
+  } catch (err) {
+    res.status(400).json({ msg: err.message });
+  }
+};
+
+// @desc    Delete a route
+// @route   DELETE /api/shuttles/route/:id
+// @access  shuttle_admin
+const deleteRoute = async (req, res) => {
+  try {
+    const route = await Route.findByIdAndDelete(req.params.id);
+    if (!route) return res.status(404).json({ msg: 'Route not found' });
+    res.json({ msg: 'Route removed successfully' });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+
 // @desc    Create a schedule
 // @route   POST /api/shuttles/schedule
 // @access  shuttle_admin
@@ -81,6 +128,31 @@ const createSchedule = async (req, res) => {
       availableSeats: bus.capacity
     });
     res.status(201).json(schedule);
+  } catch (err) {
+    res.status(400).json({ msg: err.message });
+  }
+};
+
+// @desc    Update a schedule
+// @route   PUT /api/shuttles/schedule/:id
+// @access  shuttle_admin
+const updateSchedule = async (req, res) => {
+  try {
+    // If busId is being changed, recalculate availableSeats from new bus
+    if (req.body.busId) {
+      const bus = await Bus.findById(req.body.busId);
+      if (!bus) return res.status(404).json({ msg: 'Bus not found' });
+      req.body.availableSeats = bus.capacity;
+    }
+
+    const schedule = await Schedule.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    ).populate('busId').populate('routeId');
+
+    if (!schedule) return res.status(404).json({ msg: 'Schedule not found' });
+    res.json(schedule);
   } catch (err) {
     res.status(400).json({ msg: err.message });
   }
@@ -112,6 +184,24 @@ const getAllBookings = async (req, res) => {
     res.json(bookings);
   } catch (err) {
     res.status(500).json({ msg: err.message });
+  }
+};
+
+// @desc    Update booking payment status (admin confirms payment)
+// @route   PUT /api/shuttles/booking/:id
+// @access  shuttle_admin
+const updateBooking = async (req, res) => {
+  try {
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { paymentStatus: req.body.paymentStatus },
+      { new: true, runValidators: true }
+    ).populate('userId', 'name email universityId');
+
+    if (!booking) return res.status(404).json({ msg: 'Booking not found' });
+    res.json(booking);
+  } catch (err) {
+    res.status(400).json({ msg: err.message });
   }
 };
 
@@ -235,12 +325,17 @@ const getTakenSeats = async (req, res) => {
 module.exports = {
   addBus,
   getAllBuses,
+  updateBus,
   deleteBus,
   addRoute,
   getAllRoutes,
+  updateRoute,
+  deleteRoute,
   createSchedule,
+  updateSchedule,
   deleteSchedule,
   getAllBookings,
+  updateBooking,
   getSchedules,
   reserveSeat,
   getMyBookings,
