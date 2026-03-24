@@ -28,11 +28,11 @@ router.post('/register', registerUser);
 // 4. Login User
 router.post('/login', loginUser);
 
-// --- FORGOT PASSWORD ROUTES ---
+// FORGOT PASSWORD ROUTES
 router.post('/forgot-password/send-code', forgotPasswordSendCode);
 router.post('/forgot-password/reset', forgotPasswordVerifyAndReset);
 
-// --- CANTEEN ADMIN MANAGEMENT ROUTES (Super Admin Only) ---
+// CANTEEN ADMIN MANAGEMENT ROUTES (Super Admin Only) 
 
 // 5. Create Canteen Admin
 router.post('/canteen-admin/create', protect, authorize('canteen_admin'), createCanteenAdmin);

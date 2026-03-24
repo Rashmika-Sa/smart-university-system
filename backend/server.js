@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
-// 1. LOAD ENVIRONMENT VARIABLES FIRST (Before importing routes!)
+// 1. LOAD ENVIRONMENT VARIABLES FIRST
 dotenv.config(); 
 
 // 2. NOW Import Routes (They can now see the .env variables)
@@ -24,7 +24,7 @@ app.use(cors());
 app.use(express.json({ limit: BODY_LIMIT }));
 app.use(express.urlencoded({ extended: true, limit: BODY_LIMIT }));
 
-// --- ROUTES ---
+//ROUTES
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/canteen', canteenRoutes);
@@ -47,22 +47,22 @@ const connectWithFallback = async () => {
 
   try {
     await mongoose.connect(primaryUri, opts);
-    console.log('✅ MongoDB Connected (primary)');
+    console.log('MongoDB Connected (primary)');
   } catch (err) {
-    console.log('❌ MongoDB primary connection failed:', err.message || err);
+    console.log('MongoDB primary connection failed:', err.message || err);
     if (fallbackEnabled) {
-      console.log('👇️ Attempting fallback to local MongoDB...');
+      console.log(' Attempting fallback to local MongoDB...');
       try {
         await mongoose.connect(fallbackUri, opts);
-        console.log('✅ MongoDB Connected (fallback local)');
+        console.log('MongoDB Connected (fallback local)');
       } catch (fallbackErr) {
-        console.log('❌ Fallback connection also failed:', fallbackErr.message || fallbackErr);
-        console.log('ℹ️ If you are using MongoDB Atlas, ensure your current IP is allowed in Network Access (IP whitelist) or set FALLBACK_TO_LOCAL=true to use a local MongoDB instance for development.');
+        console.log('Fallback connection also failed:', fallbackErr.message || fallbackErr);
+        console.log('ℹIf you are using MongoDB Atlas, ensure your current IP is allowed in Network Access (IP whitelist) or set FALLBACK_TO_LOCAL=true to use a local MongoDB instance for development.');
         process.exit(1);
       }
     } else {
-      console.log('ℹ️ To enable fallback to a local MongoDB, set `FALLBACK_TO_LOCAL=true` and optionally `LOCAL_MONGO_URI`.');
-      console.log('ℹ️ If you are using MongoDB Atlas, make sure your current IP is added to the cluster IP access list: https://www.mongodb.com/docs/atlas/security-whitelist/');
+      console.log('To enable fallback to a local MongoDB, set `FALLBACK_TO_LOCAL=true` and optionally `LOCAL_MONGO_URI`.');
+      console.log('If you are using MongoDB Atlas, make sure your current IP is added to the cluster IP access list: https://www.mongodb.com/docs/atlas/security-whitelist/');
       process.exit(1);
     }
   }
