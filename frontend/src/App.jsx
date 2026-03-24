@@ -17,6 +17,7 @@ import StudentMenu from './pages/Canteen/StudentMenu';
 import Checkout from './pages/Canteen/Checkout';
 import OrderHistory from './pages/Student/OrderHistory';
 import CanteenReviews from './pages/Canteen/CanteenReviews';
+import StudentShuttleDashboard from './pages/Shuttle/StudentShuttleDashboard';
 
 // 4. Import Admin & Manager Dashboards
 import AdminDashboard from './pages/Admin/AdminDashboard';
@@ -51,6 +52,8 @@ function App() {
               <Route path="/student-dashboard" element={<StudentDashboard />} />
               <Route path="/my-orders" element={<OrderHistory />} />
               <Route path="/canteen-reviews" element={<CanteenReviews />} />
+
+    
               
               {/*Canteen Flow for Students */}
               <Route path="/canteen-selection" element={<CanteenSelection />} />
@@ -62,9 +65,12 @@ function App() {
               
               {/* Canteen Super Admin - Manage Admins */}
               <Route path="/canteen-admin-management" element={<CanteenAdminManagement />} />
-
-              {/* Other Service Managers */}
+              
+              {/* Shuttle*/}
+              <Route path="/student-shuttle-dashboard" element={<StudentShuttleDashboard />} />
               <Route path="/shuttle-dashboard" element={<ShuttleDashboard />} />
+              {/* Other Service Managers */}
+              
               <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} />
               <Route path="/facility-dashboard" element={<FacilityDashboard />} />
               
