@@ -1,0 +1,368 @@
+{
+  "info": {
+    "name": "Facilities Booking Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "<paste token here>",
+      "type": "string"
+    },
+    {
+      "key": "registration_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "space_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "booking_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register — Team Captain",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "auth", "register"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Silva\",\n  \"email\": \"it21000001@my.sliit.lk\",\n  \"password\": \"password123\",\n  \"role\": \"team_captain\",\n  \"teamName\": \"SLIIT Volleyball Team\",\n  \"sportName\": \"Volleyball\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register — Society",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "auth", "register"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Amal Perera\",\n  \"email\": \"it21000002@my.sliit.lk\",\n  \"password\": \"password123\",\n  \"role\": \"society\",\n  \"societyName\": \"SLIIT Drama Society\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (existing route)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"it21000001@my.sliit.lk\",\n  \"password\": \"password123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Registrations",
+      "item": [
+        {
+          "name": "Get All Registrations",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-auth-token", "value": "{{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/registrations?status=pending",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "registrations"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "description": "pending | approved | rejected (omit for all)"
+                }
+              ]
+            },
+            "description": "sports_council sees team_captain registrations. facility_admin sees society registrations."
+          }
+        },
+        {
+          "name": "Get Registration by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-auth-token", "value": "{{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/registrations/{{registration_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "registrations", "{{registration_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Approve Registration",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "x-auth-token", "value": "{{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/registrations/{{registration_id}}/approve",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "registrations", "{{registration_id}}", "approve"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "Reject Registration",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "x-auth-token", "value": "{{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/registrations/{{registration_id}}/reject",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "registrations", "{{registration_id}}", "reject"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Incomplete information provided.\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Spaces",
+      "item": [
+        {
+          "name": "Get All Spaces",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-auth-token", "value": "{{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/spaces",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "spaces"]
+            },
+            "description": "facility_admin sees all (active + inactive). Others see active only."
+          }
+        },
+        {
+          "name": "Get Available Slots",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-auth-token", "value": "{{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/spaces/{{space_id}}/slots?date=2026-03-25",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "spaces", "{{space_id}}", "slots"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2026-03-25",
+                  "description": "YYYY-MM-DD"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Space",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "x-auth-token", "value": "{{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/spaces",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "spaces"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Volleyball Court\",\n  \"type\": \"Sports Facility\",\n  \"openTime\": \"08:00\",\n  \"closeTime\": \"22:00\",\n  \"slotDuration\": 60\n}"
+            },
+            "description": "facility_admin only"
+          }
+        },
+        {
+          "name": "Update Space",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "x-auth-token", "value": "{{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/spaces/{{space_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "spaces", "{{space_id}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Volleyball Court A\",\n  \"type\": \"Sports Facility\",\n  \"openTime\": \"07:00\",\n  \"closeTime\": \"21:00\",\n  \"slotDuration\": 60,\n  \"status\": \"active\"\n}"
+            },
+            "description": "facility_admin only"
+          }
+        },
+        {
+          "name": "Toggle Space Status (Activate / Deactivate)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "x-auth-token", "value": "{{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/spaces/{{space_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "spaces", "{{space_id}}", "status"]
+            },
+            "description": "facility_admin only. Flips active ↔ inactive."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Get My Bookings (upcoming)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-auth-token", "value": "{{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/bookings?status=upcoming",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "bookings"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "upcoming",
+                  "description": "upcoming | past | cancelled (for team_captain / society)"
+                }
+              ]
+            },
+            "description": "team_captain / society: own bookings. facility_admin: all bookings."
+          }
+        },
+        {
+          "name": "Get My Bookings (past)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-auth-token", "value": "{{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/bookings?status=past",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "bookings"],
+              "query": [{ "key": "status", "value": "past" }]
+            }
+          }
+        },
+        {
+          "name": "Get My Bookings (cancelled)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-auth-token", "value": "{{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/bookings?status=cancelled",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "bookings"],
+              "query": [{ "key": "status", "value": "cancelled" }]
+            }
+          }
+        },
+        {
+          "name": "Get All Bookings — Admin (with filters)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-auth-token", "value": "{{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/bookings?spaceId={{space_id}}&from=2026-03-01&to=2026-03-31&bookerType=team_captain",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "bookings"],
+              "query": [
+                { "key": "spaceId", "value": "{{space_id}}", "description": "Filter by space" },
+                { "key": "from", "value": "2026-03-01", "description": "Date range start YYYY-MM-DD" },
+                { "key": "to", "value": "2026-03-31", "description": "Date range end YYYY-MM-DD" },
+                { "key": "bookerType", "value": "team_captain", "description": "team_captain | society" }
+              ]
+            },
+            "description": "facility_admin only. All filters are optional."
+          }
+        },
+        {
+          "name": "Get Booking by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-auth-token", "value": "{{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/bookings/{{booking_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "bookings", "{{booking_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "x-auth-token", "value": "{{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/bookings",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "bookings"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"spaceId\": \"{{space_id}}\",\n  \"date\": \"2026-03-28\",\n  \"startTime\": \"10:00\",\n  \"endTime\": \"11:00\",\n  \"label\": \"Practice session\"\n}"
+            },
+            "description": "Approved team_captain or society only. Returns 409 if slot is already taken."
+          }
+        },
+        {
+          "name": "Cancel Booking",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "x-auth-token", "value": "{{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/bookings/{{booking_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "bookings", "{{booking_id}}"]
+            },
+            "description": "Approved team_captain or society (owner only)."
+          }
+        }
+      ]
+    }
+  ]
+}

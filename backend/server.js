@@ -13,6 +13,7 @@ const canteenRoutes = require('./routes/Canteen/canteenRoutes');
 const orderRoutes = require('./routes/Order/orderRoutes');
 const reviewRoutes = require('./routes/Canteen/reviewRoutes');
 const noticeRoutes = require('./routes/General/noticeRoutes');
+const facilitiesRoutes = require('./Facilities');
 
 // Initialize the App
 const app = express();
@@ -20,7 +21,10 @@ const PORT = process.env.PORT || 5000;
 const BODY_LIMIT = process.env.BODY_LIMIT || '10mb';
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  credentials: true,
+}));
 app.use(express.json({ limit: BODY_LIMIT }));
 app.use(express.urlencoded({ extended: true, limit: BODY_LIMIT }));
 
@@ -31,6 +35,7 @@ app.use('/api/canteen', canteenRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/notices', noticeRoutes);
+app.use('/api/facilities', facilitiesRoutes);
 
 // Basic Route
 app.get('/', (req, res) => {
