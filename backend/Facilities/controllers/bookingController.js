@@ -67,7 +67,7 @@ const getAll = async (req, res) => {
         filter.status = 'cancelled';
       }
     } else {
-      // facility_admin
+      // facility_admin / sports_council — see all bookings
       if (spaceId) filter.space = spaceId;
       if (status)  filter.status = status;
 

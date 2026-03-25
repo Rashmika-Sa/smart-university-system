@@ -37,7 +37,7 @@ const Login = () => {
           navigate("/shuttle-dashboard");
           break;
         case "facility_admin":
-          navigate("/facilities/home");
+          navigate("/facilities/registrations");
           break;
         case "society":
           navigate("/facilities/bookings");

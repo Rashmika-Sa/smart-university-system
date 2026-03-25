@@ -24,7 +24,6 @@ import CanteenAdminManagement from "./pages/Canteen/CanteenAdminManagement";
 import ShuttleDashboard from "./pages/Shuttle/ShuttleDashboard";
 import AcedmicSpaceDashboard from "./pages/Academic/AcedmicSpaceDashboard";
 import FacilityDashboard from "./pages/Facility/FacilityDashboard";
-import FacilityRegister from "./pages/Facilities/FacilityRegister";
 import RegistrationList from "./pages/Facilities/RegistrationList";
 import RegistrationDetail from "./pages/Facilities/RegistrationDetail";
 import FacilityHome from "./pages/Facilities/FacilityHome";
@@ -32,6 +31,7 @@ import ManageSpaces from "./pages/Facilities/ManageSpaces";
 import SpaceForm from "./pages/Facilities/SpaceForm";
 import NewBooking from "./pages/Facilities/NewBooking";
 import MyBookings from "./pages/Facilities/MyBookings";
+import FacilitiesCalendar from "./pages/Facilities/FacilitiesCalendar";
 
 // 5. Import Route Protectors
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -49,7 +49,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/facilities/register" element={<FacilityRegister />} />
 
             {/* Facilities — facility_admin only */}
             <Route element={<ProtectedRoute allowedRoles={["facility_admin"]} />}>
@@ -69,6 +68,11 @@ function App() {
               <Route path="/facilities/home" element={<FacilityHome />} />
               <Route path="/facilities/bookings" element={<MyBookings />} />
               <Route path="/facilities/bookings/new" element={<NewBooking />} />
+            </Route>
+
+            {/* Facilities — calendar (all authenticated facilities roles) */}
+            <Route element={<ProtectedRoute allowedRoles={["team_captain", "society", "facility_admin", "sports_council"]} />}>
+              <Route path="/facilities/calendar" element={<FacilitiesCalendar />} />
             </Route>
 
             {/* --- PROTECTED ROUTES (Requires Login) --- */}

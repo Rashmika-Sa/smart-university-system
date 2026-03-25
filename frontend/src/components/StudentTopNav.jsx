@@ -30,6 +30,7 @@ const StudentTopNav = ({ active = "Home" }) => {
         <div className="flex flex-wrap items-center gap-1.5 text-sm">
           <NavBtn label="Home" route="/student-dashboard" />
           <NavBtn label="Book Facilities" route="/facilities/home" />
+          <NavBtn label="Calendar" route="/facilities/calendar" />
           <NavBtn label="Canteen" route="/canteen-selection" />
           <NavBtn label="Shuttle" route="/shuttle-dashboard" />
         </div>

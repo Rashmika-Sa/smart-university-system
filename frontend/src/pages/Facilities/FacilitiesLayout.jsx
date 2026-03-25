@@ -3,6 +3,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import StudentTopNav from "../../components/StudentTopNav";
 
 // ── per-role sidebar navigation ─────────────────────────────────────────────
+const CALENDAR_NAV = {
+  label: "Calendar",
+  path: "/facilities/calendar",
+  icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+};
+
 const NAV = {
   sports_council: [
     {
@@ -10,6 +16,7 @@ const NAV = {
       path: "/facilities/registrations",
       icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2",
     },
+    CALENDAR_NAV,
   ],
   facility_admin: [
     {
@@ -22,11 +29,7 @@ const NAV = {
       path: "/facilities/spaces",
       icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
     },
-    {
-      label: "All Bookings",
-      path: "/facilities/bookings",
-      icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
-    },
+    CALENDAR_NAV,
   ],
   team_captain: [
     {
@@ -44,6 +47,7 @@ const NAV = {
       path: "/facilities/bookings/new",
       icon: "M12 4v16m8-8H4",
     },
+    CALENDAR_NAV,
   ],
   society: [
     {
@@ -61,6 +65,7 @@ const NAV = {
       path: "/facilities/bookings/new",
       icon: "M12 4v16m8-8H4",
     },
+    CALENDAR_NAV,
   ],
 };
 
