@@ -28,6 +28,11 @@ import FacilityDashboard from './pages/Facility/FacilityDashboard';
 import FacilityRegister   from './pages/Facilities/FacilityRegister';
 import RegistrationList   from './pages/Facilities/RegistrationList';
 import RegistrationDetail from './pages/Facilities/RegistrationDetail';
+import FacilityHome       from './pages/Facilities/FacilityHome';
+import ManageSpaces       from './pages/Facilities/ManageSpaces';
+import SpaceForm          from './pages/Facilities/SpaceForm';
+import NewBooking         from './pages/Facilities/NewBooking';
+import MyBookings         from './pages/Facilities/MyBookings';
 
 // 5. Import Route Protectors
 import ProtectedRoute from './components/ProtectedRoute';
@@ -48,10 +53,24 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/facilities/register" element={<FacilityRegister />} />
 
+            {/* Facilities — facility_admin only */}
+            <Route element={<ProtectedRoute allowedRoles={['facility_admin']} />}>
+              <Route path="/facilities/spaces"          element={<ManageSpaces />} />
+              <Route path="/facilities/spaces/new"      element={<SpaceForm />} />
+              <Route path="/facilities/spaces/:id/edit" element={<SpaceForm />} />
+            </Route>
+
             {/* Facilities — reviewers */}
             <Route element={<ProtectedRoute allowedRoles={['sports_council', 'facility_admin']} />}>
               <Route path="/facilities/registrations"     element={<RegistrationList />} />
               <Route path="/facilities/registrations/:id" element={<RegistrationDetail />} />
+            </Route>
+
+            {/* Facilities — bookers */}
+            <Route element={<ProtectedRoute allowedRoles={['team_captain', 'society']} />}>
+              <Route path="/facilities/home"         element={<FacilityHome />} />
+              <Route path="/facilities/bookings"     element={<MyBookings />} />
+              <Route path="/facilities/bookings/new" element={<NewBooking />} />
             </Route>
 
             {/* --- PROTECTED ROUTES (Requires Login) --- */}
