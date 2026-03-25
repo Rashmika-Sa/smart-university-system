@@ -25,6 +25,9 @@ import CanteenAdminManagement from './pages/Canteen/CanteenAdminManagement';
 import ShuttleDashboard from './pages/Shuttle/ShuttleDashboard';
 import AcedmicSpaceDashboard from './pages/Academic/AcedmicSpaceDashboard';
 import FacilityDashboard from './pages/Facility/FacilityDashboard';
+import FacilityRegister   from './pages/Facilities/FacilityRegister';
+import RegistrationList   from './pages/Facilities/RegistrationList';
+import RegistrationDetail from './pages/Facilities/RegistrationDetail';
 
 // 5. Import Route Protectors
 import ProtectedRoute from './components/ProtectedRoute';
@@ -43,6 +46,13 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/facilities/register" element={<FacilityRegister />} />
+
+            {/* Facilities — reviewers */}
+            <Route element={<ProtectedRoute allowedRoles={['sports_council', 'facility_admin']} />}>
+              <Route path="/facilities/registrations"     element={<RegistrationList />} />
+              <Route path="/facilities/registrations/:id" element={<RegistrationDetail />} />
+            </Route>
 
             {/* --- PROTECTED ROUTES (Requires Login) --- */}
             <Route element={<ProtectedRoute />}>
