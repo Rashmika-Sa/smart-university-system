@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
 const StudentTopNav = ({ active = 'Home' }) => {
   const navigate = useNavigate();
 
@@ -35,7 +36,7 @@ const StudentTopNav = ({ active = 'Home' }) => {
           <NavBtn label="Home" route="/student-dashboard" />
           <NavBtn label="Academic Spaces" route="/academic-space-dashboard" />
           <NavBtn label="Canteen" route="/canteen-selection" />
-          <NavBtn label="Shuttle" route="/shuttle-dashboard" />
+          <NavBtn label="Shuttle" route="/student-shuttle-dashboard" />
           <NavBtn label="Facilities" route="/facility-dashboard" />
         </div>
       </div>

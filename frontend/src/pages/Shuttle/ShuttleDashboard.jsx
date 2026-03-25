@@ -160,7 +160,7 @@ const BookingCard = ({ booking, dark, onConfirm, confirmingId }) => {
 // ═══════════════════════════════════════════════════════════════════
 export default function ShuttleDashboard() {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const [dark, setDark]   = useState(true);
+  const [dark, setDark]   = useState(false);
   const [tab, setTab]     = useState('buses');
   const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(false);
