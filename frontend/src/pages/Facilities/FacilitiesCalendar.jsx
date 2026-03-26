@@ -19,7 +19,6 @@ const PALETTES = [
 const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const MONTH_SHORT = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const DAYS_LONG   = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-const DAYS_MINI   = ["S","M","T","W","T","F","S"];
 const HOURS       = Array.from({ length: 16 }, (_, i) => i + 7); // 7 AM – 10 PM
 const HOUR_H      = 64;
 const GRID_START  = 7;
@@ -57,20 +56,6 @@ const buildMonthGrid = (year, month) => {
   return cells;
 };
 
-const buildMiniGrid = (year, month) => {
-  const firstDay    = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const daysInPrev  = new Date(year, month, 0).getDate();
-  const cells = [];
-  for (let i = firstDay - 1; i >= 0; i--)
-    cells.push({ day: daysInPrev - i, current: false });
-  for (let d = 1; d <= daysInMonth; d++)
-    cells.push({ day: d, month, year, current: true });
-  let a = 1;
-  while (cells.length % 7 !== 0)
-    cells.push({ day: a++, current: false });
-  return cells;
-};
 
 const paletteFor = (id, cache) => {
   if (!cache[id]) cache[id] = PALETTES[Object.keys(cache).length % PALETTES.length];
@@ -142,7 +127,7 @@ const CalendarContent = ({ colorCache }) => {
         from = dateIso(weekDays[0]);
         to   = dateIso(weekDays[6]);
       }
-      const { data } = await axios.get(`/facilities/bookings?from=${from}&to=${to}&status=confirmed`);
+      const { data } = await axios.get(`/facilities/bookings?from=${from}&to=${to}&status=confirmed&calendar=true`);
       setBookings(data);
     } catch { setBookings([]); }
     finally   { setLoading(false); }
@@ -169,14 +154,7 @@ const CalendarContent = ({ colorCache }) => {
     return map;
   }, [bookings, spaceType, selectedSpaces]);
 
-  const datesWithBookings = useMemo(() => {
-    const s = new Set();
-    bookings.forEach((b) => { if (b.date) s.add(b.date); });
-    return s;
-  }, [bookings]);
-
   const monthGrid = useMemo(() => buildMonthGrid(year, month), [year, month]);
-  const miniGrid  = useMemo(() => buildMiniGrid(year, month),  [year, month]);
 
   const goPrev = () => {
     if (view === "month") {
@@ -242,38 +220,6 @@ const CalendarContent = ({ colorCache }) => {
             ))}
           </div>
         </div>
-
-        {/* Mini calendar */}
-        <div style={{ padding: "0 12px 12px", flexShrink: 0 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", marginBottom: 4 }}>
-            {DAYS_MINI.map((d, i) => (
-              <div key={i} style={{ textAlign: "center", fontSize: 9, fontWeight: 600, color: "#71717a", padding: "2px 0" }}>{d}</div>
-            ))}
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)" }}>
-            {miniGrid.map((cell, idx) => {
-              const ds     = cell.current ? isoDate(cell.year, cell.month, cell.day) : null;
-              const isToday = ds === todayStr;
-              const hasDot  = ds && datesWithBookings.has(ds);
-              return (
-                <div key={idx} style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "2px 0" }}>
-                  <div style={{
-                    width: 22, height: 22, display: "flex", alignItems: "center", justifyContent: "center",
-                    borderRadius: "50%", fontSize: 10, fontWeight: 500,
-                    background: isToday ? "#FF6B35" : "transparent",
-                    color: isToday ? "#fff" : cell.current ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.2)",
-                  }}>
-                    {cell.day}
-                  </div>
-                  <div style={{ width: 4, height: 4, borderRadius: "50%", marginTop: 2, background: hasDot ? "#FF6B35" : "transparent" }} />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* divider */}
-        <div style={{ margin: "0 16px 12px", borderTop: "1px solid rgba(255,255,255,0.1)", flexShrink: 0 }} />
 
         {/* Venue filter */}
         <div style={{ padding: "0 12px", flex: 1, minHeight: 0, overflowY: "auto" }}>

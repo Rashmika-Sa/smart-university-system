@@ -54,7 +54,7 @@ const getAll = async (req, res) => {
     const filter = {};
     const today = new Date().toISOString().split('T')[0];
 
-    if (['team_captain', 'society'].includes(req.user.role)) {
+    if (['team_captain', 'society'].includes(req.user.role) && req.query.calendar !== 'true') {
       filter.booker = req.user.id;
 
       if (status === 'upcoming') {
