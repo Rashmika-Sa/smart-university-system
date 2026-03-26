@@ -52,7 +52,7 @@ const Login = () => {
           navigate("/student-dashboard");
       }
     } catch (err) {
-      setError("Invalid email or password. Please try again.");
+      setError(err.response?.data?.msg || "Invalid email or password. Please try again.");
     } finally {
       setLoading(false);
     }

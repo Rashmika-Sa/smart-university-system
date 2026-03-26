@@ -169,7 +169,12 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ msg: 'Invalid Credentials' });
     }
 
-    // 3. Success
+    // 3. Block unapproved team captains and societies
+    if (['team_captain', 'society'].includes(user.role) && user.facilityStatus !== 'approved') {
+      return res.status(403).json({ msg: 'Your account is pending approval. Please wait for Sports Council approval before logging in.' });
+    }
+
+    // 4. Success
     const payload = { user: { id: user.id, role: user.role } };
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secretkey', { expiresIn: '1h' });
 

@@ -37,3 +37,7 @@ ROLE - team_captain
 /facilities/bookings
 /facilities/bookings/new
 /facilities/calendar
+
+Role - Team Captain
+it23824188@my.sliit.lk
+12345
