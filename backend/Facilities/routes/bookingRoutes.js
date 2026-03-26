@@ -14,9 +14,9 @@ router.post('/',
   create
 );
 
-// Read — bookers see their own; facility_admin + sports_council see all
-router.get('/',    authorize('team_captain', 'society', 'facility_admin', 'sports_council'), getAll);
-router.get('/:id', authorize('team_captain', 'society', 'facility_admin', 'sports_council'), getOne);
+// Read — bookers see their own; facility_admin sees all; students read-only for calendar
+router.get('/',    authorize('team_captain', 'society', 'facility_admin', 'student'), getAll);
+router.get('/:id', authorize('team_captain', 'society', 'facility_admin', 'student'), getOne);
 
 // Cancel — approved team_captain or society (owner only, enforced in controller)
 router.delete('/:id',

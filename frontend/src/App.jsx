@@ -70,8 +70,8 @@ function App() {
               <Route path="/facilities/bookings/new" element={<NewBooking />} />
             </Route>
 
-            {/* Facilities — calendar (all authenticated facilities roles) */}
-            <Route element={<ProtectedRoute allowedRoles={["team_captain", "society", "facility_admin", "sports_council"]} />}>
+            {/* Facilities — calendar (all authenticated users except sports_council) */}
+            <Route element={<ProtectedRoute allowedRoles={["team_captain", "society", "facility_admin", "student"]} />}>
               <Route path="/facilities/calendar" element={<FacilitiesCalendar />} />
             </Route>
 
