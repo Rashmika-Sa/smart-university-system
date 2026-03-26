@@ -108,7 +108,7 @@ const registerUser = async (req, res) => {
 
     // Check existing
     let user = await User.findOne({ email: cleanEmail });
-    if (user) return res.status(400).json({ msg: 'User already exists' });
+    if (user) return res.status(400).json({ message: 'User already exists' });
 
     // Create User with PLAIN password
     // (Your User.js model handles the hashing via .pre('save'))

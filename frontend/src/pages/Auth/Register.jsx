@@ -44,26 +44,44 @@ const Register = () => {
   const [msg, setMsg]           = useState('');
   const navigate = useNavigate();
 
+  const getApiErrorMessage = (err, fallback) => {
+    const data = err?.response?.data;
+
+    if (typeof data?.message === 'string' && data.message.trim()) {
+      return data.message;
+    }
+
+    if (typeof data?.msg === 'string' && data.msg.trim()) {
+      return data.msg;
+    }
+
+    if (Array.isArray(data?.errors) && data.errors.length > 0) {
+      return data.errors[0]?.message || fallback;
+    }
+
+    return fallback;
+  };
+
   const handleSendCode = async (e) => {
     e.preventDefault(); setError(''); setMsg(''); setLoading(true);
     try {
       await axios.post('/auth/send-code', { email });
       setStep(2); setMsg(`Verification code sent to ${email}`);
-    } catch (err) { setError(err.response?.data?.message || 'Failed to send code'); }
+    } catch (err) { setError(getApiErrorMessage(err, 'Failed to send code')); }
     finally { setLoading(false); }
   };
 
   const handleVerifyCode = async (e) => {
-    e.preventDefault(); setError(''); setLoading(true);
+    e.preventDefault(); setError(''); setMsg(''); setLoading(true);
     try {
       await axios.post('/auth/verify-code', { email, code: otp });
       setStep(3); setMsg('Identity confirmed. Complete your profile.');
-    } catch (err) { setError('Invalid code. Please try again.'); }
+    } catch (err) { setError(getApiErrorMessage(err, 'Invalid code. Please try again.')); }
     finally { setLoading(false); }
   };
 
   const handleRegister = async (e) => {
-    e.preventDefault(); setLoading(true);
+    e.preventDefault(); setError(''); setMsg(''); setLoading(true);
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
       setLoading(false);
@@ -74,7 +92,7 @@ const Register = () => {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       navigate('/student-dashboard');
-    } catch (err) { setError(err.response?.data?.message || 'Registration failed'); }
+    } catch (err) { setError(getApiErrorMessage(err, 'Registration failed')); }
     finally { setLoading(false); }
   };
 
