@@ -10,9 +10,32 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add an email'],
     unique: true,
-    match: [
-      /^(?:(it|en|bm|hs|ar)\d{8}@my\.sliit\.lk|[a-z0-9._%+-]+@sliit\.lk)$/i,
-      'Please use a valid SLIIT email (@my.sliit.lk for students or @sliit.lk for staff/admin).'
+    trim: true,
+    lowercase: true,
+    validate: [
+      {
+        validator: (value) => {
+          if (!value) return true;
+          if (/@sliit\.lk$/i.test(value) && !/@my\.sliit\.lk$/i.test(value)) {
+            return true;
+          }
+          return /@my\.sliit\.lk$/i.test(value);
+        },
+        message: 'Email must end with @my.sliit.lk for students (or @sliit.lk for staff/admin).'
+      },
+      {
+        validator: (value) => {
+          if (!value) return true;
+          if (/@my\.sliit\.lk$/i.test(value)) {
+            return /^[a-z]{2}\d{8}@my\.sliit\.lk$/i.test(value);
+          }
+          if (/@sliit\.lk$/i.test(value)) {
+            return /^[a-z0-9._%+-]+@sliit\.lk$/i.test(value);
+          }
+          return false;
+        },
+        message: 'Student emails must start with 2 letters and 8 digits (example: it12345678@my.sliit.lk).'
+      }
     ]
   },
   password: {
