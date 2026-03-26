@@ -9,16 +9,62 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  const getApiErrorMessage = (err, fallback) => {
+    const data = err?.response?.data;
+
+    if (typeof data?.message === 'string' && data.message.trim()) {
+      return data.message;
+    }
+
+    if (typeof data?.msg === 'string' && data.msg.trim()) {
+      return data.msg;
+    }
+
+    if (Array.isArray(data?.errors) && data.errors.length > 0) {
+      return data.errors[0]?.message || fallback;
+    }
+
+    return fallback;
+  };
+
+  const validateStudentEmail = (value) => {
+    const normalizedEmail = (value || '').trim().toLowerCase();
+
+    if (!normalizedEmail) {
+      return 'Please add an email';
+    }
+
+    if (!/@my\.sliit\.lk$/i.test(normalizedEmail)) {
+      return 'Email must end with @my.sliit.lk.';
+    }
+
+    if (!/^[a-z]{2}\d{8}@my\.sliit\.lk$/i.test(normalizedEmail)) {
+      return 'Email must start with 2 letters and 8 digits (example: it12345678@my.sliit.lk).';
+    }
+
+    return '';
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (error) setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
+
+    const emailValidationError = validateStudentEmail(formData.email);
+    if (emailValidationError) {
+      setError(emailValidationError);
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await axios.post('/auth/login', formData);
+      const normalizedFormData = { ...formData, email: formData.email.trim().toLowerCase() };
+      const response = await axios.post('/auth/login', normalizedFormData);
       const { token, user } = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
@@ -31,7 +77,7 @@ const Login = () => {
         default: navigate('/student-dashboard');
       }
     } catch (err) {
-      setError('Invalid email or password. Please try again.');
+      setError(getApiErrorMessage(err, 'Invalid email or password. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -84,7 +130,7 @@ const Login = () => {
                 <input
                   type="email"
                   name="email"
-                  placeholder="itXXXXXX@my.sliit.lk"
+                  placeholder="it12345678@my.sliit.lk"
                   autoComplete="username"
                   spellCheck={false}
                   className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-slate-100 placeholder-slate-500 text-sm caret-white focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/40 outline-none transition-all duration-200"

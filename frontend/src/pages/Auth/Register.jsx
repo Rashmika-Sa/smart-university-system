@@ -62,11 +62,40 @@ const Register = () => {
     return fallback;
   };
 
+  const validateStudentEmail = (value) => {
+    const normalizedEmail = (value || '').trim().toLowerCase();
+
+    if (!normalizedEmail) {
+      return 'Please add an email';
+    }
+
+    if (!/@my\.sliit\.lk$/i.test(normalizedEmail)) {
+      return 'Email must end with @my.sliit.lk.';
+    }
+
+    if (!/^[a-z]{2}\d{8}@my\.sliit\.lk$/i.test(normalizedEmail)) {
+      return 'Email must start with 2 letters and 8 digits (example: it12345678@my.sliit.lk).';
+    }
+
+    return '';
+  };
+
   const handleSendCode = async (e) => {
     e.preventDefault(); setError(''); setMsg(''); setLoading(true);
+
+    const emailValidationError = validateStudentEmail(email);
+    if (emailValidationError) {
+      setError(emailValidationError);
+      setLoading(false);
+      return;
+    }
+
     try {
-      await axios.post('/auth/send-code', { email });
-      setStep(2); setMsg(`Verification code sent to ${email}`);
+      const normalizedEmail = email.trim().toLowerCase();
+      await axios.post('/auth/send-code', { email: normalizedEmail });
+      setStep(2);
+      setMsg(`Verification code sent to ${normalizedEmail}`);
+      setEmail(normalizedEmail);
     } catch (err) { setError(getApiErrorMessage(err, 'Failed to send code')); }
     finally { setLoading(false); }
   };
@@ -74,7 +103,7 @@ const Register = () => {
   const handleVerifyCode = async (e) => {
     e.preventDefault(); setError(''); setMsg(''); setLoading(true);
     try {
-      await axios.post('/auth/verify-code', { email, code: otp });
+      await axios.post('/auth/verify-code', { email: email.trim().toLowerCase(), code: otp });
       setStep(3); setMsg('Identity confirmed. Complete your profile.');
     } catch (err) { setError(getApiErrorMessage(err, 'Invalid code. Please try again.')); }
     finally { setLoading(false); }
@@ -88,7 +117,8 @@ const Register = () => {
       return;
     }
     try {
-      const res = await axios.post('/auth/register', { name, email, password, role: 'student' });
+      const normalizedEmail = email.trim().toLowerCase();
+      const res = await axios.post('/auth/register', { name, email: normalizedEmail, password, role: 'student' });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       navigate('/student-dashboard');
@@ -164,9 +194,12 @@ const Register = () => {
                 label="Academic Email"
                 icon="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
                 type="email"
-                placeholder="itXXXXXX@my.sliit.lk"
+                placeholder="it12345678@my.sliit.lk"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (error) setError('');
+                }}
                 required
               />
               <button disabled={loading} className="relative w-full overflow-hidden py-3.5 rounded-xl font-bold text-sm text-white bg-accent shadow-[0_0_30px_rgba(255,107,53,0.35)] hover:shadow-[0_0_45px_rgba(255,107,53,0.55)] transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 group">
