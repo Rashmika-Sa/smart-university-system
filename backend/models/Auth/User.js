@@ -15,38 +15,31 @@ const userSchema = new mongoose.Schema({
     validate: [
       {
         validator: function(value) {
-          // Skip validation for admin roles
-          const adminRoles = ['admin', 'staff', 'instructor', 'canteen_admin', 'academic_admin', 'shuttle_admin', 'facility_admin'];
-          if (adminRoles.includes(this.role)) {
+          // Skip ALL validation for admin/staff roles
+          const userRole = this.get('role') || this.role;
+          if (userRole && userRole !== 'student') {
             return true;
           }
           
+          // Only validate student emails
           if (!value) return true;
-          if (/@sliit\.lk$/i.test(value) && !/@my\.sliit\.lk$/i.test(value)) {
-            return true;
-          }
           return /@my\.sliit\.lk$/i.test(value);
         },
-        message: 'Email must end with @my.sliit.lk for students (or @sliit.lk for staff/admin).'
+        message: 'Students must use SLIIT email ending with @my.sliit.lk'
       },
       {
         validator: function(value) {
-          // Skip validation for admin roles
-          const adminRoles = ['admin', 'staff', 'instructor', 'canteen_admin', 'academic_admin', 'shuttle_admin', 'facility_admin'];
-          if (adminRoles.includes(this.role)) {
+          // Skip ALL validation for admin/staff roles
+          const userRole = this.get('role') || this.role;
+          if (userRole && userRole !== 'student') {
             return true;
           }
           
+          // Only validate student emails - must be 2 letters + 8 digits
           if (!value) return true;
-          if (/@my\.sliit\.lk$/i.test(value)) {
-            return /^[a-z]{2}\d{8}@my\.sliit\.lk$/i.test(value);
-          }
-          if (/@sliit\.lk$/i.test(value)) {
-            return /^[a-z0-9._%+-]+@sliit\.lk$/i.test(value);
-          }
-          return false;
+          return /^[a-z]{2}\d{8}@my\.sliit\.lk$/i.test(value);
         },
-        message: 'Student emails must start with 2 letters and 8 digits (example: it12345678@my.sliit.lk).'
+        message: 'Student email must start with 2 letters and 8 digits (example: it12345678@my.sliit.lk)'
       }
     ]
   },
@@ -62,7 +55,7 @@ const userSchema = new mongoose.Schema({
       'staff', 
       'instructor',
       'canteen_admin',
-      'academic_admin',
+      'library_admin',
       'shuttle_admin',
       'facility_admin'
     ],

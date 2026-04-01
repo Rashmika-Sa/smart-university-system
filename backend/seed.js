@@ -24,7 +24,7 @@ const seedDatabase = async () => {
       'main@sliit.lk',
       'birdnest@sliit.lk',
       'ps@sliit.lk',
-      'academic@sliit.lk', 
+      'library@sliit.lk',
       'shuttle@sliit.lk', 
       'facility@sliit.lk'
     ];
@@ -64,10 +64,10 @@ const seedDatabase = async () => {
       },
       
       { 
-        name: 'Academic Space Manager', 
-        email: 'academic@sliit.lk', 
-        password: process.env.ACADEMIC_PASS, 
-        role: 'academic_admin' 
+        name: 'Library Manager', 
+        email: 'library@sliit.lk', 
+        password: process.env.LIBRARY_PASS, 
+        role: 'library_admin' 
       },
       { 
         name: 'Shuttle Manager', 

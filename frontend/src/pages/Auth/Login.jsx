@@ -27,24 +27,6 @@ const Login = () => {
     return fallback;
   };
 
-  const validateStudentEmail = (value) => {
-    const normalizedEmail = (value || '').trim().toLowerCase();
-
-    if (!normalizedEmail) {
-      return 'Please add an email';
-    }
-
-    if (!/@my\.sliit\.lk$/i.test(normalizedEmail)) {
-      return 'Email must end with @my.sliit.lk.';
-    }
-
-    if (!/^[a-z]{2}\d{8}@my\.sliit\.lk$/i.test(normalizedEmail)) {
-      return 'Email must start with 2 letters and 8 digits (example: it12345678@my.sliit.lk).';
-    }
-
-    return '';
-  };
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (error) setError('');
@@ -55,9 +37,8 @@ const Login = () => {
     setError('');
     setLoading(true);
 
-    const emailValidationError = validateStudentEmail(formData.email);
-    if (emailValidationError) {
-      setError(emailValidationError);
+    if (!formData.email || !formData.password) {
+      setError('Please enter both email and password');
       setLoading(false);
       return;
     }
@@ -71,7 +52,7 @@ const Login = () => {
       switch (user.role) {
         case 'admin': navigate('/admin-dashboard'); break;
         case 'canteen_admin': navigate('/canteen-dashboard'); break;
-        case 'academic_admin': navigate('/academic-space-dashboard'); break;
+        case 'library_admin': navigate('/library-dashboard'); break;
         case 'shuttle_admin': navigate('/shuttle-dashboard'); break;
         case 'facility_admin': navigate('/facility-dashboard'); break;
         default: navigate('/student-dashboard');

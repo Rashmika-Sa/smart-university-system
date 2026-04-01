@@ -176,7 +176,7 @@ const loginUser = async (req, res) => {
     let isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch && password === user.password) {
       user.password = password;
-      await user.save();
+      await user.save({ validateModifiedOnly: true });
       isMatch = true;
     }
     

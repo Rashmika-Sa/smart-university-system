@@ -23,7 +23,7 @@ import AdminDashboard from './pages/Admin/AdminDashboard';
 import CanteenDashboard from './pages/Canteen/CanteenDashboard';
 import CanteenAdminManagement from './pages/Canteen/CanteenAdminManagement'; 
 import ShuttleDashboard from './pages/Shuttle/ShuttleDashboard';
-import AcedmicSpaceDashboard from './pages/Academic/AcedmicSpaceDashboard';
+import LibraryDashboard from './pages/Library/LibraryDashboard';
 import FacilityDashboard from './pages/Facility/FacilityDashboard';
 
 // 5. Import Route Protectors
@@ -65,7 +65,7 @@ function App() {
 
               {/* Other Service Managers */}
               <Route path="/shuttle-dashboard" element={<ShuttleDashboard />} />
-              <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} />
+              <Route path="/library-dashboard" element={<LibraryDashboard />} />
               <Route path="/facility-dashboard" element={<FacilityDashboard />} />
               
             </Route>
