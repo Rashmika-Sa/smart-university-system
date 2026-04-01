@@ -14,7 +14,13 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [
       {
-        validator: (value) => {
+        validator: function(value) {
+          // Skip validation for admin roles
+          const adminRoles = ['admin', 'staff', 'instructor', 'canteen_admin', 'academic_admin', 'shuttle_admin', 'facility_admin'];
+          if (adminRoles.includes(this.role)) {
+            return true;
+          }
+          
           if (!value) return true;
           if (/@sliit\.lk$/i.test(value) && !/@my\.sliit\.lk$/i.test(value)) {
             return true;
@@ -24,7 +30,13 @@ const userSchema = new mongoose.Schema({
         message: 'Email must end with @my.sliit.lk for students (or @sliit.lk for staff/admin).'
       },
       {
-        validator: (value) => {
+        validator: function(value) {
+          // Skip validation for admin roles
+          const adminRoles = ['admin', 'staff', 'instructor', 'canteen_admin', 'academic_admin', 'shuttle_admin', 'facility_admin'];
+          if (adminRoles.includes(this.role)) {
+            return true;
+          }
+          
           if (!value) return true;
           if (/@my\.sliit\.lk$/i.test(value)) {
             return /^[a-z]{2}\d{8}@my\.sliit\.lk$/i.test(value);
