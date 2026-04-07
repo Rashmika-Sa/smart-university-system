@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from '../../api/axios';
 
 const Icon = ({ path, className = 'w-5 h-5' }) => (
@@ -40,10 +40,10 @@ const Toast = ({ msg, type, onClose }) => (
 
 const Modal = ({ title, onClose, children, dark, wide = false }) => (
   <div className="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
-    <div className={`rounded-3xl shadow-2xl w-full border ${wide ? 'max-w-2xl' : 'max-w-lg'} ${dark ? 'bg-gray-900 border-white/10' : 'bg-white border-gray-200'}`}>
-      <div className={`flex items-center justify-between px-6 py-5 border-b ${dark ? 'border-white/10' : 'border-gray-100'}`}>
+    <div className={`rounded-3xl shadow-2xl w-full border ${wide ? 'max-w-2xl' : 'max-w-lg'} ${dark ? 'bg-gray-900 border-white/10' : 'bg-white border-[#E0E4EB]'}`}>
+      <div className={`flex items-center justify-between px-6 py-5 border-b ${dark ? 'border-white/10' : 'border-[#E8EEF5]'}`}>
         <h3 className={`font-bold text-lg ${dark ? 'text-white' : 'text-gray-900'}`}>{title}</h3>
-        <button onClick={onClose} className={`p-1.5 rounded-lg transition-colors ${dark ? 'text-gray-500 hover:text-white hover:bg-white/10' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'}`}>
+        <button onClick={onClose} className={`p-1.5 rounded-lg transition-colors ${dark ? 'text-[#6B7280] hover:text-white hover:bg-white/10' : 'text-[#6B7280] hover:text-gray-700 hover:bg-gray-100'}`}>
           <Icon path={IC.close} />
         </button>
       </div>
@@ -54,35 +54,35 @@ const Modal = ({ title, onClose, children, dark, wide = false }) => (
 
 const Input = ({ label, dark, ...props }) => (
   <div className="space-y-1.5">
-    <label className={`block text-xs font-bold uppercase tracking-widest ${dark ? 'text-gray-400' : 'text-gray-500'}`}>{label}</label>
+    <label className={`block text-xs font-bold uppercase tracking-widest ${dark ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>{label}</label>
     <input className={`w-full px-4 py-3 rounded-xl text-sm outline-none transition-all border
-      ${dark ? 'bg-white/5 border-white/10 text-white placeholder-gray-600 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/20'
-             : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20'}`} {...props} />
+      ${dark ? 'bg-white/5 border-white/10 text-white placeholder-gray-600 focus:border-[#1B4D89]/60 focus:ring-2 focus:ring-[#1B4D89]/20'
+             : 'bg-[#F5F7FA] border-[#E0E4EB] text-gray-900 placeholder-[#6B7280] focus:border-[#1B4D89] focus:ring-2 focus:ring-[#1B4D89]/20'}`} {...props} />
   </div>
 );
 
 const Select = ({ label, dark, children, ...props }) => (
   <div className="space-y-1.5">
-    <label className={`block text-xs font-bold uppercase tracking-widest ${dark ? 'text-gray-400' : 'text-gray-500'}`}>{label}</label>
+    <label className={`block text-xs font-bold uppercase tracking-widest ${dark ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>{label}</label>
     <select className={`w-full px-4 py-3 rounded-xl text-sm outline-none transition-all border
-      ${dark ? 'bg-gray-800 border-white/10 text-white focus:border-violet-400/60'
-             : 'bg-gray-50 border-gray-200 text-gray-900 focus:border-violet-400'}`} {...props}>{children}</select>
+      ${dark ? 'bg-gray-800 border-white/10 text-white focus:border-[#1B4D89]/60'
+             : 'bg-[#F5F7FA] border-[#E0E4EB] text-gray-900 focus:border-[#1B4D89]'}`} {...props}>{children}</select>
   </div>
 );
 
 const StatCard = ({ label, value, icon, from, to, dark }) => (
   <div className={`relative overflow-hidden rounded-2xl p-5 border transition-all duration-200 hover:scale-[1.02] cursor-default
-    ${dark ? 'bg-gray-900 border-white/10 hover:border-white/20' : 'bg-white border-gray-200 shadow-sm hover:shadow-md'}`}>
+    ${dark ? 'bg-gray-900 border-white/10 hover:border-white/20' : 'bg-white border-[#E0E4EB] shadow-sm hover:shadow-md'}`}>
     <div className={`absolute -top-8 -right-8 w-28 h-28 rounded-full opacity-[0.08] bg-gradient-to-br ${from} ${to}`} />
     <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-3 bg-gradient-to-br ${from} ${to} shadow-lg`}>
       <Icon path={icon} className="w-5 h-5 text-white" />
     </div>
     <p className={`text-3xl font-black mb-0.5 ${dark ? 'text-white' : 'text-gray-900'}`}>{value}</p>
-    <p className={`text-xs font-bold uppercase tracking-widest ${dark ? 'text-gray-500' : 'text-gray-400'}`}>{label}</p>
+    <p className={`text-xs font-bold uppercase tracking-widest ${dark ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>{label}</p>
   </div>
 );
 
-// ─── Booking Row Card ────────────────────────────────────────────
+// Booking Row Card
 const BookingCard = ({ booking, dark, onConfirm, confirmingId }) => {
   const b = booking;
   const isConfirmed = b.paymentStatus === 'Confirmed';
@@ -93,34 +93,34 @@ const BookingCard = ({ booking, dark, onConfirm, confirmingId }) => {
 
   return (
     <div className={`relative overflow-hidden rounded-2xl border p-4 transition-all
-      ${dark ? 'bg-white/5 border-white/10 hover:border-white/20' : 'bg-gray-50 border-gray-100 hover:border-violet-200'}`}>
-      <div className={`absolute top-0 left-0 w-1 h-full rounded-l-2xl ${isConfirmed ? 'bg-emerald-400' : 'bg-amber-400'}`} />
+      ${dark ? 'bg-white/5 border-white/10 hover:border-white/20' : 'bg-[#F5F7FA] border-[#E8EEF5] hover:border-[#2A5F9E]/30'}`}>
+      <div className={`absolute top-0 left-0 w-1 h-full rounded-l-2xl ${isConfirmed ? 'bg-emerald-400' : 'bg-[#FF6B35]'}`} />
       <div className="pl-3 flex items-center justify-between gap-4 flex-wrap">
         <div className="flex items-center gap-3">
           {/* Avatar */}
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center text-white text-sm font-black shadow-lg shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1B4D89] to-[#2A5F9E] flex items-center justify-center text-white text-sm font-black shadow-lg shrink-0">
             {b.userId?.name?.[0]?.toUpperCase() || '?'}
           </div>
           <div>
             <p className={`font-bold text-sm ${dark ? 'text-white' : 'text-gray-900'}`}>{b.userId?.name || 'Unknown'}</p>
-            <p className={`text-xs ${dark ? 'text-gray-500' : 'text-gray-400'}`}>{b.userId?.email}</p>
-            <p className={`text-xs font-semibold mt-0.5 ${dark ? 'text-gray-400' : 'text-gray-500'}`}>
-              {b.scheduleId?.routeId?.routeName || 'N/A'} ·{' '}
-              {b.scheduleId?.routeId?.startPoint} → {b.scheduleId?.routeId?.endPoint}
+            <p className={`text-xs ${dark ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>{b.userId?.email}</p>
+            <p className={`text-xs font-semibold mt-0.5 ${dark ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>
+              {b.scheduleId?.routeId?.routeName || 'N/A'} -{' '}
+              {b.scheduleId?.routeId?.startPoint}{' -> '}{b.scheduleId?.routeId?.endPoint}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
           {/* Seat badge */}
-          <div className={`flex flex-col items-center px-3 py-2 rounded-xl ${dark ? 'bg-white/5' : 'bg-white border border-gray-200'}`}>
-            <span className={`text-[10px] font-bold uppercase tracking-wider ${dark ? 'text-gray-500' : 'text-gray-400'}`}>Seat</span>
+          <div className={`flex flex-col items-center px-3 py-2 rounded-xl ${dark ? 'bg-white/5' : 'bg-white border border-[#E0E4EB]'}`}>
+            <span className={`text-[10px] font-bold uppercase tracking-wider ${dark ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>Seat</span>
             <span className={`text-xl font-black ${dark ? 'text-white' : 'text-gray-900'}`}>{b.seatNumber}</span>
           </div>
 
           {/* Departure */}
-          <div className={`flex flex-col px-3 py-2 rounded-xl ${dark ? 'bg-white/5' : 'bg-white border border-gray-200'}`}>
-            <span className={`text-[10px] font-bold uppercase tracking-wider ${dark ? 'text-gray-500' : 'text-gray-400'}`}>Departure</span>
+          <div className={`flex flex-col px-3 py-2 rounded-xl ${dark ? 'bg-white/5' : 'bg-white border border-[#E0E4EB]'}`}>
+            <span className={`text-[10px] font-bold uppercase tracking-wider ${dark ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>Departure</span>
             <span className={`text-xs font-bold mt-0.5 ${dark ? 'text-white' : 'text-gray-900'}`}>{dep}</span>
           </div>
 
@@ -129,8 +129,8 @@ const BookingCard = ({ booking, dark, onConfirm, confirmingId }) => {
             <span className={`px-3 py-1 rounded-full text-xs font-extrabold border
               ${isConfirmed
                 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-400/20'
-                : 'bg-amber-500/10 text-amber-400 border-amber-400/20'}`}>
-              {isConfirmed ? '✓ Confirmed' : '⏳ Pending'}
+                : 'bg-[#FF6B35]/10 text-[#FF6B35] border-[#FF6B35]/20'}`}>
+              {isConfirmed ? 'Confirmed' : 'Pending'}
             </span>
 
             {isConfirmed ? (
@@ -157,10 +157,12 @@ const BookingCard = ({ booking, dark, onConfirm, confirmingId }) => {
   );
 };
 
-// ═══════════════════════════════════════════════════════════════════
+// ==============================================================
 export default function ShuttleDashboard() {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const [dark, setDark]   = useState(false);
+  const [dark, setDark]   = useState(false
+    
+  );
   const [tab, setTab]     = useState('buses');
   const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -170,12 +172,12 @@ export default function ShuttleDashboard() {
   const [routes, setRoutes]       = useState([]);
   const [schedules, setSchedules] = useState([]);
 
-  // ── All bookings (flat list for the Bookings tab) ──────────────
+  // All bookings (flat list for the Bookings tab)
   const [allBookings,       setAllBookings]       = useState([]);
   const [bookingsLoading,   setBookingsLoading]   = useState(false);
   const [selectedScheduleFilter, setSelectedScheduleFilter] = useState('all');
   const [statusFilter,           setStatusFilter]           = useState('all');
-  // ──────────────────────────────────────────────────────────────
+  // --------------------------------------------------------------
 
   const [busModal,      setBusModal]      = useState(null);
   const [routeModal,    setRouteModal]    = useState(null);
@@ -191,7 +193,7 @@ export default function ShuttleDashboard() {
   const fetchRoutes    = async () => { try { const r = await axios.get('/shuttles/routes');    setRoutes(r.data); } catch {} };
   const fetchSchedules = async () => { try { const r = await axios.get('/shuttles/schedules'); setSchedules(r.data); } catch {} };
 
-  // ── Fetch bookings for ALL schedules ─────────────────────────
+  // Fetch bookings for ALL schedules
   const fetchAllBookings = async () => {
     setBookingsLoading(true);
     try {
@@ -207,7 +209,7 @@ export default function ShuttleDashboard() {
     } catch {}
     setBookingsLoading(false);
   };
-  // ────────────────────────────────────────────────────────────
+  // --------------------------------------------------------------
 
   useEffect(() => { fetchBuses(); fetchRoutes(); fetchSchedules(); }, []);
   // Refresh bookings whenever schedules are loaded or bookings tab opened
@@ -275,7 +277,7 @@ export default function ShuttleDashboard() {
     try {
       await axios.put(`/shuttles/booking/${bookingId}`, { paymentStatus: 'Confirmed' });
       setAllBookings(prev => prev.map(b => b._id === bookingId ? { ...b, paymentStatus: 'Confirmed' } : b));
-      showToast(`✅ Confirmed & email sent to ${studentName || 'student'}!`);
+      showToast(`Confirmed and email sent to ${studentName || 'student'}!`);
     } catch (err) {
       showToast(err.response?.data?.msg || 'Error confirming payment', 'error');
     }
@@ -284,7 +286,7 @@ export default function ShuttleDashboard() {
 
   const logout = () => { localStorage.clear(); window.location.href = '/login'; };
 
-  // ── Filtered bookings ─────────────────────────────────────────
+  // Filtered bookings
   const filteredBookings = allBookings.filter(b => {
     const schedMatch = selectedScheduleFilter === 'all' || b.scheduleId?._id === selectedScheduleFilter;
     const statMatch  = statusFilter === 'all' || b.paymentStatus === statusFilter;
@@ -294,36 +296,35 @@ export default function ShuttleDashboard() {
   const confirmedCount = allBookings.filter(b => b.paymentStatus === 'Confirmed').length;
 
   const D       = dark;
-  const bg      = D ? 'bg-gray-950'     : 'bg-slate-50';
+  const bg      = D ? 'bg-gray-950'     : 'bg-[#F5F7FA]';
   const surface = D ? 'bg-gray-900'     : 'bg-white';
-  const border  = D ? 'border-white/10' : 'border-gray-200';
+  const border  = D ? 'border-white/10' : 'border-[#E0E4EB]';
   const text    = D ? 'text-white'      : 'text-gray-900';
-  const muted   = D ? 'text-gray-500'   : 'text-gray-400';
-  const divider = D ? 'border-white/5'  : 'border-gray-100';
-  const rowHov  = D ? 'hover:bg-white/[0.03]' : 'hover:bg-violet-50/40';
+  const muted   = D ? 'text-[#6B7280]'   : 'text-[#6B7280]';
+  const divider = D ? 'border-white/5'  : 'border-[#E8EEF5]';
+  const rowHov  = D ? 'hover:bg-white/[0.03]' : 'hover:bg-[#E8EEF5]/70';
 
   const TABS = [
-    { id:'buses',     label:'Fleet',     icon:IC.bus,      g:'from-cyan-500 to-blue-600',       shadow:'shadow-cyan-500/20' },
-    { id:'routes',    label:'Routes',    icon:IC.route,    g:'from-violet-500 to-purple-600',   shadow:'shadow-violet-500/20' },
+    { id:'buses',     label:'Fleet',     icon:IC.bus,      g:'from-[#2A5F9E] to-[#1B4D89]',       shadow:'shadow-[#2A5F9E]/20' },
+    { id:'routes',    label:'Routes',    icon:IC.route,    g:'from-[#1B4D89] to-[#143A6B]',   shadow:'shadow-[#1B4D89]/20' },
     { id:'schedules', label:'Schedules', icon:IC.schedule, g:'from-rose-500 to-pink-600',       shadow:'shadow-rose-500/20' },
     { id:'bookings',  label:'Bookings',  icon:IC.bookings, g:'from-emerald-500 to-teal-600',    shadow:'shadow-emerald-500/20',
       badge: pendingCount > 0 ? pendingCount : null },
   ];
-  const cardGrads = [['from-violet-500','to-purple-600'],['from-cyan-500','to-blue-600'],['from-rose-500','to-pink-600'],['from-emerald-500','to-teal-600'],['from-amber-500','to-orange-500']];
+  const cardGrads = [['from-[#1B4D89]','to-[#143A6B]'],['from-[#2A5F9E]','to-[#1B4D89]'],['from-rose-500','to-pink-600'],['from-emerald-500','to-teal-600'],['from-[#FF6B35]','to-[#F59E0B]']];
   const btn = g => `w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r ${g} hover:opacity-90 shadow-lg transition-all disabled:opacity-50`;
 
   return (
     <div className={`min-h-screen ${bg} transition-colors duration-300`}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif; }
         @keyframes toast-in { from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)} }
         .animate-toast { animation: toast-in 0.3s cubic-bezier(.22,1,.36,1); }
         @keyframes fade-up { from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)} }
         .fade-up { animation: fade-up 0.4s cubic-bezier(.22,1,.36,1) both; }
         .d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}.d4{animation-delay:.2s}
         ::-webkit-scrollbar{width:5px}
-        ::-webkit-scrollbar-thumb{background:linear-gradient(#8b5cf6,#06b6d4);border-radius:99px}
+        ::-webkit-scrollbar-thumb{background:linear-gradient(#2A5F9E,#1B4D89);border-radius:99px}
       `}</style>
 
       {toast && <Toast msg={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
@@ -332,7 +333,7 @@ export default function ShuttleDashboard() {
       <header className={`sticky top-0 z-30 ${surface} border-b ${border} backdrop-blur-xl`}>
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-violet-500/30">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#1B4D89] to-[#2A5F9E] flex items-center justify-center shadow-lg shadow-[#1B4D89]/30">
               <Icon path={IC.bus} className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -342,16 +343,16 @@ export default function ShuttleDashboard() {
           </div>
           <div className="flex items-center gap-3">
             <button onClick={() => setDark(!dark)}
-              className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all ${surface} ${border} ${muted} hover:text-violet-400`}>
+              className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all ${surface} ${border} ${muted} hover:text-[#1B4D89]`}>
               <Icon path={dark ? IC.sun : IC.moon} className="w-4 h-4" />
             </button>
             <div className={`hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-xl border ${surface} ${border}`}>
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center text-white text-xs font-black">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#1B4D89] to-[#2A5F9E] flex items-center justify-center text-white text-xs font-black">
                 {user.name?.[0]?.toUpperCase() || 'A'}
               </div>
               <div>
                 <p className={`text-xs font-bold leading-none ${text}`}>{user.name || 'Admin'}</p>
-                <p className="text-[10px] text-violet-400 font-semibold mt-0.5">Shuttle Admin</p>
+                <p className="text-[10px] text-[#1B4D89] font-semibold mt-0.5">Shuttle Admin</p>
               </div>
             </div>
             <button onClick={logout}
@@ -365,25 +366,25 @@ export default function ShuttleDashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
 
         {/* HERO */}
-        <div className="relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-violet-600 via-purple-700 to-cyan-600 shadow-2xl shadow-violet-500/25 fade-up">
+        <div className="relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-[#143A6B] via-purple-700 to-[#2A5F9E] shadow-2xl shadow-[#1B4D89]/25 fade-up">
           <div className="absolute inset-0" style={{backgroundImage:'radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)', backgroundSize:'32px 32px'}} />
           <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-white/5 blur-3xl" />
           <div className="relative flex items-center justify-between flex-wrap gap-4">
             <div>
-              <p className="text-violet-200 text-xs font-bold uppercase tracking-widest mb-1">Welcome back</p>
-              <h1 className="text-white text-3xl font-black">{user.name || 'Shuttle Admin'} 👋</h1>
+              <p className="text-[#E8EEF5] text-xs font-bold uppercase tracking-widest mb-1">Welcome back</p>
+              <h1 className="text-white text-3xl font-black">{user.name || 'Shuttle Admin'}</h1>
               <p className="text-white/50 text-sm mt-1">Manage fleet, routes, schedules, and confirm bookings.</p>
             </div>
             <div className="flex gap-3 flex-wrap">
               {[
-                { v:buses.length,     l:'Buses',     g:'from-cyan-400/20 to-blue-400/20',   t:'text-cyan-300' },
-                { v:routes.length,    l:'Routes',    g:'from-violet-400/20 to-purple-400/20', t:'text-violet-300' },
-                { v:schedules.length, l:'Schedules', g:'from-rose-400/20 to-pink-400/20',   t:'text-rose-300' },
-                { v:pendingCount,     l:'Pending',   g:'from-amber-400/20 to-orange-400/20', t:'text-amber-300' },
+                { v:buses.length,     l:'Buses',     g:'from-[#3B82F6]/35 to-[#1B4D89]/35', t:'text-white', lc:'text-white/85' },
+                { v:routes.length,    l:'Routes',    g:'from-[#1B4D89]/40 to-[#143A6B]/40', t:'text-white', lc:'text-white/85' },
+                { v:schedules.length, l:'Schedules', g:'from-[#FF6B35]/35 to-[#F59E0B]/35', t:'text-white', lc:'text-white/85' },
+                { v:pendingCount,     l:'Pending',   g:'from-[#F59E0B]/35 to-[#FF6B35]/35', t:'text-white', lc:'text-white/85' },
               ].map(s => (
                 <div key={s.l} className={`bg-gradient-to-br ${s.g} backdrop-blur-sm rounded-2xl px-5 py-3 text-center border border-white/10`}>
                   <p className={`text-2xl font-black ${s.t}`}>{s.v}</p>
-                  <p className="text-white/50 text-xs font-semibold">{s.l}</p>
+                  <p className={`text-xs font-semibold ${s.lc}`}>{s.l}</p>
                 </div>
               ))}
             </div>
@@ -393,10 +394,10 @@ export default function ShuttleDashboard() {
         {/* STAT CARDS */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { label:'Total Buses',       value:buses.length,                               icon:IC.bus,      from:'from-cyan-500',    to:'to-blue-600' },
+            { label:'Total Buses',       value:buses.length,                               icon:IC.bus,      from:'from-[#2A5F9E]',    to:'to-[#1B4D89]' },
             { label:'Active',            value:buses.filter(b=>b.status==='Active').length, icon:IC.check,    from:'from-emerald-500',  to:'to-teal-600' },
-            { label:'Pending Bookings',  value:pendingCount,                               icon:IC.clock,    from:'from-amber-500',    to:'to-orange-500' },
-            { label:'Confirmed',         value:confirmedCount,                             icon:IC.bookings, from:'from-violet-500',   to:'to-purple-600' },
+            { label:'Pending Bookings',  value:pendingCount,                               icon:IC.clock,    from:'from-[#FF6B35]',    to:'to-[#F59E0B]' },
+            { label:'Confirmed',         value:confirmedCount,                             icon:IC.bookings, from:'from-[#1B4D89]',   to:'to-[#143A6B]' },
           ].map((s,i) => (
             <div key={s.label} className={`fade-up d${i+1}`}><StatCard {...s} dark={dark} /></div>
           ))}
@@ -410,7 +411,7 @@ export default function ShuttleDashboard() {
                 ${tab === t.id ? `bg-gradient-to-r ${t.g} text-white shadow-lg ${t.shadow}` : `${muted} hover:${text}`}`}>
               <Icon path={t.icon} className="w-4 h-4" />{t.label}
               {t.badge && (
-                <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${tab === t.id ? 'bg-white/25 text-white' : 'bg-amber-500/20 text-amber-400'}`}>
+                <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${tab === t.id ? 'bg-white/25 text-white' : 'bg-[#FF6B35]/20 text-[#FF6B35]'}`}>
                   {t.badge}
                 </span>
               )}
@@ -418,12 +419,12 @@ export default function ShuttleDashboard() {
           ))}
         </div>
 
-        {/* ═══ BUSES ═══ */}
+        {/* BUSES */}
         {tab === 'buses' && (
           <div className="fade-up space-y-5">
             <div className="flex items-center justify-between">
               <div><h2 className={`text-xl font-extrabold ${text}`}>Bus Fleet</h2><p className={`text-sm ${muted}`}>{buses.length} buses registered</p></div>
-              <button onClick={openAddBus} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold shadow-lg shadow-cyan-500/25 hover:opacity-90 transition-all">
+              <button onClick={openAddBus} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#2A5F9E] to-[#1B4D89] text-white text-sm font-bold shadow-lg shadow-[#2A5F9E]/25 hover:opacity-90 transition-all">
                 <Icon path={IC.plus} className="w-4 h-4" /> Add Bus
               </button>
             </div>
@@ -433,7 +434,7 @@ export default function ShuttleDashboard() {
                   <Icon path={IC.bus} className={`w-10 h-10 mx-auto mb-3 ${muted}`} /><p className={muted}>No buses added yet</p>
                 </div>
               ) : buses.map((b) => {
-                const [gf,gt] = b.status==='Active' ? ['from-cyan-500','to-blue-600'] : ['from-amber-400','to-orange-500'];
+                const [gf,gt] = b.status==='Active' ? ['from-[#2A5F9E]','to-[#1B4D89]'] : ['from-[#FF6B35]','to-[#F59E0B]'];
                 return (
                   <div key={b._id} className={`relative overflow-hidden rounded-2xl border p-5 ${surface} ${border} transition-all hover:shadow-2xl hover:-translate-y-1`}>
                     <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${gf} ${gt}`} />
@@ -441,7 +442,7 @@ export default function ShuttleDashboard() {
                       <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${gf} ${gt} shadow-lg`}>
                         <Icon path={IC.bus} className="w-6 h-6 text-white" />
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold border ${b.status==='Active' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-400/20' : 'bg-amber-500/10 text-amber-400 border-amber-400/20'}`}>{b.status}</span>
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold border ${b.status==='Active' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-400/20' : 'bg-[#FF6B35]/10 text-[#FF6B35] border-[#FF6B35]/20'}`}>{b.status}</span>
                     </div>
                     <p className={`font-black text-xl font-mono tracking-wider ${text}`}>{b.plateNumber}</p>
                     <p className={`text-sm ${muted} mt-0.5 mb-3`}>{b.model}</p>
@@ -449,7 +450,7 @@ export default function ShuttleDashboard() {
                       <Icon path={IC.users} className="w-3.5 h-3.5" />{b.capacity} seats
                     </div>
                     <div className={`flex gap-2 mt-4 pt-4 border-t ${divider}`}>
-                      <button onClick={() => openEditBus(b)} className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-violet-500/10 hover:bg-violet-500/20 border border-violet-400/20 text-violet-400 text-xs font-bold transition-all">
+                      <button onClick={() => openEditBus(b)} className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-[#1B4D89]/10 hover:bg-[#1B4D89]/20 border border-[#1B4D89]/20 text-[#1B4D89] text-xs font-bold transition-all">
                         <Icon path={IC.edit} className="w-3.5 h-3.5" /> Edit
                       </button>
                       <button onClick={() => deleteBus(b._id)} className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-400/20 text-rose-400 text-xs font-bold transition-all">
@@ -463,12 +464,12 @@ export default function ShuttleDashboard() {
           </div>
         )}
 
-        {/* ═══ ROUTES ═══ */}
+        {/* ROUTES */}
         {tab === 'routes' && (
           <div className="fade-up space-y-5">
             <div className="flex items-center justify-between">
               <div><h2 className={`text-xl font-extrabold ${text}`}>Bus Routes</h2><p className={`text-sm ${muted}`}>{routes.length} routes configured</p></div>
-              <button onClick={openAddRoute} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 text-white text-sm font-bold shadow-lg shadow-violet-500/25 hover:opacity-90 transition-all">
+              <button onClick={openAddRoute} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#1B4D89] to-[#143A6B] text-white text-sm font-bold shadow-lg shadow-[#1B4D89]/25 hover:opacity-90 transition-all">
                 <Icon path={IC.plus} className="w-4 h-4" /> Add Route
               </button>
             </div>
@@ -487,7 +488,7 @@ export default function ShuttleDashboard() {
                         <Icon path={IC.route} className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex gap-1.5">
-                        <button onClick={() => openEditRoute(r)} className="p-2 rounded-xl bg-violet-500/10 hover:bg-violet-500/20 border border-violet-400/20 text-violet-400 transition-all"><Icon path={IC.edit} className="w-4 h-4" /></button>
+                        <button onClick={() => openEditRoute(r)} className="p-2 rounded-xl bg-[#1B4D89]/10 hover:bg-[#1B4D89]/20 border border-[#1B4D89]/20 text-[#1B4D89] transition-all"><Icon path={IC.edit} className="w-4 h-4" /></button>
                         <button onClick={() => deleteRoute(r._id)} className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-400/20 text-rose-400 transition-all"><Icon path={IC.trash} className="w-4 h-4" /></button>
                       </div>
                     </div>
@@ -505,13 +506,13 @@ export default function ShuttleDashboard() {
           </div>
         )}
 
-        {/* ═══ SCHEDULES ═══ */}
+        {/* SCHEDULES */}
         {tab === 'schedules' && (
           <div className="fade-up space-y-5">
             <div className="flex items-center justify-between">
               <div><h2 className={`text-xl font-extrabold ${text}`}>Schedules</h2><p className={`text-sm ${muted}`}>{schedules.length} active trips</p></div>
               <div className="flex gap-3">
-                <button onClick={fetchSchedules} className={`p-2.5 rounded-xl border transition-all ${surface} ${border} ${muted} hover:text-violet-400`}><Icon path={IC.refresh} className="w-4 h-4" /></button>
+                <button onClick={fetchSchedules} className={`p-2.5 rounded-xl border transition-all ${surface} ${border} ${muted} hover:text-[#1B4D89]`}><Icon path={IC.refresh} className="w-4 h-4" /></button>
                 <button onClick={openAddSchedule} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 text-white text-sm font-bold shadow-lg shadow-rose-500/25 hover:opacity-90 transition-all">
                   <Icon path={IC.plus} className="w-4 h-4" /> Add Schedule
                 </button>
@@ -520,7 +521,7 @@ export default function ShuttleDashboard() {
             <div className={`rounded-2xl border ${surface} ${border} overflow-hidden`}>
               <table className="w-full text-sm">
                 <thead>
-                  <tr className={`border-b ${divider} ${D?'bg-white/[0.02]':'bg-gray-50'}`}>
+                  <tr className={`border-b ${divider} ${D?'bg-white/[0.02]':'bg-[#F5F7FA]'}`}>
                     {['Bus','Route','Departure','Seats','Actions'].map(h=>(
                       <th key={h} className={`text-left px-5 py-4 text-[11px] font-extrabold uppercase tracking-widest ${muted}`}>{h}</th>
                     ))}
@@ -531,15 +532,15 @@ export default function ShuttleDashboard() {
                     <tr><td colSpan={5} className={`text-center py-20 ${muted}`}><Icon path={IC.schedule} className="w-8 h-8 mx-auto mb-2 opacity-40" />No schedules yet</td></tr>
                   ) : schedules.map(s => (
                     <tr key={s._id} className={`border-b ${divider} ${rowHov} transition-colors`}>
-                      <td className="px-5 py-4"><p className={`font-black font-mono ${text}`}>{s.busId?.plateNumber||'—'}</p><p className={`text-xs ${muted}`}>{s.busId?.model}</p></td>
-                      <td className="px-5 py-4"><p className={`font-semibold ${text}`}>{s.routeId?.routeName||'—'}</p><p className={`text-xs ${muted}`}>{s.routeId?.startPoint} → {s.routeId?.endPoint}</p></td>
-                      <td className="px-5 py-4"><p className={`font-semibold ${text}`}>{s.departureTime?new Date(s.departureTime).toLocaleDateString():'—'}</p><p className={`text-xs ${muted}`}>{s.departureTime?new Date(s.departureTime).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):''}</p></td>
+                      <td className="px-5 py-4"><p className={`font-black font-mono ${text}`}>{s.busId?.plateNumber||'-'}</p><p className={`text-xs ${muted}`}>{s.busId?.model}</p></td>
+                      <td className="px-5 py-4"><p className={`font-semibold ${text}`}>{s.routeId?.routeName||'-'}</p><p className={`text-xs ${muted}`}>{s.routeId?.startPoint}{' -> '}{s.routeId?.endPoint}</p></td>
+                      <td className="px-5 py-4"><p className={`font-semibold ${text}`}>{s.departureTime?new Date(s.departureTime).toLocaleDateString():'-'}</p><p className={`text-xs ${muted}`}>{s.departureTime?new Date(s.departureTime).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):''}</p></td>
                       <td className="px-5 py-4">
-                        <span className={`px-3 py-1.5 rounded-full text-xs font-extrabold border ${s.availableSeats>5?'bg-emerald-500/10 text-emerald-400 border-emerald-400/20':s.availableSeats>0?'bg-amber-500/10 text-amber-400 border-amber-400/20':'bg-rose-500/10 text-rose-400 border-rose-400/20'}`}>{s.availableSeats} left</span>
+                        <span className={`px-3 py-1.5 rounded-full text-xs font-extrabold border ${s.availableSeats>5?'bg-emerald-500/10 text-emerald-400 border-emerald-400/20':s.availableSeats>0?'bg-[#FF6B35]/10 text-[#FF6B35] border-[#FF6B35]/20':'bg-rose-500/10 text-rose-400 border-rose-400/20'}`}>{s.availableSeats} left</span>
                       </td>
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-1.5">
-                          <button onClick={() => openEditSchedule(s)} className="p-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-400/20 text-cyan-400 transition-all"><Icon path={IC.edit} className="w-4 h-4" /></button>
+                          <button onClick={() => openEditSchedule(s)} className="p-2 rounded-xl bg-[#2A5F9E]/10 hover:bg-[#2A5F9E]/20 border border-[#2A5F9E]/20 text-[#1B4D89] transition-all"><Icon path={IC.edit} className="w-4 h-4" /></button>
                           <button onClick={() => deleteSchedule(s._id)} className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-400/20 text-rose-400 transition-all"><Icon path={IC.trash} className="w-4 h-4" /></button>
                         </div>
                       </td>
@@ -551,33 +552,33 @@ export default function ShuttleDashboard() {
           </div>
         )}
 
-        {/* ═══ BOOKINGS TAB ═══ */}
+        {/* BOOKINGS TAB */}
         {tab === 'bookings' && (
           <div className="fade-up space-y-5">
             <div className="flex items-center justify-between flex-wrap gap-3">
               <div>
                 <h2 className={`text-xl font-extrabold ${text}`}>Booking Confirmations</h2>
-                <p className={`text-sm ${muted}`}>{allBookings.length} total bookings · {pendingCount} awaiting confirmation</p>
+                <p className={`text-sm ${muted}`}>{allBookings.length} total bookings - {pendingCount} awaiting confirmation</p>
               </div>
               <button onClick={fetchAllBookings} disabled={bookingsLoading}
-                className={`flex items-center gap-2 p-2.5 rounded-xl border transition-all ${surface} ${border} ${muted} hover:text-violet-400 disabled:opacity-50`}>
+                className={`flex items-center gap-2 p-2.5 rounded-xl border transition-all ${surface} ${border} ${muted} hover:text-[#1B4D89] disabled:opacity-50`}>
                 <Icon path={IC.refresh} className={`w-4 h-4 ${bookingsLoading ? 'animate-spin' : ''}`} />
                 <span className="text-xs font-semibold hidden sm:inline">Refresh</span>
               </button>
             </div>
 
-            {/* ── Info Banner ── */}
+            {/* Info Banner */}
             <div className={`flex items-start gap-3 px-4 py-3.5 rounded-2xl border text-xs font-semibold
               ${D ? 'bg-emerald-500/10 border-emerald-400/20 text-emerald-400' : 'bg-emerald-50 border-emerald-200 text-emerald-700'}`}>
               <Icon path={IC.mail} className="w-4 h-4 shrink-0 mt-0.5" />
               <span>Clicking <strong>Confirm & Email</strong> will update the booking status to <strong>Confirmed</strong> and automatically send a confirmation email to the student's inbox.</span>
             </div>
 
-            {/* ── Stats Row ── */}
+            {/* Stats Row */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {[
-                { label:'Total Bookings', value:allBookings.length, g:'from-violet-500 to-purple-600' },
-                { label:'Pending',        value:pendingCount,       g:'from-amber-400 to-orange-500' },
+                { label:'Total Bookings', value:allBookings.length, g:'from-[#1B4D89] to-[#143A6B]' },
+                { label:'Pending',        value:pendingCount,       g:'from-[#FF6B35] to-[#F59E0B]' },
                 { label:'Confirmed',      value:confirmedCount,     g:'from-emerald-500 to-teal-500' },
               ].map(s => (
                 <div key={s.label} className={`rounded-2xl border p-4 ${surface} ${border}`}>
@@ -587,7 +588,7 @@ export default function ShuttleDashboard() {
               ))}
             </div>
 
-            {/* ── Filters ── */}
+            {/* Filters */}
             <div className={`flex items-center gap-3 flex-wrap p-4 rounded-2xl border ${surface} ${border}`}>
               <Icon path={IC.filter} className={`w-4 h-4 ${muted} shrink-0`} />
               <span className={`text-xs font-bold uppercase tracking-wider ${muted}`}>Filter</span>
@@ -597,11 +598,11 @@ export default function ShuttleDashboard() {
                 value={selectedScheduleFilter}
                 onChange={e => setSelectedScheduleFilter(e.target.value)}
                 className={`px-3 py-2 rounded-xl text-xs font-semibold border outline-none transition-all
-                  ${D ? 'bg-gray-800 border-white/10 text-white' : 'bg-gray-50 border-gray-200 text-gray-900'}`}>
+                  ${D ? 'bg-gray-800 border-white/10 text-white' : 'bg-[#F5F7FA] border-[#E0E4EB] text-gray-900'}`}>
                 <option value="all">All Schedules</option>
                 {schedules.map(s => (
                   <option key={s._id} value={s._id}>
-                    {s.routeId?.routeName} · {s.departureTime ? new Date(s.departureTime).toLocaleDateString() : ''}
+                    {s.routeId?.routeName} - {s.departureTime ? new Date(s.departureTime).toLocaleDateString() : ''}
                   </option>
                 ))}
               </select>
@@ -612,10 +613,10 @@ export default function ShuttleDashboard() {
                   <button key={v} onClick={() => setStatusFilter(v)}
                     className={`px-4 py-2 text-xs font-bold transition-all
                       ${statusFilter === v
-                        ? v === 'Pending'   ? 'bg-amber-500 text-white'
+                        ? v === 'Pending'   ? 'bg-[#FF6B35] text-white'
                         : v === 'Confirmed' ? 'bg-emerald-500 text-white'
-                        : 'bg-violet-500 text-white'
-                        : `${muted} ${D?'hover:bg-white/5':'hover:bg-gray-50'}`}`}>
+                        : 'bg-[#1B4D89] text-white'
+                        : `${muted} ${D?'hover:bg-white/5':'hover:bg-[#F5F7FA]'}`}`}>
                     {v === 'all' ? 'All' : v}
                   </button>
                 ))}
@@ -624,14 +625,14 @@ export default function ShuttleDashboard() {
               <span className={`ml-auto text-xs ${muted}`}>{filteredBookings.length} shown</span>
             </div>
 
-            {/* ── Booking List ── */}
+            {/* Booking List */}
             {bookingsLoading ? (
               <div className={`rounded-2xl border ${surface} ${border} py-20 text-center`}>
                 <svg className={`w-8 h-8 mx-auto mb-3 animate-spin ${muted}`} fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
                 </svg>
-                <p className={muted}>Loading bookings…</p>
+                <p className={muted}>Loading bookings...</p>
               </div>
             ) : filteredBookings.length === 0 ? (
               <div className={`rounded-2xl border ${surface} ${border} py-20 text-center`}>
@@ -658,7 +659,7 @@ export default function ShuttleDashboard() {
 
       {/* BUS MODAL */}
       {busModal && (
-        <Modal title={busModal==='add'?'🚌 Add New Bus':'✏️ Edit Bus'} onClose={()=>setBusModal(null)} dark={dark}>
+        <Modal title={busModal==='add'?'Add New Bus':'Edit Bus'} onClose={()=>setBusModal(null)} dark={dark}>
           <div className="space-y-4">
             <Input label="Plate Number" dark={dark} placeholder="e.g. CAB-1234" value={busForm.plateNumber} onChange={e=>setBusForm({...busForm,plateNumber:e.target.value})} />
             <Input label="Bus Model" dark={dark} placeholder="e.g. Toyota Coaster" value={busForm.model} onChange={e=>setBusForm({...busForm,model:e.target.value})} />
@@ -666,35 +667,35 @@ export default function ShuttleDashboard() {
             <Select label="Status" dark={dark} value={busForm.status} onChange={e=>setBusForm({...busForm,status:e.target.value})}>
               <option value="Active">Active</option><option value="Maintenance">Maintenance</option>
             </Select>
-            <button onClick={saveBus} disabled={loading} className={btn('from-cyan-500 to-blue-600')}>{loading?'Saving...':busModal==='add'?'Add Bus':'Update Bus'}</button>
+            <button onClick={saveBus} disabled={loading} className={btn('from-[#2A5F9E] to-[#1B4D89]')}>{loading?'Saving...':busModal==='add'?'Add Bus':'Update Bus'}</button>
           </div>
         </Modal>
       )}
 
       {/* ROUTE MODAL */}
       {routeModal && (
-        <Modal title={routeModal==='add'?'🗺️ Add New Route':'✏️ Edit Route'} onClose={()=>setRouteModal(null)} dark={dark}>
+        <Modal title={routeModal==='add'?'Add New Route':'Edit Route'} onClose={()=>setRouteModal(null)} dark={dark}>
           <div className="space-y-4">
             <Input label="Route Name" dark={dark} placeholder="e.g. Route 01" value={routeForm.routeName} onChange={e=>setRouteForm({...routeForm,routeName:e.target.value})} />
             <Input label="Start Point" dark={dark} placeholder="e.g. SLIIT Main Gate" value={routeForm.startPoint} onChange={e=>setRouteForm({...routeForm,startPoint:e.target.value})} />
             <Input label="End Point" dark={dark} placeholder="e.g. Malabe Town" value={routeForm.endPoint} onChange={e=>setRouteForm({...routeForm,endPoint:e.target.value})} />
             <Input label="Stops (comma separated)" dark={dark} placeholder="e.g. Library, Hostel" value={routeForm.stops} onChange={e=>setRouteForm({...routeForm,stops:e.target.value})} />
-            <button onClick={saveRoute} disabled={loading} className={btn('from-violet-500 to-purple-600')}>{loading?'Saving...':routeModal==='add'?'Add Route':'Update Route'}</button>
+            <button onClick={saveRoute} disabled={loading} className={btn('from-[#1B4D89] to-[#143A6B]')}>{loading?'Saving...':routeModal==='add'?'Add Route':'Update Route'}</button>
           </div>
         </Modal>
       )}
 
       {/* SCHEDULE MODAL */}
       {scheduleModal && (
-        <Modal title={scheduleModal==='add'?'📅 Create Schedule':'✏️ Edit Schedule'} onClose={()=>setScheduleModal(null)} dark={dark}>
+        <Modal title={scheduleModal==='add'?'Create Schedule':'Edit Schedule'} onClose={()=>setScheduleModal(null)} dark={dark}>
           <div className="space-y-4">
             <Select label="Select Bus" dark={dark} value={scheduleForm.busId} onChange={e=>setScheduleForm({...scheduleForm,busId:e.target.value})}>
               <option value="">-- Choose a bus --</option>
-              {buses.filter(b=>b.status==='Active').map(b=><option key={b._id} value={b._id}>{b.plateNumber} — {b.model} ({b.capacity} seats)</option>)}
+              {buses.filter(b=>b.status==='Active').map(b=><option key={b._id} value={b._id}>{b.plateNumber} - {b.model} ({b.capacity} seats)</option>)}
             </Select>
             <Select label="Select Route" dark={dark} value={scheduleForm.routeId} onChange={e=>setScheduleForm({...scheduleForm,routeId:e.target.value})}>
               <option value="">-- Choose a route --</option>
-              {routes.map(r=><option key={r._id} value={r._id}>{r.routeName} ({r.startPoint} → {r.endPoint})</option>)}
+              {routes.map(r=><option key={r._id} value={r._id}>{r.routeName} ({r.startPoint}{' -> '}{r.endPoint})</option>)}
             </Select>
             <Input label="Departure Time" dark={dark} type="datetime-local" value={scheduleForm.departureTime} onChange={e=>setScheduleForm({...scheduleForm,departureTime:e.target.value})} />
             <button onClick={saveSchedule} disabled={loading} className={btn('from-rose-500 to-pink-600')}>{loading?'Saving...':scheduleModal==='add'?'Create Schedule':'Update Schedule'}</button>
