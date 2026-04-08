@@ -44,66 +44,45 @@ const Login = () => {
     }
 
     try {
-<<<<<<< HEAD
-      const response = await axios.post("/auth/login", formData);
-=======
       const normalizedFormData = { ...formData, email: formData.email.trim().toLowerCase() };
       const response = await axios.post('/auth/login', normalizedFormData);
->>>>>>> main
       const { token, user } = response.data;
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       console.log(user.role);
       switch (user.role) {
-<<<<<<< HEAD
-        case "admin":
-          navigate("/admin-dashboard");
+        case 'admin':
+          navigate('/admin-dashboard');
           break;
-        case "canteen_admin":
-          navigate("/canteen-dashboard");
+        case 'canteen_admin':
+          navigate('/canteen-dashboard');
           break;
-        case "academic_admin":
-          navigate("/academic-space-dashboard");
+        case 'academic_admin':
+          navigate('/academic-space-dashboard');
           break;
-        case "shuttle_admin":
-          navigate("/shuttle-dashboard");
+        case 'library_admin':
+          navigate('/library-dashboard');
           break;
-        case "facility_admin":
-          navigate("/facilities/application-reviews");
+        case 'shuttle_admin':
+          navigate('/shuttle-dashboard');
           break;
-        case "society":
-          navigate("/facilities/bookings");
+        case 'facility_admin':
+          navigate('/facility-dashboard');
           break;
-        case "team_captain":
-          navigate("/facilities/bookings");
+        case 'society':
+          navigate('/facilities/bookings');
           break;
-        case "sports_council":
-          navigate("/facilities/application-reviews");
+        case 'team_captain':
+          navigate('/facilities/bookings');
+          break;
+        case 'sports_council':
+          navigate('/facilities/application-reviews');
           break;
         default:
-          navigate("/student-dashboard");
-      }
-    } catch (err) {
-      if (!err.response) {
-        setError("Cannot reach server. Make sure backend is running on http://localhost:5000.");
-      } else {
-        setError(
-          err.response?.data?.msg ||
-            err.response?.data?.message ||
-            "Invalid email or password. Please try again."
-        );
-      }
-=======
-        case 'admin': navigate('/admin-dashboard'); break;
-        case 'canteen_admin': navigate('/canteen-dashboard'); break;
-        case 'library_admin': navigate('/library-dashboard'); break;
-        case 'shuttle_admin': navigate('/shuttle-dashboard'); break;
-        case 'facility_admin': navigate('/facility-dashboard'); break;
-        default: navigate('/student-dashboard');
+          navigate('/student-dashboard');
       }
     } catch (err) {
       setError(getApiErrorMessage(err, 'Invalid email or password. Please try again.'));
->>>>>>> main
     } finally {
       setLoading(false);
     }

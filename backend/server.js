@@ -10,15 +10,10 @@ dotenv.config();
 const authRoutes    = require('./routes/Auth/authRoutes');
 const userRoutes    = require('./routes/Auth/users');
 const canteenRoutes = require('./routes/Canteen/canteenRoutes');
-<<<<<<< Updated upstream
-const orderRoutes = require('./routes/Order/orderRoutes');
-const reviewRoutes = require('./routes/Canteen/reviewRoutes');
-const noticeRoutes = require('./routes/General/noticeRoutes');
-const facilitiesRoutes = require('./Facilities');
-=======
 const orderRoutes   = require('./routes/Order/orderRoutes');
 const reviewRoutes  = require('./routes/Canteen/reviewRoutes');
 const noticeRoutes  = require('./routes/General/noticeRoutes');
+const facilitiesRoutes = require('./Facilities');
 
 // Library Module Routes
 const libraryRoomRoutes         = require('./routes/Library/roomRoutes');
@@ -28,7 +23,6 @@ const libraryChairBookingRoutes = require('./routes/Library/chairBookingRoutes')
 const libraryBookRoutes         = require('./routes/Library/bookRoutes');
 const libraryCartRoutes         = require('./routes/Library/cartRoutes');
 const libraryBookBookingRoutes  = require('./routes/Library/bookBookingRoutes');
->>>>>>> Stashed changes
 
 // Initialize the App
 const app        = express();
