@@ -26,7 +26,8 @@ const seedDatabase = async () => {
       'ps@sliit.lk',
       'library@sliit.lk',
       'shuttle@sliit.lk', 
-      'facility@sliit.lk'
+      'facility@sliit.lk',
+      'sportscouncil@sliit.lk'
     ];
 
     // Delete existing staff to avoid duplicates
@@ -75,11 +76,17 @@ const seedDatabase = async () => {
         password: process.env.SHUTTLE_PASS, 
         role: 'shuttle_admin' 
       },
-      { 
-        name: 'Facility Manager', 
-        email: 'facility@sliit.lk', 
-        password: process.env.FACILITY_PASS, 
-        role: 'facility_admin' 
+      {
+        name: 'Facility Manager',
+        email: 'facility@sliit.lk',
+        password: process.env.FACILITY_PASS,
+        role: 'facility_admin'
+      },
+      {
+        name: 'Sports Council',
+        email: 'sportscouncil@sliit.lk',
+        password: process.env.SPORTS_COUNCIL_PASS,
+        role: 'sports_council'
       }
     ];
 

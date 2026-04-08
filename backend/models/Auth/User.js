@@ -57,7 +57,11 @@ const userSchema = new mongoose.Schema({
       'canteen_admin',
       'library_admin',
       'shuttle_admin',
-      'facility_admin'
+      'facility_admin',
+      // Facilities booking platform
+      'team_captain',
+      'society',
+      'sports_council'
     ],
     default: 'student'
   },
@@ -83,6 +87,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  // Facilities booking platform — approval state for team_captain and society
+  facilityStatus: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: null
+  },
+  teamName:    { type: String, default: '' },
+  societyName: { type: String, default: '' },
+
   // Store saved cards for the user
   savedCards: [
     {
