@@ -20,7 +20,8 @@ const Login = () => {
       return data.msg;
     }
 
-    if (Array.isArray(data?.errors) && data.errors.length > 0) {
+        const normalizedFormData = { ...formData, email: formData.email.trim().toLowerCase() };
+        const response = await axios.post('/auth/login', normalizedFormData);
       return data.errors[0]?.message || fallback;
     }
 
@@ -30,7 +31,7 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (error) setError('');
-  };
+            navigate("/canteen-dashboard");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,30 +45,20 @@ const Login = () => {
     }
 
     try {
-<<<<<<< HEAD
-      const response = await axios.post("/auth/login", formData);
-=======
       const normalizedFormData = { ...formData, email: formData.email.trim().toLowerCase() };
       const response = await axios.post('/auth/login', normalizedFormData);
->>>>>>> main
       const { token, user } = response.data;
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       console.log(user.role);
+          case "library_admin":
+            navigate("/library-dashboard");
+            break;
       switch (user.role) {
-<<<<<<< HEAD
         case "admin":
           navigate("/admin-dashboard");
           break;
-        case "canteen_admin":
-          navigate("/canteen-dashboard");
-          break;
-        case "academic_admin":
-          navigate("/academic-space-dashboard");
-          break;
-        case "shuttle_admin":
-          navigate("/shuttle-dashboard");
-          break;
+        setError(getApiErrorMessage(err, 'Invalid email or password. Please try again.'));
         case "facility_admin":
           navigate("/facilities/application-reviews");
           break;
@@ -93,17 +84,6 @@ const Login = () => {
             "Invalid email or password. Please try again."
         );
       }
-=======
-        case 'admin': navigate('/admin-dashboard'); break;
-        case 'canteen_admin': navigate('/canteen-dashboard'); break;
-        case 'library_admin': navigate('/library-dashboard'); break;
-        case 'shuttle_admin': navigate('/shuttle-dashboard'); break;
-        case 'facility_admin': navigate('/facility-dashboard'); break;
-        default: navigate('/student-dashboard');
-      }
-    } catch (err) {
-      setError(getApiErrorMessage(err, 'Invalid email or password. Please try again.'));
->>>>>>> main
     } finally {
       setLoading(false);
     }
