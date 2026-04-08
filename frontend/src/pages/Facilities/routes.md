@@ -5,7 +5,7 @@
 
 ### facility_admin
 
-login details - email: facility@sliit.lk - password: Facility@123
+login details - email: facility@sliit.lk - password: [SEE_ADMIN_FOR_CREDENTIALS]
 Routes
 /facilities/registrations
 /facilities/registrations/:id
@@ -16,7 +16,7 @@ Routes
 
 ### student_council
 
-login details - email: sportscouncil@sliit.lk - password: 12345
+login details - email: sportscouncil@sliit.lk - password: [SEE_ADMIN_FOR_CREDENTIALS]
 Routes
 /facilities/registrations
 /facilities/registrations/:id
@@ -25,7 +25,7 @@ Routes
 ### Bookings
 
 ROLE - society
-login details - it23778892@my.sliit.lk password-123456
+login details - it23778892@my.sliit.lk password-[SEE_ADMIN_FOR_CREDENTIALS]
 
 /facilities/home
 /facilities/bookings
@@ -40,4 +40,4 @@ ROLE - team_captain
 
 Role - Team Captain
 it23824188@my.sliit.lk
-12345
+[SEE_ADMIN_FOR_CREDENTIALS]
