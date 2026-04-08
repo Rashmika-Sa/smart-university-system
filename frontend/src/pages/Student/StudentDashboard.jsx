@@ -358,14 +358,14 @@ const StudentDashboard = () => {
       cta: "Preorder Now",
     },
     {
-      id: "academic",
-      icon: "🏛️",
-      title: "Academic Spaces",
-      subtitle: "Study Zones",
-      description: "Find and reserve study rooms or collaborative academic spaces on campus.",
-      route: "/academic-space-dashboard",
-      cta: "Book Space",
-    },
+      id: 'academic',
+      icon: '🏛️',
+      title: 'Academic Spaces',
+      subtitle: 'Study Zones',
+      description: 'Find and reserve study rooms or collaborative academic spaces on campus.',
+      route: '/academic-space-dashboard',
+      cta: 'Book Space'
+    }
   ];
 
   const displayName = userProfile?.name || "Student";

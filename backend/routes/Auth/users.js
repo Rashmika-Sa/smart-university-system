@@ -1,8 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { getAllUsers, getMyProfile, updateMyProfile, deleteMyProfile } = require('../../controllers/Auth/userController');
+const { getStudentEmails, getAllUsers, getMyProfile, updateMyProfile, deleteMyProfile } = require('../../controllers/Auth/userController');
 // We need middleware to protect this route (Only Admins can see it)
 const { protect, authorize } = require('../../middleware/authMiddleware');
+
+// Route: GET /api/users/students/emails
+// Desc:  Get all student email addresses
+// Access: Private
+router.get('/students/emails', protect, getStudentEmails);
 
 // Route: GET /api/users/me
 // Desc:  Get current logged-in user profile
