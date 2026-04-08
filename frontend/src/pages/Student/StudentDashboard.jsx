@@ -366,6 +366,15 @@ const StudentDashboard = () => {
       route: "/academic-space-dashboard",
       cta: "Book Space",
     },
+    {
+      id: "library",
+      icon: "📚",
+      title: "Library",
+      subtitle: "Study & Borrow",
+      description: "Book private study rooms, reserve seats, and borrow books from the SLIIT library.",
+      route: "/library-dashboard",
+      cta: "Open Library",
+    },
   ];
 
   const displayName = userProfile?.name || "Student";

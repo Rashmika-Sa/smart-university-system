@@ -1,5 +1,16 @@
 const User = require('../../models/Auth/User');
 
+// --- GET STUDENT EMAILS (Admin Only) ---
+const getStudentEmails = async (req, res) => {
+  try {
+    const students = await User.find({ role: 'student' }).select('email -_id');
+    res.json(students);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
 // --- GET ALL USERS (Admin Only) ---
 const getAllUsers = async (req, res) => {
   try {
@@ -93,4 +104,4 @@ const deleteMyProfile = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, getMyProfile, updateMyProfile, deleteMyProfile };
+module.exports = { getStudentEmails, getAllUsers, getMyProfile, updateMyProfile, deleteMyProfile };

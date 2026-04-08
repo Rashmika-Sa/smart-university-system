@@ -1,5 +1,10 @@
+<<<<<<< Updated upstream
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+=======
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+>>>>>>> Stashed changes
 
 // 1. Import Public Pages
 import Home from "./pages/Home";
@@ -41,14 +46,29 @@ import AdminDashboard from './pages/Admin/AdminDashboard';
 import CanteenDashboard from './pages/Canteen/CanteenDashboard';
 import CanteenAdminManagement from './pages/Canteen/CanteenAdminManagement'; 
 import ShuttleDashboard from './pages/Shuttle/ShuttleDashboard';
+<<<<<<< Updated upstream
 import LibraryDashboard from './pages/Library/LibraryDashboard';
+=======
+>>>>>>> Stashed changes
 import FacilityDashboard from './pages/Facility/FacilityDashboard';
 >>>>>>> main
 
+<<<<<<< Updated upstream
 // 5. Import Route Protectors
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./pages/Auth/AdminRoute";
 import AppFooter from "./components/AppFooter";
+=======
+// 5. Import Library Pages
+import LibraryDashboard        from './pages/Library/LibraryDashboard';
+import LibraryStudentDashboard from './pages/Library/LibraryStudentDashboard';
+import LibraryAdminDashboard   from './pages/Library/LibraryAdminDashboard';
+
+// 6. Import Route Protectors
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './pages/Auth/AdminRoute';
+import AppFooter from './components/AppFooter';
+>>>>>>> Stashed changes
 
 function App() {
   return (
@@ -99,9 +119,14 @@ function App() {
               <Route path="/student-dashboard" element={<StudentDashboard />} />
               <Route path="/my-orders" element={<OrderHistory />} />
               <Route path="/canteen-reviews" element={<CanteenReviews />} />
+<<<<<<< Updated upstream
               {/*Canteen Flow for Students */}
+=======
+              
+              {/* Canteen Flow for Students */}
+>>>>>>> Stashed changes
               <Route path="/canteen-selection" element={<CanteenSelection />} />
-              <Route path="/canteen-menu/:canteenName" element={<StudentMenu />} /> {/* 👈 Updated to be dynamic */}
+              <Route path="/canteen-menu/:canteenName" element={<StudentMenu />} />
               <Route path="/checkout" element={<Checkout />} />
               {/* Canteen Manager */}
               <Route path="/canteen-dashboard" element={<CanteenDashboard />} />
@@ -109,6 +134,7 @@ function App() {
               <Route path="/canteen-admin-management" element={<CanteenAdminManagement />} />
               {/* Other Service Managers */}
               <Route path="/shuttle-dashboard" element={<ShuttleDashboard />} />
+<<<<<<< Updated upstream
 <<<<<<< HEAD
               <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} />
               {/* <Route path="/facility-dashboard" element={<FacilityDashboard />} /> */}
@@ -117,9 +143,18 @@ function App() {
               <Route path="/facility-dashboard" element={<FacilityDashboard />} />
               
 >>>>>>> main
+=======
+              <Route path="/facility-dashboard" element={<FacilityDashboard />} />
+
+              {/* Library Routes */}
+              <Route path="/library-dashboard" element={<LibraryDashboard />} />
+              <Route path="/library-student"   element={<LibraryStudentDashboard />} />
+              <Route path="/library-admin"     element={<LibraryAdminDashboard />} />
+
+>>>>>>> Stashed changes
             </Route>
 
-            {/* SYSTEM ADMIN ONLY  */}
+            {/* SYSTEM ADMIN ONLY */}
             <Route element={<AdminRoute />}>
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
             </Route>
