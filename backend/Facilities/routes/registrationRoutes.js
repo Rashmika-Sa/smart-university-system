@@ -4,7 +4,7 @@ const { protect, authorize } = require('../../middleware/authMiddleware');
 const { getAll, getOne, approve, reject } = require('../controllers/registrationController');
 
 // All registration management routes require auth + reviewer role
-router.use(protect, authorize('sports_council', 'facility_admin'));
+router.use(protect, authorize('facility_admin', 'admin'));
 
 router.get('/',               getAll);
 router.get('/:id',            getOne);

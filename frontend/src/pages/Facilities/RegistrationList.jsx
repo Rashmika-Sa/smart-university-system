@@ -4,7 +4,7 @@ import axios from '../../api/axios';
 import FacilitiesLayout from './FacilitiesLayout';
 
 // ── helpers ──────────────────────────────────────────────────────────────────
-const TABS = ['pending', 'approved', 'rejected'];
+const TABS = ['all', 'pending', 'approved', 'rejected'];
 
 const STATUS_BADGE = {
   pending:  'bg-amber-50  text-amber-700  border border-amber-200',
@@ -40,7 +40,9 @@ const EmptyState = ({ tab }) => (
         />
       </svg>
     </div>
-    <p className="text-sm font-semibold text-gray-700">No {tab} registrations</p>
+    <p className="text-sm font-semibold text-gray-700">
+      {tab === 'all' ? 'No registrations found' : `No ${tab} registrations`}
+    </p>
     <p className="text-xs text-gray-400 mt-1">New registrations will appear here</p>
   </div>
 );
@@ -49,6 +51,7 @@ const EmptyState = ({ tab }) => (
 const RegCard = ({ reg, onReview }) => {
   const name = reg.user?.name || '—';
   const email = reg.user?.email || '—';
+  const roleLabel = reg.role === 'team_captain' ? 'Team Captain' : 'Society';
   const detail = reg.role === 'team_captain'
     ? `${reg.teamName}  ·  ${reg.sportName}`
     : reg.societyName;
@@ -64,6 +67,9 @@ const RegCard = ({ reg, onReview }) => {
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
           <p className="text-sm font-semibold text-gray-900">{name}</p>
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+            {roleLabel}
+          </span>
           <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize ${STATUS_BADGE[reg.status]}`}>
             {reg.status}
           </span>
@@ -103,14 +109,10 @@ const RegistrationList = () => {
   const navigate = useNavigate();
   const user     = JSON.parse(localStorage.getItem('user') || '{}');
 
-  const pageTitle = user.role === 'sports_council'
-    ? 'Team Captain Registrations'
-    : 'Society Registrations';
-  const pageSubtitle = user.role === 'sports_council'
-    ? 'Review and action Team Captain registration requests.'
-    : 'Review and action Society registration requests.';
+  const pageTitle = 'Facility Registrations';
+  const pageSubtitle = 'Review and action Team Captain and Society registration requests.';
 
-  const [activeTab, setActiveTab]   = useState('pending');
+  const [activeTab, setActiveTab]   = useState('all');
   const [search, setSearch]         = useState('');
   const [registrations, setRegs]    = useState([]);
   const [loading, setLoading]       = useState(true);
@@ -120,7 +122,8 @@ const RegistrationList = () => {
     setLoading(true);
     setError('');
     try {
-      const { data } = await axios.get(`/facilities/registrations?status=${activeTab}`);
+      const query = activeTab === 'all' ? '' : `?status=${activeTab}`;
+      const { data } = await axios.get(`/facilities/registrations${query}`);
       setRegs(data);
     } catch (err) {
       setError(err.response?.data?.msg || 'Failed to load registrations');

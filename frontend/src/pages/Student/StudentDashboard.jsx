@@ -331,6 +331,15 @@ const StudentDashboard = () => {
 
   const serviceModules = [
     {
+      id: "application",
+      icon: "📝",
+      title: "Applications",
+      subtitle: "Role Upgrade",
+      description: "Apply to become a Team Captain or Society account from your student profile.",
+      route: "/facilities/application",
+      cta: "Apply Now",
+    },
+    {
       id: "shuttle",
       icon: "🚌",
       title: "Shuttle Service",

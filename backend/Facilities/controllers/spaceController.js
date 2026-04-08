@@ -92,7 +92,11 @@ const getAvailableSlots = async (req, res) => {
 
     const allSlots = generateSlots(space.openTime, space.closeTime, space.slotDuration);
 
-    const booked = await Booking.find({ space: space._id, date, status: 'confirmed' });
+    const booked = await Booking.find({
+      space: space._id,
+      date,
+      status: { $in: ['pending', 'confirmed'] },
+    });
 
     const available = allSlots.filter(slot =>
       !booked.some(b => timesOverlap(slot.startTime, slot.endTime, b.startTime, b.endTime))

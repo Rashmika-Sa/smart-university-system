@@ -3,14 +3,11 @@ const { Registration } = require('../models');
 const { notifyApproved, notifyRejected } = require('../email');
 
 // GET /api/facilities/registrations?status=pending|approved|rejected
-// sports_council  → sees team_captain registrations
-// facility_admin  → sees society registrations
+// reviewer roles (sports_council, facility_admin) → see all registrations
 const getAll = async (req, res) => {
   try {
     const { status } = req.query;
-    const roleFilter = req.user.role === 'sports_council' ? 'team_captain' : 'society';
-
-    const filter = { role: roleFilter };
+    const filter = {};
     if (status) filter.status = status;
 
     const registrations = await Registration.find(filter)
@@ -32,13 +29,6 @@ const getOne = async (req, res) => {
       .populate('reviewedBy', 'name');
 
     if (!registration) return res.status(404).json({ msg: 'Registration not found' });
-
-    if (req.user.role === 'sports_council' && registration.role !== 'team_captain') {
-      return res.status(403).json({ msg: 'Access denied' });
-    }
-    if (req.user.role === 'facility_admin' && registration.role !== 'society') {
-      return res.status(403).json({ msg: 'Access denied' });
-    }
 
     res.json(registration);
   } catch (err) {

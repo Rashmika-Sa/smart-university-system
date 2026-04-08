@@ -6,13 +6,17 @@ import StudentTopNav from "../../components/StudentTopNav";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 const TABS = [
+  { key: "pending", label: "Pending" },
   { key: "upcoming", label: "Upcoming" },
   { key: "past", label: "Past" },
+  { key: "rejected", label: "Rejected" },
   { key: "cancelled", label: "Cancelled" },
 ];
 
 const STATUS_BADGE = {
+  pending: "bg-amber-50 text-amber-700 border border-amber-200",
   confirmed: "bg-green-50 text-green-700 border border-green-200",
+  rejected: "bg-rose-50 text-rose-700 border border-rose-200",
   cancelled: "bg-red-50   text-red-600   border border-red-200",
 };
 
@@ -136,7 +140,7 @@ const EmptyState = ({ tab, onNew }) => (
 const MyBookings = () => {
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState("upcoming");
+  const [activeTab, setActiveTab] = useState("pending");
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

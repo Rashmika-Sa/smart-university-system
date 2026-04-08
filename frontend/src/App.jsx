@@ -32,6 +32,9 @@ import SpaceForm from "./pages/Facilities/SpaceForm";
 import NewBooking from "./pages/Facilities/NewBooking";
 import MyBookings from "./pages/Facilities/MyBookings";
 import FacilitiesCalendar from "./pages/Facilities/FacilitiesCalendar";
+import BookingRequests from "./pages/Facilities/BookingRequests";
+import StudentApplication from "./pages/Facilities/StudentApplication";
+import ApplicationReviews from "./pages/Facilities/ApplicationReviews";
 
 // 5. Import Route Protectors
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -58,9 +61,11 @@ function App() {
             </Route>
 
             {/* Facilities — reviewers */}
-            <Route element={<ProtectedRoute allowedRoles={["sports_council", "facility_admin"]} />}>
+            <Route element={<ProtectedRoute allowedRoles={["sports_council", "facility_admin", "admin"]} />}>
               <Route path="/facilities/registrations" element={<RegistrationList />} />
               <Route path="/facilities/registrations/:id" element={<RegistrationDetail />} />
+              <Route path="/facilities/booking-requests" element={<BookingRequests />} />
+              <Route path="/facilities/application-reviews" element={<ApplicationReviews />} />
             </Route>
 
             {/* Facilities — bookers */}
@@ -73,6 +78,10 @@ function App() {
             {/* Facilities — calendar (all authenticated users except sports_council) */}
             <Route element={<ProtectedRoute allowedRoles={["team_captain", "society", "facility_admin", "student"]} />}>
               <Route path="/facilities/calendar" element={<FacilitiesCalendar />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["student"]} />}>
+              <Route path="/facilities/application" element={<StudentApplication />} />
             </Route>
 
             {/* --- PROTECTED ROUTES (Requires Login) --- */}
@@ -91,7 +100,7 @@ function App() {
               <Route path="/canteen-admin-management" element={<CanteenAdminManagement />} />
               {/* Other Service Managers */}
               <Route path="/shuttle-dashboard" element={<ShuttleDashboard />} />
-              {/* <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} /> */}
+              <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} />
               {/* <Route path="/facility-dashboard" element={<FacilityDashboard />} /> */}
             </Route>
 

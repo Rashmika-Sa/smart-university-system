@@ -39,6 +39,7 @@ const SummaryRow = ({ label, value }) => (
 // ── main ──────────────────────────────────────────────────────────────────────
 const NewBooking = () => {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const [spaces, setSpaces]             = useState([]);
   const [selectedSpace, setSelectedSpace] = useState('');
@@ -69,6 +70,9 @@ const NewBooking = () => {
   }, [selectedSpace, date]);
 
   const spaceObj   = spaces.find(s => s._id === selectedSpace);
+  const visibleSpaces = user.role === 'team_captain'
+    ? spaces.filter((s) => s.type === 'Sports Facility')
+    : spaces;
   const canSubmit  = selectedSpace && date && selectedSlot && label.trim();
 
   const handleSubmit = async () => {
@@ -139,7 +143,7 @@ const NewBooking = () => {
                   className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white outline-none focus:border-[#0d1b3e]/40 transition-colors"
                 >
                   <option value="">Choose a space…</option>
-                  {spaces.map(s => (
+                  {visibleSpaces.map(s => (
                     <option key={s._id} value={s._id}>
                       {s.name} — {s.type}
                     </option>

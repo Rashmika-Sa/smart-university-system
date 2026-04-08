@@ -21,12 +21,34 @@ const bookingSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['confirmed', 'cancelled'],
-    default: 'confirmed'
+    enum: ['pending', 'confirmed', 'rejected', 'cancelled'],
+    default: 'pending'
+  },
+  rejectionReason: {
+    type: String,
+    default: ''
+  },
+  reviewedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  reviewedAt: {
+    type: Date
   }
 }, { timestamps: true });
 
 // Compound index to speed up conflict checks
 bookingSchema.index({ space: 1, date: 1, status: 1 });
+
+// Prevent exact duplicate slot requests/bookings for active statuses.
+bookingSchema.index(
+  { space: 1, date: 1, startTime: 1, endTime: 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      status: { $in: ['pending', 'confirmed'] },
+    },
+  }
+);
 
 module.exports = mongoose.model('FacilityBooking', bookingSchema);

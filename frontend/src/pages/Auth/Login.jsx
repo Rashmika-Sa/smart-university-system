@@ -37,7 +37,7 @@ const Login = () => {
           navigate("/shuttle-dashboard");
           break;
         case "facility_admin":
-          navigate("/facilities/registrations");
+          navigate("/facilities/application-reviews");
           break;
         case "society":
           navigate("/facilities/bookings");
@@ -46,13 +46,21 @@ const Login = () => {
           navigate("/facilities/bookings");
           break;
         case "sports_council":
-          navigate("/facilities/registrations");
+          navigate("/facilities/application-reviews");
           break;
         default:
           navigate("/student-dashboard");
       }
     } catch (err) {
-      setError(err.response?.data?.msg || "Invalid email or password. Please try again.");
+      if (!err.response) {
+        setError("Cannot reach server. Make sure backend is running on http://localhost:5000.");
+      } else {
+        setError(
+          err.response?.data?.msg ||
+            err.response?.data?.message ||
+            "Invalid email or password. Please try again."
+        );
+      }
     } finally {
       setLoading(false);
     }

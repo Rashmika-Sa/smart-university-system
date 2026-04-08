@@ -6,6 +6,12 @@ const StudentTopNav = ({ active = "Home" }) => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const isBooker = ["team_captain", "society"].includes(user.role);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
   const NavBtn = ({ label, route }) => {
     const isActive = active === label;
     return (
@@ -31,10 +37,17 @@ const StudentTopNav = ({ active = "Home" }) => {
         </div>
         <div className="flex flex-wrap items-center gap-1.5 text-sm">
           <NavBtn label="Home" route="/student-dashboard" />
+          {user.role === "student" && <NavBtn label="Application" route="/facilities/application" />}
           {isBooker && <NavBtn label="Book Facilities" route="/facilities/home" />}
           <NavBtn label="Calendar" route="/facilities/calendar" />
           <NavBtn label="Canteen" route="/canteen-selection" />
           <NavBtn label="Shuttle" route="/shuttle-dashboard" />
+          <button
+            onClick={handleLogout}
+            className="px-3 py-2 rounded-xl text-sm font-semibold text-rose-600 hover:bg-rose-50 transition-all duration-200"
+          >
+            Logout
+          </button>
         </div>
       </div>
     </nav>
