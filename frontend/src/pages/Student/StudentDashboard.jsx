@@ -333,14 +333,14 @@ const StudentDashboard = () => {
       cta: 'Book Facility'
     },
     {
-      id: 'academic',
-      icon: '🏛️',
-      title: 'Academic Spaces',
-      subtitle: 'Study Zones',
-      description: 'Find and reserve study rooms or collaborative academic spaces on campus.',
-      route: '/academic-space-dashboard',
-      cta: 'Book Space'
-    }
+     id: 'library',
+     icon: '📚',
+      title: 'Library',
+      subtitle: 'Study & Borrow',
+      description: 'Book private study rooms, reserve seats, and borrow books from the SLIIT library.',
+      route: '/library-dashboard',
+      cta: 'Open Library'
+}
   ];
 
   const displayName = userProfile?.name || 'Student';
