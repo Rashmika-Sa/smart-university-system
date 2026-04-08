@@ -216,7 +216,7 @@ const RoomBookingModal = ({ room, booking, onClose, onSaved }) => {
                     type="email"
                     autoComplete="off"
                     spellCheck={false}
-                    placeholder={`Student email ${i + 2} — e.g. it23821972@my.sliit.lk${i >= 3 ? ' (optional)' : ''}`}
+                    placeholder={`Member email ${i + 2} — e.g. it23821972@my.sliit.lk${i >= 3 ? ' (optional)' : ''}`}
                     value={val}
                     onChange={e => updateMember(i, e.target.value.toLowerCase())}
                     className={`w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500
@@ -244,7 +244,7 @@ const RoomBookingModal = ({ room, booking, onClose, onSaved }) => {
             </div>
 
             <p className="text-xs text-slate-400 mt-2">
-              All emails must belong to a registered student account.
+              All emails must belong to a registered account.
             </p>
           </div>
 

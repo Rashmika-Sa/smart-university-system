@@ -1,10 +1,10 @@
 const User = require('../../models/Auth/User');
 
-// --- GET STUDENT EMAILS (Admin Only) ---
+// --- GET USER EMAILS (Admin Only) ---
 const getStudentEmails = async (req, res) => {
   try {
-    const students = await User.find({ role: 'student' }).select('email -_id');
-    res.json(students);
+    const users = await User.find({}, 'email').select('email -_id');
+    res.json(users);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

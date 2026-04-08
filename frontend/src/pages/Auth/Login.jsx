@@ -61,7 +61,7 @@ const Login = () => {
           navigate('/academic-space-dashboard');
           break;
         case 'library_admin':
-          navigate('/library-dashboard');
+          navigate('/library-admin');
           break;
         case 'shuttle_admin':
           navigate('/shuttle-dashboard');

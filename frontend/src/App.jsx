@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // 1. Import Public Pages
 import Home from './pages/Home';
@@ -37,7 +37,6 @@ import StudentApplication from './pages/Facilities/StudentApplication';
 import ApplicationReviews from './pages/Facilities/ApplicationReviews';
 
 // 5. Import Library Pages
-import LibraryDashboard from './pages/Library/LibraryDashboard';
 import LibraryStudentDashboard from './pages/Library/LibraryStudentDashboard';
 import LibraryAdminDashboard from './pages/Library/LibraryAdminDashboard';
 
@@ -56,6 +55,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/library-student" element={<LibraryStudentDashboard />} />
+            <Route path="/library" element={<Navigate to="/library-student" replace />} />
 
             <Route element={<ProtectedRoute allowedRoles={["facility_admin"]} />}>
               <Route path="/facilities/spaces" element={<ManageSpaces />} />
@@ -95,9 +96,8 @@ function App() {
               <Route path="/canteen-admin-management" element={<CanteenAdminManagement />} />
               <Route path="/shuttle-dashboard" element={<ShuttleDashboard />} />
               <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} />
-              <Route path="/library-dashboard" element={<LibraryDashboard />} />
-              <Route path="/library-student" element={<LibraryStudentDashboard />} />
               <Route path="/library-admin" element={<LibraryAdminDashboard />} />
+              <Route path="/library-dashboard" element={<Navigate to="/library-admin" replace />} />
               <Route path="/facility-dashboard" element={<FacilityDashboard />} />
             </Route>
 

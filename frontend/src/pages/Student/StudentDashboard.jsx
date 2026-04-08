@@ -358,6 +358,15 @@ const StudentDashboard = () => {
       cta: "Preorder Now",
     },
     {
+      id: "library",
+      icon: "📚",
+      title: "Library",
+      subtitle: "Study Resources",
+      description: "Book private rooms, reserve chairs, browse books, and manage your library bookings.",
+      route: "/library-student",
+      cta: "Open Library",
+    },
+    {
       id: 'academic',
       icon: '🏛️',
       title: 'Academic Spaces',

@@ -14,13 +14,12 @@ async function validate({ groupMembers, roomId, date, sessions, excludeId, leadS
 
   const studentUsers = await User.find({
     email: { $in: normalizedMembers },
-    role: 'student',
   }).select('email');
 
   const foundEmails = new Set(studentUsers.map(user => user.email.toLowerCase()));
   const missingEmails = normalizedMembers.filter(member => !foundEmails.has(member));
   if (missingEmails.length > 0)
-    return `Student account not found for: ${missingEmails.join(', ')}`;
+    return `Eligible account not found for: ${missingEmails.join(', ')}`;
 
   // Rule 3: same lead student max 2 sessions per day in this room
   // ✅ Use leadStudentId (MongoDB ObjectId) not groupMembers[0] (string)
