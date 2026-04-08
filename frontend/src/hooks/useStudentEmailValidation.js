@@ -25,7 +25,7 @@ const useStudentEmailValidation = () => {
         }
       } catch (err) {
         if (isActive) {
-          setError(err.response?.data?.msg || 'Failed to load student emails');
+          setError(err.response?.data?.msg || 'Failed to load registered user emails');
         }
       } finally {
         if (isActive) {

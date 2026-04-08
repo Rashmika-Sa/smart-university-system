@@ -40,6 +40,11 @@ const StudentMyBookings = () => {
       setRoomBookings(roomRes.data);
       setChairBookings(chairRes.data);
       setBookBookings(bookRes.data);
+    } catch (err) {
+      setRoomBookings([]);
+      setChairBookings([]);
+      setBookBookings([]);
+      toast.error(err.response?.data?.msg || 'Please log in to view your bookings');
     } finally {
       setLoading(false);
     }

@@ -7,7 +7,12 @@ const ProtectedRoute = ({ allowedRoles }) => {
   const token = localStorage.getItem('token');
 
   // Parse user data safely
-  const user = userString ? JSON.parse(userString) : null;
+  let user = null;
+  try {
+    user = userString ? JSON.parse(userString) : null;
+  } catch {
+    user = null;
+  }
 
   // 2. Check if not logged in (No token or No user data)
   if (!token || !user) {

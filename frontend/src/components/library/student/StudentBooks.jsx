@@ -42,7 +42,7 @@ const StudentBooks = () => {
     }
   };
 
-  const inCart = (id) => cartBooks.some(b => (b._id || b) === id);
+  const inCart = (id) => cartBooks.some(b => b && ((b._id || b) === id));
 
   if (loading) return <Spinner />;
 
