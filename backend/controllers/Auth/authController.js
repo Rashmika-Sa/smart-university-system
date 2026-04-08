@@ -7,6 +7,18 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
+const validateSliitStudentEmail = (email) => {
+  if (!/@my\.sliit\.lk$/i.test(email)) {
+    return 'Email must end with @my.sliit.lk.';
+  }
+
+  if (!/^[a-z]{2}\d{8}@my\.sliit\.lk$/i.test(email)) {
+    return 'Email must start with 2 letters and 8 digits (example: it12345678@my.sliit.lk).';
+  }
+
+  return null;
+};
+
 // 0. SETUP EMAIL TRANSPORTER (GMAIL CONFIG) 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com', 
@@ -29,14 +41,11 @@ const sendVerificationCode = async (req, res) => {
   console.log("📧 Attempting to send OTP to:", cleanEmail);
 
   try {
-    //Check for IT, EN, BM, HS, AR + 8 digits
-    const sliitEmailRegex = /^(it|en|bm|hs|ar)\d{8}@my\.sliit\.lk$/i;
-    
-    if (!sliitEmailRegex.test(cleanEmail)) {
+     const emailValidationMessage = validateSliitStudentEmail(cleanEmail);
+
+     if (emailValidationMessage) {
        console.log("⛔ Blocked: Invalid SLIIT email format detected");
-       return res.status(400).json({ 
-         message: 'Access Denied: Please use a valid SLIIT student email (e.g., it23836754@my.sliit.lk, en12345678@my.sliit.lk).' 
-       });
+       return res.status(400).json({ message: emailValidationMessage });
     }
     // Check if user already exists
     const existingUser = await User.findOne({ email: cleanEmail });
@@ -91,18 +100,15 @@ const registerUser = async (req, res) => {
     const cleanEmail = email.trim().toLowerCase();
     const universityId = cleanEmail.split('@')[0].toUpperCase();
 
-    // UPDATED SECURITY CHECK
-    const sliitEmailRegex = /^(it|en|bm|hs|ar)\d{8}@my\.sliit\.lk$/i;
-    
-    if (!sliitEmailRegex.test(cleanEmail)) {
-        return res.status(400).json({ 
-          message: 'Invalid email format. Must be a valid SLIIT student email from any faculty.' 
-        });
+    const emailValidationMessage = validateSliitStudentEmail(cleanEmail);
+
+    if (emailValidationMessage) {
+      return res.status(400).json({ message: emailValidationMessage });
     }
 
     // Check existing
     let user = await User.findOne({ email: cleanEmail });
-    if (user) return res.status(400).json({ msg: 'User already exists' });
+    if (user) return res.status(400).json({ message: 'User already exists' });
 
     // Create User with PLAIN password
     // (Your User.js model handles the hashing via .pre('save'))
@@ -138,7 +144,16 @@ const registerUser = async (req, res) => {
 
   } catch (err) {
     console.error("❌ Register Error:", err.message);
-    res.status(500).send('Server Error');
+    if (err.name === 'ValidationError') {
+      const firstError = Object.values(err.errors)[0];
+      return res.status(400).json({ message: firstError?.message || 'Validation failed.' });
+    }
+
+    if (err.code === 11000) {
+      return res.status(400).json({ message: 'Email already exists.' });
+    }
+
+    res.status(500).json({ message: 'Server Error' });
   }
 };
 
@@ -161,7 +176,7 @@ const loginUser = async (req, res) => {
     let isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch && password === user.password) {
       user.password = password;
-      await user.save();
+      await user.save({ validateModifiedOnly: true });
       isMatch = true;
     }
     

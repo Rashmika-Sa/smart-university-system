@@ -18,6 +18,7 @@ import OrderHistory from "./pages/Student/OrderHistory";
 import CanteenReviews from "./pages/Canteen/CanteenReviews";
 
 // 4. Import Admin & Manager Dashboards
+<<<<<<< HEAD
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import CanteenDashboard from "./pages/Canteen/CanteenDashboard";
 import CanteenAdminManagement from "./pages/Canteen/CanteenAdminManagement";
@@ -35,6 +36,14 @@ import FacilitiesCalendar from "./pages/Facilities/FacilitiesCalendar";
 import BookingRequests from "./pages/Facilities/BookingRequests";
 import StudentApplication from "./pages/Facilities/StudentApplication";
 import ApplicationReviews from "./pages/Facilities/ApplicationReviews";
+=======
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import CanteenDashboard from './pages/Canteen/CanteenDashboard';
+import CanteenAdminManagement from './pages/Canteen/CanteenAdminManagement'; 
+import ShuttleDashboard from './pages/Shuttle/ShuttleDashboard';
+import LibraryDashboard from './pages/Library/LibraryDashboard';
+import FacilityDashboard from './pages/Facility/FacilityDashboard';
+>>>>>>> main
 
 // 5. Import Route Protectors
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -100,8 +109,14 @@ function App() {
               <Route path="/canteen-admin-management" element={<CanteenAdminManagement />} />
               {/* Other Service Managers */}
               <Route path="/shuttle-dashboard" element={<ShuttleDashboard />} />
+<<<<<<< HEAD
               <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} />
               {/* <Route path="/facility-dashboard" element={<FacilityDashboard />} /> */}
+=======
+              <Route path="/library-dashboard" element={<LibraryDashboard />} />
+              <Route path="/facility-dashboard" element={<FacilityDashboard />} />
+              
+>>>>>>> main
             </Route>
 
             {/* SYSTEM ADMIN ONLY  */}

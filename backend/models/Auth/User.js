@@ -10,9 +10,37 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add an email'],
     unique: true,
-    match: [
-      /^(?:(it|en|bm|hs|ar)\d{8}@my\.sliit\.lk|[a-z0-9._%+-]+@sliit\.lk)$/i,
-      'Please use a valid SLIIT email (@my.sliit.lk for students or @sliit.lk for staff/admin).'
+    trim: true,
+    lowercase: true,
+    validate: [
+      {
+        validator: function(value) {
+          // Skip ALL validation for admin/staff roles
+          const userRole = this.get('role') || this.role;
+          if (userRole && userRole !== 'student') {
+            return true;
+          }
+          
+          // Only validate student emails
+          if (!value) return true;
+          return /@my\.sliit\.lk$/i.test(value);
+        },
+        message: 'Students must use SLIIT email ending with @my.sliit.lk'
+      },
+      {
+        validator: function(value) {
+          // Skip ALL validation for admin/staff roles
+          const userRole = this.get('role') || this.role;
+          if (userRole && userRole !== 'student') {
+            return true;
+          }
+          
+          // Only validate student emails - must be 2 letters + 8 digits
+          if (!value) return true;
+          return /^[a-z]{2}\d{8}@my\.sliit\.lk$/i.test(value);
+        },
+        message: 'Student email must start with 2 letters and 8 digits (example: it12345678@my.sliit.lk)'
+      }
     ]
   },
   password: {
@@ -27,7 +55,7 @@ const userSchema = new mongoose.Schema({
       'staff', 
       'instructor',
       'canteen_admin',
-      'academic_admin',
+      'library_admin',
       'shuttle_admin',
       'facility_admin',
       // Facilities booking platform

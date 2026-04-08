@@ -61,46 +61,86 @@ const StudentTab = () => {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
+  const getApiErrorMessage = (err, fallback) => {
+    const data = err?.response?.data;
+
+    if (typeof data?.message === 'string' && data.message.trim()) {
+      return data.message;
+    }
+
+    if (typeof data?.msg === 'string' && data.msg.trim()) {
+      return data.msg;
+    }
+
+    if (Array.isArray(data?.errors) && data.errors.length > 0) {
+      return data.errors[0]?.message || fallback;
+    }
+
+    return fallback;
+  };
+
+  const validateStudentEmail = (value) => {
+    const normalizedEmail = (value || '').trim().toLowerCase();
+
+    if (!normalizedEmail) {
+      return 'Please add an email';
+    }
+
+    if (!/@my\.sliit\.lk$/i.test(normalizedEmail)) {
+      return 'Email must end with @my.sliit.lk.';
+    }
+
+    if (!/^[a-z]{2}\d{8}@my\.sliit\.lk$/i.test(normalizedEmail)) {
+      return 'Email must start with 2 letters and 8 digits (example: it12345678@my.sliit.lk).';
+    }
+
+    return '';
+  };
+
   const handleSendCode = async (e) => {
-    e.preventDefault();
-    setError(""); setMsg(""); setLoading(true);
+    e.preventDefault(); setError(''); setMsg(''); setLoading(true);
+
+    const emailValidationError = validateStudentEmail(email);
+    if (emailValidationError) {
+      setError(emailValidationError);
+      setLoading(false);
+      return;
+    }
+
     try {
-      await axios.post("/auth/send-code", { email });
+      const normalizedEmail = email.trim().toLowerCase();
+      await axios.post('/auth/send-code', { email: normalizedEmail });
       setStep(2);
-      setMsg(`Verification code sent to ${email}`);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to send code");
-    } finally { setLoading(false); }
+      setMsg(`Verification code sent to ${normalizedEmail}`);
+      setEmail(normalizedEmail);
+    } catch (err) { setError(getApiErrorMessage(err, 'Failed to send code')); }
+    finally { setLoading(false); }
   };
 
   const handleVerifyCode = async (e) => {
-    e.preventDefault();
-    setError(""); setLoading(true);
+    e.preventDefault(); setError(''); setMsg(''); setLoading(true);
     try {
-      await axios.post("/auth/verify-code", { email, code: otp });
-      setStep(3);
-      setMsg("Identity confirmed. Complete your profile.");
-    } catch {
-      setError("Invalid code. Please try again.");
-    } finally { setLoading(false); }
+      await axios.post('/auth/verify-code', { email: email.trim().toLowerCase(), code: otp });
+      setStep(3); setMsg('Identity confirmed. Complete your profile.');
+    } catch (err) { setError(getApiErrorMessage(err, 'Invalid code. Please try again.')); }
+    finally { setLoading(false); }
   };
 
   const handleRegister = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault(); setError(''); setMsg(''); setLoading(true);
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       setLoading(false);
       return;
     }
     try {
-      const res = await axios.post("/auth/register", { name, email, password, role: "student" });
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-      navigate("/student-dashboard");
-    } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
-    } finally { setLoading(false); }
+      const normalizedEmail = email.trim().toLowerCase();
+      const res = await axios.post('/auth/register', { name, email: normalizedEmail, password, role: 'student' });
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      navigate('/student-dashboard');
+    } catch (err) { setError(getApiErrorMessage(err, 'Registration failed')); }
+    finally { setLoading(false); }
   };
 
   return (
