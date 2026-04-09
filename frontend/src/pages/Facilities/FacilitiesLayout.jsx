@@ -132,7 +132,7 @@ const FacilitiesLayout = ({ children }) => {
     .toUpperCase();
 
   const isBooker = ["team_captain", "society"].includes(user.role);
-  const shouldShowTopNav = ["team_captain", "society", "student", "facility_admin", "sports_council"].includes(user.role);
+  const shouldShowTopNav = ["team_captain", "society", "student"].includes(user.role);
   const topNavActive = isBooker ? "Book Facilities" : "Facilities";
 
   return (
