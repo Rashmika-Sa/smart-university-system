@@ -9,6 +9,10 @@
 }
 
 @layer base {
+  html, body {
+    @apply transition-colors duration-200;
+  }
+
   body {
     @apply bg-white text-gray-800; 
   }

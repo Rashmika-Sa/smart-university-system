@@ -8,7 +8,7 @@ const AppFooter = () => {
   const currentDayIndex = today.getDay() === 0 ? 6 : today.getDay() - 1;
 
   return (
-    <footer className="border-t border-slate-800 bg-slate-900 pt-8 pb-6 mt-auto">
+    <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 pt-8 pb-6 mt-auto transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-6">
         {/* scan-line accent */}
         <div className="h-px w-full bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent mb-8" />
@@ -16,10 +16,10 @@ const AppFooter = () => {
           {/* Support block */}
           <div className="flex flex-col gap-2">
             <span className="text-xs text-cyan-400 uppercase tracking-widest font-bold mb-1">Need Support?</span>
-            <a href="https://support.sliit.lk" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold text-white hover:text-cyan-400 transition-colors">
+            <a href="https://support.sliit.lk" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold text-slate-900 dark:text-white hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
               support.sliit.lk
             </a>
-            <div className="flex items-center justify-center lg:justify-start gap-2 text-slate-400">
+            <div className="flex items-center justify-center lg:justify-start gap-2 text-slate-600 dark:text-slate-400">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
               <span className="font-mono text-lg">+94 11 754 4801</span>
             </div>
@@ -38,18 +38,18 @@ const AppFooter = () => {
               <SocialLink href="#" icon={<InstagramIcon />} />
               <SocialLink href="#" icon={<LinkedinIcon />} />
             </div>
-            <div className="text-slate-500 text-sm">
+            <div className="text-slate-600 dark:text-slate-400 text-sm">
               © {today.getFullYear()} SLIIT Smart Systems. All rights reserved.
             </div>
           </div>
 
           {/* Date widget */}
-          <div className="bg-slate-800 border border-white/20 rounded-xl p-4 min-w-[200px] shadow-xl">
-            <div className="flex justify-between items-end mb-2 border-b border-white/20 pb-2">
-              <span className="text-3xl font-bold text-accent">{today.getDate()}</span>
+          <div className="bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-white/20 rounded-xl p-4 min-w-[200px] shadow-xl dark:shadow-slate-900/50">
+            <div className="flex justify-between items-end mb-2 border-b border-slate-200 dark:border-white/20 pb-2">
+              <span className="text-3xl font-bold text-amber-600 dark:text-accent">{today.getDate()}</span>
               <div className="flex flex-col text-right">
-                <span className="text-xs text-cyan-400 font-bold uppercase">{dayName}</span>
-                <span className="text-[10px] text-slate-400">{fullDate}</span>
+                <span className="text-xs text-cyan-600 dark:text-cyan-400 font-bold uppercase">{dayName}</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400">{fullDate}</span>
               </div>
             </div>
             <div className="flex justify-between gap-1">
@@ -58,8 +58,8 @@ const AppFooter = () => {
                   key={index}
                   className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold transition-all duration-300 ${
                     index === currentDayIndex
-                      ? 'bg-accent text-white shadow-lg shadow-accent/40 scale-110'
-                      : 'bg-slate-800 text-white/60 hover:bg-white/10'
+                      ? 'bg-amber-600 dark:bg-accent text-white shadow-lg shadow-amber-600/40 dark:shadow-accent/40 scale-110'
+                      : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-white/60 hover:bg-slate-300 dark:hover:bg-white/10'
                   }`}
                 >
                   {day}
@@ -74,7 +74,7 @@ const AppFooter = () => {
 };
 
 const SocialLink = ({ href, icon }) => (
-  <a href={href} className="text-slate-400 hover:text-cyan-400 transition-colors duration-200 transform hover:scale-110">
+  <a href={href} className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors duration-200 transform hover:scale-110">
     {icon}
   </a>
 );

@@ -49,7 +49,7 @@ import AppFooter from './components/AppFooter';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950 text-gray-900 dark:text-gray-100 transition-colors duration-200">
         <div className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
