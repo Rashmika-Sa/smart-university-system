@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import StudentTopNav from '../../components/StudentTopNav';
 
 const facilities = [
   { id: 1, name: 'Basketball Court', icon: '🏀', location: 'Block C Ground Floor', capacity: 10, status: 'Available', slots: ['08:00–10:00', '10:00–12:00', '14:00–16:00'] },
@@ -29,7 +30,9 @@ const FacilityDashboard = () => {
   // Show facility admin dashboard if user is facility_admin
   if (user?.role === 'facility_admin') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pb-16">
+      <>
+        <StudentTopNav active="Facilities" />
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pb-16">
         {/* Admin Header */}
         <div className="border-b border-slate-700 px-6 py-8">
           <div className="max-w-7xl mx-auto">
@@ -166,12 +169,16 @@ const FacilityDashboard = () => {
           </div>
         </div>
       </div>
+        </div>
+      </>
     );
   }
 
   // Student/General Facility Booking Dashboard
   return (
-    <div className="min-h-screen bg-white pb-16">
+    <>
+      <StudentTopNav active="Facilities" />
+      <div className="min-h-screen bg-white pb-16">
       {/* Header */}
       <div className="bg-slate-900 border-b border-slate-800 px-6 py-8">
         <div className="max-w-6xl mx-auto">
@@ -257,6 +264,7 @@ const FacilityDashboard = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

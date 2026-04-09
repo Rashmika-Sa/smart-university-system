@@ -132,10 +132,12 @@ const FacilitiesLayout = ({ children }) => {
     .toUpperCase();
 
   const isBooker = ["team_captain", "society"].includes(user.role);
+  const shouldShowTopNav = ["team_captain", "society", "student", "facility_admin", "sports_council"].includes(user.role);
+  const topNavActive = isBooker ? "Book Facilities" : "Facilities";
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-800">
-      {isBooker && <StudentTopNav active="Book Facilities" />}
+      {shouldShowTopNav && <StudentTopNav active={topNavActive} />}
       <div className="flex flex-1">
         {/* ── Sidebar ─────────────────────────────────────────────────── */}
         <aside className="w-64 shrink-0 bg-white/95 backdrop-blur border-r border-slate-200 flex flex-col shadow-[0_0_0_1px_rgba(15,23,42,0.02)]">
