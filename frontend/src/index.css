@@ -12,6 +12,21 @@
   body {
     @apply bg-white text-gray-800; 
   }
+
+  /* Dark mode styles */
+  :root.dark body {
+    @apply bg-slate-950 text-slate-100;
+  }
+
+  :root.dark {
+    color-scheme: dark;
+  }
+
+  :root.dark input,
+  :root.dark textarea,
+  :root.dark select {
+    @apply bg-slate-800 text-slate-100 border-slate-700;
+  }
 }
 
 @layer utilities {
