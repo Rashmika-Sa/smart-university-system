@@ -272,8 +272,37 @@ const StudentDashboard = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleRemovePhoto = () => {
-    setProfileForm((prev) => ({ ...prev, profilePhoto: "" }));
+  const handleRemovePhoto = async () => {
+    try {
+      setSavingProfile(true);
+      setError("");
+      
+      const updatedForm = { ...profileForm, profilePhoto: "" };
+      const response = await axios.put("/users/me", updatedForm);
+      const updatedUser = response.data.user;
+
+      setProfileForm((prev) => ({ ...prev, profilePhoto: "" }));
+      setUserProfile((prev) => ({ ...prev, ...updatedUser, _id: prev?._id || updatedUser.id }));
+      setMessage("Profile photo removed successfully.");
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: updatedUser.id,
+          _id: updatedUser.id,
+          name: updatedUser.name,
+          email: updatedUser.email,
+          role: updatedUser.role,
+          universityId: updatedUser.universityId || "",
+          managedCanteen: updatedUser.managedCanteen || null,
+          profilePhoto: updatedUser.profilePhoto || "",
+        }),
+      );
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to remove profile photo.");
+    } finally {
+      setSavingProfile(false);
+    }
   };
 
   const handleUpdateProfile = async (e) => {
