@@ -1043,7 +1043,7 @@ export default function StudentShuttleDashboard() {
       `}</style>
 
       {toast && <Toast msg={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
-      <StudentTopNav dark={dark} onToggleDark={() => setDark(!dark)} onLogout={logout} user={user} role="student" />
+      <StudentTopNav active="Shuttle" />
 
       <main className="max-w-6xl mx-auto px-6 py-8 space-y-8">
 

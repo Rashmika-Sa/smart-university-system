@@ -172,7 +172,9 @@ const MyBookings = () => {
   };
 
   return (
-    <FacilitiesLayout>
+    <>
+      <StudentTopNav active="Book Facilities" />
+      <FacilitiesLayout>
       <div className="p-8 max-w-3xl">
         {/* heading */}
         <div className="flex items-start justify-between mb-7">
@@ -226,6 +228,7 @@ const MyBookings = () => {
         )}
       </div>
     </FacilitiesLayout>
+    </>
   );
 };
 

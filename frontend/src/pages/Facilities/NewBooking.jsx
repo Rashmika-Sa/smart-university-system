@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
 import FacilitiesLayout from './FacilitiesLayout';
+import StudentTopNav from '../../components/StudentTopNav';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 const todayStr = () => new Date().toISOString().split('T')[0];
@@ -95,7 +96,9 @@ const NewBooking = () => {
   };
 
   return (
-    <FacilitiesLayout>
+    <>
+      <StudentTopNav active="Book Facilities" />
+      <FacilitiesLayout>
       <div className="p-8">
 
         {/* heading */}
@@ -303,6 +306,7 @@ const NewBooking = () => {
         </div>
       </div>
     </FacilitiesLayout>
+    </>
   );
 };
 
