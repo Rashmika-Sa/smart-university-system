@@ -45,8 +45,8 @@ app.use('/api/canteen', canteenRoutes);
 app.use('/api/orders',  orderRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/notices', noticeRoutes);
-<<<<<<< HEAD
 app.use('/api/facilities', facilitiesRoutes);
+app.use('/api/shuttles', shuttleRoutes);
 
 // ── Library Module Routes ─────────────────────────────────────────────────────
 app.use('/api/library/rooms',          libraryRoomRoutes);
@@ -56,9 +56,6 @@ app.use('/api/library/chair-bookings', libraryChairBookingRoutes);
 app.use('/api/library/books',          libraryBookRoutes);
 app.use('/api/library/cart',           libraryCartRoutes);
 app.use('/api/library/book-bookings',  libraryBookBookingRoutes);
-=======
-app.use('/api/shuttles', shuttleRoutes);
->>>>>>> origin/feature/shuttle-module
 
 // Basic Route
 app.get('/', (req, res) => {
