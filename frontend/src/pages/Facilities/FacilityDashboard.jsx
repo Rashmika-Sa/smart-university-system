@@ -30,9 +30,7 @@ const FacilityDashboard = () => {
   // Show facility admin dashboard if user is facility_admin
   if (user?.role === 'facility_admin') {
     return (
-      <>
-        <StudentTopNav active="Facilities" />
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pb-16">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pb-16">
         {/* Admin Header */}
         <div className="border-b border-slate-700 px-6 py-8">
           <div className="max-w-7xl mx-auto">
@@ -169,7 +167,6 @@ const FacilityDashboard = () => {
           </div>
         </div>
       </div>
-      </>
     );
   }
 
