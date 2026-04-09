@@ -41,7 +41,8 @@ const StudentTopNav = ({ active = "Home" }) => {
           {isBooker && <NavBtn label="Book Facilities" route="/facilities/home" />}
           <NavBtn label="Calendar" route="/facilities/calendar" />
           <NavBtn label="Canteen" route="/canteen-selection" />
-          <NavBtn label="Shuttle" route="/shuttle-dashboard" />
+          <NavBtn label="Shuttle" route="/student-shuttle-dashboard" />
+          <NavBtn label="Facilities" route="/facility-dashboard" />
           <button
             onClick={handleLogout}
             className="px-3 py-2 rounded-xl text-sm font-semibold text-rose-600 hover:bg-rose-50 transition-all duration-200"

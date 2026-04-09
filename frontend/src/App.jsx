@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Home from './pages/Home';
 
 // 2. Import Auth & Dashboards
-import Login from './pages/Auth/Login';
+import Login from './pages/Auth/Login.jsx';
 import Register from './pages/Auth/Register';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 
@@ -16,6 +16,7 @@ import StudentMenu from './pages/Canteen/StudentMenu';
 import Checkout from './pages/Canteen/Checkout';
 import OrderHistory from './pages/Student/OrderHistory';
 import CanteenReviews from './pages/Canteen/CanteenReviews';
+import StudentShuttleDashboard from './pages/Shuttle/StudentShuttleDashboard';
 
 // 4. Import Admin & Manager Dashboards
 import AdminDashboard from './pages/Admin/AdminDashboard';
@@ -89,12 +90,19 @@ function App() {
               <Route path="/student-dashboard" element={<StudentDashboard />} />
               <Route path="/my-orders" element={<OrderHistory />} />
               <Route path="/canteen-reviews" element={<CanteenReviews />} />
+              
+              {/*Canteen Flow for Students */}
               <Route path="/canteen-selection" element={<CanteenSelection />} />
               <Route path="/canteen-menu/:canteenName" element={<StudentMenu />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/canteen-dashboard" element={<CanteenDashboard />} />
               <Route path="/canteen-admin-management" element={<CanteenAdminManagement />} />
+              
+              {/* Shuttle*/}
+              <Route path="/student-shuttle-dashboard" element={<StudentShuttleDashboard />} />
               <Route path="/shuttle-dashboard" element={<ShuttleDashboard />} />
+              {/* Other Service Managers */}
+              
               <Route path="/academic-space-dashboard" element={<AcedmicSpaceDashboard />} />
               <Route path="/library-admin" element={<LibraryAdminDashboard />} />
               <Route path="/library-dashboard" element={<Navigate to="/library-admin" replace />} />

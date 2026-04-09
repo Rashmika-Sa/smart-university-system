@@ -345,7 +345,7 @@ const StudentDashboard = () => {
       title: "Shuttle Service",
       subtitle: "Live Routes",
       description: "Check campus transport schedules, route updates, and upcoming departures.",
-      route: "/shuttle-dashboard",
+      route: "/student-shuttle-dashboard",
       cta: "Open Shuttle",
     },
     {
