@@ -80,6 +80,5 @@ const StudentTopNav = ({ active = "Home" }) => {
     </nav>
   );
 };
-};
 
 export default StudentTopNav;
