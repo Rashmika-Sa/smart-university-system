@@ -30,9 +30,31 @@ const app        = express();
 const PORT       = process.env.PORT       || 5000;
 const BODY_LIMIT = process.env.BODY_LIMIT || '10mb';
 
+const configuredOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const isLocalDevOrigin = (origin) => {
+  return /^http:\/\/(localhost|127\.0\.0\.1):(\d+)$/.test(origin);
+};
+
+const corsOrigin = (origin, callback) => {
+  // Allow server-to-server calls and local tools that don't send Origin.
+  if (!origin) {
+    return callback(null, true);
+  }
+
+  if (configuredOrigins.includes(origin) || isLocalDevOrigin(origin)) {
+    return callback(null, true);
+  }
+
+  return callback(new Error(`CORS blocked origin: ${origin}`));
+};
+
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  origin: corsOrigin,
   credentials: true,
 }));
 app.use(express.json({ limit: BODY_LIMIT }));

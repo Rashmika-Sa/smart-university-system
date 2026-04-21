@@ -2,6 +2,8 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('./models/Auth/User'); 
 
+const SPORTS_COUNCIL_DEFAULT_PASS = 'SportsCouncil@123';
+
 const seedDatabase = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
@@ -21,16 +23,13 @@ const seedDatabase = async () => {
     // --- 2. STAFF & SERVICE MANAGERS ---
     const staffEmails = [
       'canteen@sliit.lk',
-      'main@sliit.lk',
-      'birdnest@sliit.lk',
-      'ps@sliit.lk',
       'library@sliit.lk',
       'shuttle@sliit.lk', 
       'facility@sliit.lk',
       'sportscouncil@sliit.lk'
     ];
 
-    // Delete existing staff to avoid duplicates
+    
     await User.deleteMany({ email: { $in: staffEmails } });
 
     const staffAccounts = [
@@ -40,28 +39,6 @@ const seedDatabase = async () => {
         password: process.env.CANTEEN_ADMIN_PASS, 
         role: 'canteen_admin',
         managedCanteen: null
-      },
-      
-      { 
-        name: 'Main Canteen Manager', 
-        email: 'main@sliit.lk', 
-        password: process.env.MAIN_CANTEEN_PASS, 
-        role: 'canteen_admin',
-        managedCanteen: 'Main Canteen'
-      },
-      { 
-        name: 'Birdnest Canteen Manager', 
-        email: 'birdnest@sliit.lk', 
-        password: process.env.BIRDNEST_PASS, 
-        role: 'canteen_admin',
-        managedCanteen: 'Birdnest Canteen'
-      },
-      { 
-        name: 'P&S Manager', 
-        email: 'ps@sliit.lk', 
-        password: process.env.PS_PASS, 
-        role: 'canteen_admin',
-        managedCanteen: 'Perera & Sons (P&S)'
       },
       
       { 
@@ -85,19 +62,18 @@ const seedDatabase = async () => {
       {
         name: 'Sports Council',
         email: 'sportscouncil@sliit.lk',
-        password: process.env.SPORTS_COUNCIL_PASS,
+        password: process.env.SPORTS_COUNCIL_PASS || SPORTS_COUNCIL_DEFAULT_PASS,
         role: 'sports_council'
       }
     ];
 
     for (const staff of staffAccounts) {
-      // ⚠️ IMPORTANT: If your User model has a .pre('save') hook, 
-      // it will hash this password automatically here.
+      
       await new User(staff).save();
     }
-    console.log("✅ Admin Accounts & Canteen Managers Reset");
+    console.log(" Admin Accounts & Canteen Managers Reset");
 
-    console.log("\n🚀 Database Seeded Successfully!");
+    console.log("\n Database Seeded Successfully!");
     process.exit();
 
   } catch (err) {

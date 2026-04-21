@@ -5,7 +5,7 @@ import StudentTopNav from '../../components/StudentTopNav';
 const CanteenSelection = () => {
   const navigate = useNavigate();
 
-  // 🍽 Canteen Data Configuration (Barista Removed!)
+  
   const canteens = [
     { 
       id: 1,
