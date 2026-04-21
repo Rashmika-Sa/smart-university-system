@@ -142,6 +142,41 @@ const getReviewStats = async (req, res) => {
   }
 };
 
+// PUT /api/reviews/:id — edit own review (student) or any review (admin)
+const updateReview = async (req, res) => {
+  try {
+    const { rating, category, comment } = req.body;
+    
+    const review = await Review.findById(req.params.id);
+    if (!review) return res.status(404).json({ message: 'Review not found.' });
+
+    const isOwner = review.author.toString() === req.user.id;
+    let isAdmin = ['admin', 'canteen_admin'].includes(req.user.role);
+
+    if (req.user.role === 'canteen_admin') {
+      const adminUser = await User.findById(req.user.id).select('managedCanteen');
+      if (adminUser?.managedCanteen && review.canteen !== adminUser.managedCanteen) {
+        isAdmin = false;
+      }
+    }
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({ message: 'Not authorised to edit this review.' });
+    }
+
+    // Update fields
+    if (rating !== undefined) review.rating = rating;
+    if (category !== undefined) review.category = category;
+    if (comment !== undefined) review.comment = comment;
+
+    await review.save();
+    res.json({ message: 'Review updated successfully.', review });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
 // DELETE /api/reviews/:id — delete own review (student) or any review (admin)
 const deleteReview = async (req, res) => {
   try {
@@ -274,4 +309,4 @@ const deleteReply = async (req, res) => {
   }
 };
 
-module.exports = { submitReview, getReviews, getReviewStats, deleteReview, replyToReview, updateReply, deleteReply };
+module.exports = { submitReview, getReviews, getReviewStats, updateReview, deleteReview, replyToReview, updateReply, deleteReply };
