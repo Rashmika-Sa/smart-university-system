@@ -260,10 +260,10 @@ const updateReply = async (req, res) => {
       }
     }
 
-    // Only the original replier or a super admin can update
+    // Only the original replier, admin, or canteen_admin can update
     const isOriginalReplier = review.reply.repliedBy?.toString() === req.user.id;
-    const isSuperAdmin = req.user.role === 'admin';
-    if (!isOriginalReplier && !isSuperAdmin) {
+    const isAdmin = ['admin', 'canteen_admin'].includes(req.user.role);
+    if (!isOriginalReplier && !isAdmin) {
       return res.status(403).json({ message: 'Not authorised.' });
     }
 
@@ -294,8 +294,8 @@ const deleteReply = async (req, res) => {
     }
 
     const isOriginalReplier = review.reply.repliedBy?.toString() === req.user.id;
-    const isSuperAdmin = req.user.role === 'admin';
-    if (!isOriginalReplier && !isSuperAdmin) {
+    const isAdmin = ['admin', 'canteen_admin'].includes(req.user.role);
+    if (!isOriginalReplier && !isAdmin) {
       return res.status(403).json({ message: 'Not authorised.' });
     }
 

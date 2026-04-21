@@ -11,7 +11,8 @@ const CanteenDashboard = () => {
   const [foodItems, setFoodItems] = useState([]);
   const [orders, setOrders] = useState([]); 
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('orders'); 
+  const [activeTab, setActiveTab] = useState('orders');
+  const [filterDate, setFilterDate] = useState(''); 
 
   // 2. User State
   const [userInfo, setUserInfo] = useState(null);
@@ -326,7 +327,24 @@ const CanteenDashboard = () => {
                         <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Live Orders</h2>
                         <p className="text-slate-500 mt-1">Real-time order feed. Auto-refreshes every 15s.</p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 items-center">
+                        <div className="flex items-center gap-2">
+                          <label className="text-sm font-semibold text-slate-600">Filter by Date:</label>
+                          <input
+                            type="date"
+                            value={filterDate}
+                            onChange={(e) => setFilterDate(e.target.value)}
+                            className="px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-900 bg-white hover:border-primary focus:ring-2 focus:ring-primary outline-none transition"
+                          />
+                          {filterDate && (
+                            <button
+                              onClick={() => setFilterDate('')}
+                              className="px-3 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition"
+                            >
+                              Clear
+                            </button>
+                          )}
+                        </div>
                          <button onClick={() => fetchOrders(selectedCanteen, true)} className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
                             Refresh
@@ -341,17 +359,29 @@ const CanteenDashboard = () => {
                     </div>
                  ) : (
                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        {orders.filter(o => !['Completed', 'Cancelled'].includes(o.status)).length === 0 && (
+                        {orders.filter(o => {
+                          if(['Completed', 'Cancelled'].includes(o.status)) return false;
+                          if(filterDate) {
+                            const orderDate = new Date(o.preOrderDate).toISOString().split('T')[0];
+                            return orderDate === filterDate;
+                          }
+                          return true;
+                        }).length === 0 && (
                             <div className="col-span-full text-center py-24 bg-white rounded-3xl border border-dashed border-slate-300">
                                 <div className="text-5xl mb-4 opacity-50">😴</div>
-                                <h3 className="text-xl font-bold text-slate-900">No Active Orders</h3>
-                                <p className="text-slate-500">The kitchen is quiet.</p>
+                                <h3 className="text-xl font-bold text-slate-900">{filterDate ? 'No orders for this date' : 'No Active Orders'}</h3>
+                                <p className="text-slate-500">{filterDate ? 'Try a different date' : 'The kitchen is quiet.'}</p>
                             </div>
                         )}
 
-                        {orders.map((order) => {
-                             if(['Completed', 'Cancelled'].includes(order.status)) return null;
-
+                        {orders.filter(o => {
+                          if(['Completed', 'Cancelled'].includes(o.status)) return false;
+                          if(filterDate) {
+                            const orderDate = new Date(o.preOrderDate).toISOString().split('T')[0];
+                            return orderDate === filterDate;
+                          }
+                          return true;
+                        }).map((order) => {
                              return (
                                 <div key={order._id} className={`bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col transition-all duration-300 ${order.status === 'Pending' ? 'ring-2 ring-accent shadow-accent/20' : ''}`}>
                                     
