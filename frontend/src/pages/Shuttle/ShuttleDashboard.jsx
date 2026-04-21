@@ -1,9 +1,9 @@
-﻿import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from '../../api/axios';
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  OpenStreetMap / Leaflet loader  (no API key — completely free)
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+//  OpenStreetMap / Leaflet loader (no API key - completely free)
+// -----------------------------------------------------------------------------
 let leafletLoadPromise = null;
 const loadLeaflet = () => {
   if (window.L) return Promise.resolve();
@@ -24,18 +24,18 @@ const loadLeaflet = () => {
   return leafletLoadPromise;
 };
 
-// Nominatim search (OpenStreetMap geocoder — free, no key)
+// Nominatim search (OpenStreetMap geocoder - free, no key)
 const nominatimSearch = async (query) => {
   const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + ' Sri Lanka')}&format=json&limit=5&countrycodes=lk`;
   const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
   return res.json();
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 //  MAP PICKER MODAL
 //  Shows a Leaflet map. Admin searches for a place, clicks to confirm.
 //  Returns { name, lat, lng } via onConfirm().
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 const MapPickerModal = ({ title, initialName, initialLat, initialLng, onConfirm, onClose, dark }) => {
   const mapDivRef   = useRef(null);
   const mapRef      = useRef(null);
@@ -57,7 +57,7 @@ const MapPickerModal = ({ title, initialName, initialLat, initialLng, onConfirm,
       const lng = initialLng || 79.8612;
       const map = L.map(mapDivRef.current).setView([lat, lng], initialLat ? 14 : 9);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         maxZoom: 19,
       }).addTo(map);
       mapRef.current = map;
@@ -117,8 +117,8 @@ const MapPickerModal = ({ title, initialName, initialLat, initialLng, onConfirm,
   const text    = dark ? 'text-white' : 'text-gray-900';
   const muted   = 'text-[#6B7280]';
   const inputCls = dark
-    ? 'bg-white/5 border-white/10 text-white placeholder-gray-500 focus:border-[#1B4D89]/60'
-    : 'bg-[#F5F7FA] border-[#E0E4EB] text-gray-900 placeholder-[#6B7280] focus:border-[#1B4D89]';
+    ? 'bg-white/5 border-white/10 text-white placeholder-gray-500 focus:border-[#0f172a]/60'
+    : 'bg-[#F5F7FA] border-[#E0E4EB] text-gray-900 placeholder-[#6B7280] focus:border-[#0f172a]';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
@@ -147,7 +147,7 @@ const MapPickerModal = ({ title, initialName, initialLat, initialLng, onConfirm,
               className={`flex-1 px-4 py-2.5 rounded-xl text-sm border outline-none transition-all ${inputCls}`}
             />
             <button onClick={handleSearch} disabled={searching}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#1B4D89] to-[#2A5F9E] text-white text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50 shrink-0">
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#0f172a] to-[#06b6d4] text-white text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50 shrink-0">
               {searching ? '...' : 'Search'}
             </button>
           </div>
@@ -158,7 +158,7 @@ const MapPickerModal = ({ title, initialName, initialLat, initialLng, onConfirm,
               {results.map((r, i) => (
                 <button key={i} onClick={() => pickResult(r)}
                   className={`w-full text-left px-4 py-2.5 text-xs font-medium border-b last:border-b-0 transition-colors ${dark ? 'border-white/5 hover:bg-white/5 text-white' : 'border-[#F0F0F0] hover:bg-[#F5F7FA] text-gray-800'}`}>
-                  📍 {r.display_name.split(',').slice(0, 3).join(', ')}
+                  [Pin] {r.display_name.split(',').slice(0, 3).join(', ')}
                 </button>
               ))}
             </div>
@@ -172,7 +172,7 @@ const MapPickerModal = ({ title, initialName, initialLat, initialLng, onConfirm,
         <div className="px-6 py-4 shrink-0 flex items-center justify-between gap-3">
           <div className={`text-xs ${muted} flex-1`}>
             {picked
-              ? <span className="text-emerald-500 font-semibold">✓ {picked.name} ({picked.lat.toFixed(5)}, {picked.lng.toFixed(5)})</span>
+              ? <span className="text-emerald-500 font-semibold">Pinned: {picked.name} ({picked.lat.toFixed(5)}, {picked.lng.toFixed(5)})</span>
               : 'No location selected yet'}
           </div>
           <button onClick={onClose} className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all ${dark ? 'border-white/10 text-[#6B7280] hover:bg-white/5' : 'border-[#E0E4EB] text-[#6B7280] hover:bg-[#F5F7FA]'}`}>
@@ -190,9 +190,9 @@ const MapPickerModal = ({ title, initialName, initialLat, initialLng, onConfirm,
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 //  SHARED UI PRIMITIVES
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 const Icon = ({ path, className = 'w-5 h-5' }) => (
   <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={path} />
@@ -246,8 +246,8 @@ const Input = ({ label, dark, ...props }) => (
   <div className="space-y-1.5">
     <label className="block text-xs font-bold uppercase tracking-widest text-[#6B7280]">{label}</label>
     <input className={`w-full px-4 py-3 rounded-xl text-sm outline-none transition-all border
-      ${dark ? 'bg-white/5 border-white/10 text-white placeholder-gray-600 focus:border-[#1B4D89]/60 focus:ring-2 focus:ring-[#1B4D89]/20'
-             : 'bg-[#F5F7FA] border-[#E0E4EB] text-gray-900 placeholder-[#6B7280] focus:border-[#1B4D89] focus:ring-2 focus:ring-[#1B4D89]/20'}`}
+      ${dark ? 'bg-white/5 border-white/10 text-white placeholder-gray-600 focus:border-[#0f172a]/60 focus:ring-2 focus:ring-[#0f172a]/20'
+             : 'bg-[#F5F7FA] border-[#E0E4EB] text-gray-900 placeholder-[#6B7280] focus:border-[#0f172a] focus:ring-2 focus:ring-[#0f172a]/20'}`}
       {...props} />
   </div>
 );
@@ -256,8 +256,8 @@ const Select = ({ label, dark, children, ...props }) => (
   <div className="space-y-1.5">
     <label className="block text-xs font-bold uppercase tracking-widest text-[#6B7280]">{label}</label>
     <select className={`w-full px-4 py-3 rounded-xl text-sm outline-none transition-all border
-      ${dark ? 'bg-gray-800 border-white/10 text-white focus:border-[#1B4D89]/60'
-             : 'bg-[#F5F7FA] border-[#E0E4EB] text-gray-900 focus:border-[#1B4D89]'}`}
+      ${dark ? 'bg-gray-800 border-white/10 text-white focus:border-[#0f172a]/60'
+             : 'bg-[#F5F7FA] border-[#E0E4EB] text-gray-900 focus:border-[#0f172a]'}`}
       {...props}>{children}</select>
   </div>
 );
@@ -283,18 +283,18 @@ const BookingCard = ({ booking, dark, onConfirm, confirmingId }) => {
     : 'N/A';
   return (
     <div className={`relative overflow-hidden rounded-2xl border p-4 transition-all
-      ${dark ? 'bg-white/5 border-white/10 hover:border-white/20' : 'bg-[#F5F7FA] border-[#E8EEF5] hover:border-[#2A5F9E]/30'}`}>
+      ${dark ? 'bg-white/5 border-white/10 hover:border-white/20' : 'bg-[#F5F7FA] border-[#E8EEF5] hover:border-[#06b6d4]/30'}`}>
       <div className={`absolute top-0 left-0 w-1 h-full rounded-l-2xl ${isConfirmed ? 'bg-emerald-400' : 'bg-[#FF6B35]'}`} />
       <div className="pl-3 flex items-center justify-between gap-4 flex-wrap">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1B4D89] to-[#2A5F9E] flex items-center justify-center text-white text-sm font-black shadow-lg shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0f172a] to-[#06b6d4] flex items-center justify-center text-white text-sm font-black shadow-lg shrink-0">
             {b.userId?.name?.[0]?.toUpperCase() || '?'}
           </div>
           <div>
             <p className={`font-bold text-sm ${dark ? 'text-white' : 'text-gray-900'}`}>{b.userId?.name || 'Unknown'}</p>
             <p className="text-xs text-[#6B7280]">{b.userId?.email}</p>
             <p className="text-xs font-semibold mt-0.5 text-[#6B7280]">
-              {b.scheduleId?.routeId?.routeName || 'N/A'} — {b.scheduleId?.routeId?.startPoint} → {b.scheduleId?.routeId?.endPoint}
+              {b.scheduleId?.routeId?.routeName || 'N/A'} - {b.scheduleId?.routeId?.startPoint}{' -> '}{b.scheduleId?.routeId?.endPoint}
             </p>
           </div>
         </div>
@@ -327,9 +327,9 @@ const BookingCard = ({ booking, dark, onConfirm, confirmingId }) => {
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 //  MAIN ADMIN DASHBOARD
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 export default function ShuttleDashboard() {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [dark, setDark]   = useState(false);
@@ -385,7 +385,7 @@ export default function ShuttleDashboard() {
   useEffect(() => { fetchBuses(); fetchRoutes(); fetchSchedules(); }, []);
   useEffect(() => { if (tab === 'bookings' && schedules.length > 0) fetchAllBookings(); }, [tab, schedules]);
 
-  // ── Bus CRUD ──
+  // -- Bus CRUD --
   const openAddBus  = () => { setBusForm({ plateNumber: '', model: '', capacity: '', status: 'Active' }); setBusModal('add'); };
   const openEditBus = b  => { setBusForm({ plateNumber: b.plateNumber, model: b.model, capacity: b.capacity, status: b.status }); setBusModal(b); };
   const saveBus = async () => {
@@ -402,7 +402,7 @@ export default function ShuttleDashboard() {
     catch (err) { showToast(err.response?.data?.msg || 'Error', 'error'); }
   };
 
-  // ── Route CRUD ──
+  // -- Route CRUD --
   const openAddRoute  = () => { setRouteForm(EMPTY_ROUTE); setRouteModal('add'); };
   const openEditRoute = r  => {
     setRouteForm({
@@ -437,7 +437,7 @@ export default function ShuttleDashboard() {
     catch (err) { showToast(err.response?.data?.msg || 'Error', 'error'); }
   };
 
-  // ── Schedule CRUD ──
+  // -- Schedule CRUD --
   const openAddSchedule  = () => { setScheduleForm({ busId: '', routeId: '', departureTime: '' }); setScheduleModal('add'); };
   const openEditSchedule = s  => {
     setScheduleForm({ busId: s.busId?._id || s.busId, routeId: s.routeId?._id || s.routeId,
@@ -458,7 +458,7 @@ export default function ShuttleDashboard() {
     catch (err) { showToast(err.response?.data?.msg || 'Error', 'error'); }
   };
 
-  // ── Confirm booking ──
+  // -- Confirm booking --
   const confirmPayment = async (bookingId, studentName) => {
     setConfirmingId(bookingId);
     try {
@@ -490,13 +490,13 @@ export default function ShuttleDashboard() {
   const btn = g => `w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r ${g} hover:opacity-90 shadow-lg transition-all disabled:opacity-50`;
 
   const TABS = [
-    { id: 'buses',     label: 'Fleet',     icon: IC.bus,      g: 'from-[#2A5F9E] to-[#1B4D89]',  shadow: 'shadow-[#2A5F9E]/20' },
-    { id: 'routes',    label: 'Routes',    icon: IC.route,    g: 'from-[#1B4D89] to-[#143A6B]',  shadow: 'shadow-[#1B4D89]/20' },
+    { id: 'buses',     label: 'Fleet',     icon: IC.bus,      g: 'from-[#06b6d4] to-[#0f172a]',  shadow: 'shadow-[#06b6d4]/20' },
+    { id: 'routes',    label: 'Routes',    icon: IC.route,    g: 'from-[#0f172a] to-[#1e293b]',  shadow: 'shadow-[#0f172a]/20' },
     { id: 'schedules', label: 'Schedules', icon: IC.schedule, g: 'from-rose-500 to-pink-600',     shadow: 'shadow-rose-500/20' },
     { id: 'bookings',  label: 'Bookings',  icon: IC.bookings, g: 'from-emerald-500 to-teal-600',  shadow: 'shadow-emerald-500/20',
       badge: pendingCount > 0 ? pendingCount : null },
   ];
-  const cardGrads = [['from-[#1B4D89]','to-[#143A6B]'],['from-[#2A5F9E]','to-[#1B4D89]'],['from-rose-500','to-pink-600'],['from-emerald-500','to-teal-600'],['from-[#FF6B35]','to-[#F59E0B]']];
+  const cardGrads = [['from-[#0f172a]','to-[#1e293b]'],['from-[#06b6d4]','to-[#0f172a]'],['from-rose-500','to-pink-600'],['from-emerald-500','to-teal-600'],['from-[#FF6B35]','to-[#F59E0B]']];
 
   return (
     <div className={`min-h-screen ${bg} transition-colors duration-300`}>
@@ -507,7 +507,7 @@ export default function ShuttleDashboard() {
         @keyframes fade-up { from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)} }
         .fade-up { animation: fade-up 0.4s cubic-bezier(.22,1,.36,1) both; }
         .d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}.d4{animation-delay:.2s}
-        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:linear-gradient(#2A5F9E,#1B4D89);border-radius:99px}
+        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:linear-gradient(#06b6d4,#0f172a);border-radius:99px}
         .leaflet-container { font-family: inherit; }
       `}</style>
 
@@ -534,7 +534,7 @@ export default function ShuttleDashboard() {
       <header className={`sticky top-0 z-30 ${surface} border-b ${border} backdrop-blur-xl`}>
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#1B4D89] to-[#2A5F9E] flex items-center justify-center shadow-lg shadow-[#1B4D89]/30">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#0f172a] to-[#06b6d4] flex items-center justify-center shadow-lg shadow-[#0f172a]/30">
               <Icon path={IC.bus} className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -543,16 +543,16 @@ export default function ShuttleDashboard() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button onClick={() => setDark(!dark)} className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all ${surface} ${border} text-[#6B7280] hover:text-[#1B4D89]`}>
+            <button onClick={() => setDark(!dark)} className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all ${surface} ${border} text-[#6B7280] hover:text-[#0f172a]`}>
               <Icon path={dark ? IC.sun : IC.moon} className="w-4 h-4" />
             </button>
             <div className={`hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-xl border ${surface} ${border}`}>
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#1B4D89] to-[#2A5F9E] flex items-center justify-center text-white text-xs font-black">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0f172a] to-[#06b6d4] flex items-center justify-center text-white text-xs font-black">
                 {user.name?.[0]?.toUpperCase() || 'A'}
               </div>
               <div>
                 <p className={`text-xs font-bold leading-none ${text}`}>{user.name || 'Admin'}</p>
-                <p className="text-[10px] text-[#1B4D89] font-semibold mt-0.5">Shuttle Admin</p>
+                <p className="text-[10px] text-[#0f172a] font-semibold mt-0.5">Shuttle Admin</p>
               </div>
             </div>
             <button onClick={logout} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 text-xs font-bold transition-all">
@@ -565,7 +565,7 @@ export default function ShuttleDashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
 
         {/* HERO */}
-        <div className="relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-[#143A6B] via-purple-700 to-[#2A5F9E] shadow-2xl fade-up">
+        <div className="relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#06b6d4] shadow-2xl fade-up">
           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
           <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-white/5 blur-3xl" />
           <div className="relative flex items-center justify-between flex-wrap gap-4">
@@ -576,8 +576,8 @@ export default function ShuttleDashboard() {
             </div>
             <div className="flex gap-3 flex-wrap">
               {[
-                { v: buses.length,     l: 'Buses',     g: 'from-[#3B82F6]/35 to-[#1B4D89]/35' },
-                { v: routes.length,    l: 'Routes',    g: 'from-[#1B4D89]/40 to-[#143A6B]/40' },
+                { v: buses.length,     l: 'Buses',     g: 'from-[#3B82F6]/35 to-[#0f172a]/35' },
+                { v: routes.length,    l: 'Routes',    g: 'from-[#0f172a]/40 to-[#1e293b]/40' },
                 { v: schedules.length, l: 'Schedules', g: 'from-[#FF6B35]/35 to-[#F59E0B]/35' },
                 { v: pendingCount,     l: 'Pending',   g: 'from-[#F59E0B]/35 to-[#FF6B35]/35' },
               ].map(s => (
@@ -593,10 +593,10 @@ export default function ShuttleDashboard() {
         {/* STAT CARDS */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { label: 'Total Buses',      value: buses.length,                                    icon: IC.bus,      from: 'from-[#2A5F9E]',  to: 'to-[#1B4D89]' },
+            { label: 'Total Buses',      value: buses.length,                                    icon: IC.bus,      from: 'from-[#06b6d4]',  to: 'to-[#0f172a]' },
             { label: 'Active',           value: buses.filter(b => b.status === 'Active').length, icon: IC.check,    from: 'from-emerald-500', to: 'to-teal-600' },
             { label: 'Pending Bookings', value: pendingCount,                                    icon: IC.clock,    from: 'from-[#FF6B35]',  to: 'to-[#F59E0B]' },
-            { label: 'Confirmed',        value: confirmedCount,                                  icon: IC.bookings, from: 'from-[#1B4D89]',  to: 'to-[#143A6B]' },
+            { label: 'Confirmed',        value: confirmedCount,                                  icon: IC.bookings, from: 'from-[#0f172a]',  to: 'to-[#1e293b]' },
           ].map((s, i) => (
             <div key={s.label} className={`fade-up d${i + 1}`}><StatCard {...s} dark={dark} /></div>
           ))}
@@ -607,7 +607,7 @@ export default function ShuttleDashboard() {
           {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
               className={`relative flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200
-                ${tab === t.id ? `bg-gradient-to-r ${t.g} text-white shadow-lg ${t.shadow}` : `${muted} hover:${text}`}`}>
+                ${tab === t.id ? `bg-gradient-to-r ${t.g} text-white shadow-lg ${t.shadow}` : `${muted} ${D ? 'hover:text-white' : 'hover:text-gray-900'}`}`}>
               <Icon path={t.icon} className="w-4 h-4" />{t.label}
               {t.badge && (
                 <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${tab === t.id ? 'bg-white/25 text-white' : 'bg-[#FF6B35]/20 text-[#FF6B35]'}`}>{t.badge}</span>
@@ -616,12 +616,12 @@ export default function ShuttleDashboard() {
           ))}
         </div>
 
-        {/* ── BUSES ── */}
+        {/* -- BUSES -- */}
         {tab === 'buses' && (
           <div className="fade-up space-y-5">
             <div className="flex items-center justify-between">
               <div><h2 className={`text-xl font-extrabold ${text}`}>Bus Fleet</h2><p className={`text-sm ${muted}`}>{buses.length} buses registered</p></div>
-              <button onClick={openAddBus} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#2A5F9E] to-[#1B4D89] text-white text-sm font-bold shadow-lg hover:opacity-90 transition-all">
+              <button onClick={openAddBus} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#06b6d4] to-[#0f172a] text-white text-sm font-bold shadow-lg hover:opacity-90 transition-all">
                 <Icon path={IC.plus} className="w-4 h-4" /> Add Bus
               </button>
             </div>
@@ -631,7 +631,7 @@ export default function ShuttleDashboard() {
                   <Icon path={IC.bus} className={`w-10 h-10 mx-auto mb-3 ${muted}`} /><p className={muted}>No buses added yet</p>
                 </div>
               ) : buses.map(b => {
-                const [gf, gt] = b.status === 'Active' ? ['from-[#2A5F9E]', 'to-[#1B4D89]'] : ['from-[#FF6B35]', 'to-[#F59E0B]'];
+                const [gf, gt] = b.status === 'Active' ? ['from-[#06b6d4]', 'to-[#0f172a]'] : ['from-[#FF6B35]', 'to-[#F59E0B]'];
                 return (
                   <div key={b._id} className={`relative overflow-hidden rounded-2xl border p-5 ${surface} ${border} transition-all hover:shadow-2xl hover:-translate-y-1`}>
                     <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${gf} ${gt}`} />
@@ -647,7 +647,7 @@ export default function ShuttleDashboard() {
                       <Icon path={IC.users} className="w-3.5 h-3.5" />{b.capacity} seats
                     </div>
                     <div className={`flex gap-2 mt-4 pt-4 border-t ${divider}`}>
-                      <button onClick={() => openEditBus(b)} className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-[#1B4D89]/10 hover:bg-[#1B4D89]/20 border border-[#1B4D89]/20 text-[#1B4D89] text-xs font-bold transition-all">
+                      <button onClick={() => openEditBus(b)} className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-[#0f172a]/10 hover:bg-[#0f172a]/20 border border-[#0f172a]/20 text-[#0f172a] text-xs font-bold transition-all">
                         <Icon path={IC.edit} className="w-3.5 h-3.5" /> Edit
                       </button>
                       <button onClick={() => deleteBus(b._id)} className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-400/20 text-rose-400 text-xs font-bold transition-all">
@@ -661,12 +661,12 @@ export default function ShuttleDashboard() {
           </div>
         )}
 
-        {/* ── ROUTES ── */}
+        {/* -- ROUTES -- */}
         {tab === 'routes' && (
           <div className="fade-up space-y-5">
             <div className="flex items-center justify-between">
               <div><h2 className={`text-xl font-extrabold ${text}`}>Bus Routes</h2><p className={`text-sm ${muted}`}>{routes.length} routes configured</p></div>
-              <button onClick={openAddRoute} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#1B4D89] to-[#143A6B] text-white text-sm font-bold shadow-lg hover:opacity-90 transition-all">
+              <button onClick={openAddRoute} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#0f172a] to-[#1e293b] text-white text-sm font-bold shadow-lg hover:opacity-90 transition-all">
                 <Icon path={IC.plus} className="w-4 h-4" /> Add Route
               </button>
             </div>
@@ -687,9 +687,9 @@ export default function ShuttleDashboard() {
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className={`px-2 py-1 rounded-lg text-[10px] font-bold border ${hasCoords ? 'bg-emerald-500/10 text-emerald-400 border-emerald-400/20' : 'bg-[#FF6B35]/10 text-[#FF6B35] border-[#FF6B35]/20'}`}>
-                          {hasCoords ? '📍 Map ready' : '⚠ No pin'}
+                          {hasCoords ? 'Map ready' : 'No pin'}
                         </span>
-                        <button onClick={() => openEditRoute(r)} className="p-2 rounded-xl bg-[#1B4D89]/10 hover:bg-[#1B4D89]/20 border border-[#1B4D89]/20 text-[#1B4D89] transition-all"><Icon path={IC.edit} className="w-4 h-4" /></button>
+                        <button onClick={() => openEditRoute(r)} className="p-2 rounded-xl bg-[#0f172a]/10 hover:bg-[#0f172a]/20 border border-[#0f172a]/20 text-[#0f172a] transition-all"><Icon path={IC.edit} className="w-4 h-4" /></button>
                         <button onClick={() => deleteRoute(r._id)} className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-400/20 text-rose-400 transition-all"><Icon path={IC.trash} className="w-4 h-4" /></button>
                       </div>
                     </div>
@@ -707,13 +707,13 @@ export default function ShuttleDashboard() {
           </div>
         )}
 
-        {/* ── SCHEDULES ── */}
+        {/* -- SCHEDULES -- */}
         {tab === 'schedules' && (
           <div className="fade-up space-y-5">
             <div className="flex items-center justify-between">
               <div><h2 className={`text-xl font-extrabold ${text}`}>Schedules</h2><p className={`text-sm ${muted}`}>{schedules.length} active trips</p></div>
               <div className="flex gap-3">
-                <button onClick={fetchSchedules} className={`p-2.5 rounded-xl border transition-all ${surface} ${border} ${muted} hover:text-[#1B4D89]`}><Icon path={IC.refresh} className="w-4 h-4" /></button>
+                <button onClick={fetchSchedules} className={`p-2.5 rounded-xl border transition-all ${surface} ${border} ${muted} hover:text-[#0f172a]`}><Icon path={IC.refresh} className="w-4 h-4" /></button>
                 <button onClick={openAddSchedule} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 text-white text-sm font-bold shadow-lg hover:opacity-90 transition-all">
                   <Icon path={IC.plus} className="w-4 h-4" /> Add Schedule
                 </button>
@@ -734,14 +734,14 @@ export default function ShuttleDashboard() {
                   ) : schedules.map(s => (
                     <tr key={s._id} className={`border-b ${divider} ${rowHov} transition-colors`}>
                       <td className="px-5 py-4"><p className={`font-black font-mono ${text}`}>{s.busId?.plateNumber || '-'}</p><p className={`text-xs ${muted}`}>{s.busId?.model}</p></td>
-                      <td className="px-5 py-4"><p className={`font-semibold ${text}`}>{s.routeId?.routeName || '-'}</p><p className={`text-xs ${muted}`}>{s.routeId?.startPoint} → {s.routeId?.endPoint}</p></td>
+                      <td className="px-5 py-4"><p className={`font-semibold ${text}`}>{s.routeId?.routeName || '-'}</p><p className={`text-xs ${muted}`}>{s.routeId?.startPoint}{' -> '}{s.routeId?.endPoint}</p></td>
                       <td className="px-5 py-4"><p className={`font-semibold ${text}`}>{s.departureTime ? new Date(s.departureTime).toLocaleDateString() : '-'}</p><p className={`text-xs ${muted}`}>{s.departureTime ? new Date(s.departureTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}</p></td>
                       <td className="px-5 py-4">
                         <span className={`px-3 py-1.5 rounded-full text-xs font-extrabold border ${s.availableSeats > 5 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-400/20' : s.availableSeats > 0 ? 'bg-[#FF6B35]/10 text-[#FF6B35] border-[#FF6B35]/20' : 'bg-rose-500/10 text-rose-400 border-rose-400/20'}`}>{s.availableSeats} left</span>
                       </td>
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-1.5">
-                          <button onClick={() => openEditSchedule(s)} className="p-2 rounded-xl bg-[#2A5F9E]/10 hover:bg-[#2A5F9E]/20 border border-[#2A5F9E]/20 text-[#1B4D89] transition-all"><Icon path={IC.edit} className="w-4 h-4" /></button>
+                          <button onClick={() => openEditSchedule(s)} className="p-2 rounded-xl bg-[#06b6d4]/10 hover:bg-[#06b6d4]/20 border border-[#06b6d4]/20 text-[#0f172a] transition-all"><Icon path={IC.edit} className="w-4 h-4" /></button>
                           <button onClick={() => deleteSchedule(s._id)} className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-400/20 text-rose-400 transition-all"><Icon path={IC.trash} className="w-4 h-4" /></button>
                         </div>
                       </td>
@@ -753,12 +753,12 @@ export default function ShuttleDashboard() {
           </div>
         )}
 
-        {/* ── BOOKINGS ── */}
+        {/* -- BOOKINGS -- */}
         {tab === 'bookings' && (
           <div className="fade-up space-y-5">
             <div className="flex items-center justify-between flex-wrap gap-3">
-              <div><h2 className={`text-xl font-extrabold ${text}`}>Booking Confirmations</h2><p className={`text-sm ${muted}`}>{allBookings.length} total — {pendingCount} awaiting confirmation</p></div>
-              <button onClick={fetchAllBookings} disabled={bookingsLoading} className={`flex items-center gap-2 p-2.5 rounded-xl border transition-all ${surface} ${border} ${muted} hover:text-[#1B4D89] disabled:opacity-50`}>
+              <div><h2 className={`text-xl font-extrabold ${text}`}>Booking Confirmations</h2><p className={`text-sm ${muted}`}>{allBookings.length} total - {pendingCount} awaiting confirmation</p></div>
+              <button onClick={fetchAllBookings} disabled={bookingsLoading} className={`flex items-center gap-2 p-2.5 rounded-xl border transition-all ${surface} ${border} ${muted} hover:text-[#0f172a] disabled:opacity-50`}>
                 <Icon path={IC.refresh} className={`w-4 h-4 ${bookingsLoading ? 'animate-spin' : ''}`} />
                 <span className="text-xs font-semibold hidden sm:inline">Refresh</span>
               </button>
@@ -768,7 +768,7 @@ export default function ShuttleDashboard() {
               <span>Clicking <strong>Confirm & Email</strong> updates the booking to <strong>Confirmed</strong> and sends a confirmation email to the student.</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {[{ label: 'Total', value: allBookings.length, g: 'from-[#1B4D89] to-[#143A6B]' }, { label: 'Pending', value: pendingCount, g: 'from-[#FF6B35] to-[#F59E0B]' }, { label: 'Confirmed', value: confirmedCount, g: 'from-emerald-500 to-teal-500' }].map(s => (
+              {[{ label: 'Total', value: allBookings.length, g: 'from-[#0f172a] to-[#1e293b]' }, { label: 'Pending', value: pendingCount, g: 'from-[#FF6B35] to-[#F59E0B]' }, { label: 'Confirmed', value: confirmedCount, g: 'from-emerald-500 to-teal-500' }].map(s => (
                 <div key={s.label} className={`rounded-2xl border p-4 ${surface} ${border}`}>
                   <p className={`text-2xl font-black bg-gradient-to-r ${s.g} bg-clip-text text-transparent`}>{s.value}</p>
                   <p className={`text-xs font-bold uppercase tracking-wider mt-0.5 ${muted}`}>{s.label}</p>
@@ -785,7 +785,7 @@ export default function ShuttleDashboard() {
               <div className={`flex rounded-xl border overflow-hidden ${border}`}>
                 {['all', 'Pending', 'Confirmed'].map(v => (
                   <button key={v} onClick={() => setStatusFilter(v)}
-                    className={`px-4 py-2 text-xs font-bold transition-all ${statusFilter === v ? v === 'Pending' ? 'bg-[#FF6B35] text-white' : v === 'Confirmed' ? 'bg-emerald-500 text-white' : 'bg-[#1B4D89] text-white' : `${muted} ${D ? 'hover:bg-white/5' : 'hover:bg-[#F5F7FA]'}`}`}>
+                    className={`px-4 py-2 text-xs font-bold transition-all ${statusFilter === v ? v === 'Pending' ? 'bg-[#FF6B35] text-white' : v === 'Confirmed' ? 'bg-emerald-500 text-white' : 'bg-[#0f172a] text-white' : `${muted} ${D ? 'hover:bg-white/5' : 'hover:bg-[#F5F7FA]'}`}`}>
                     {v === 'all' ? 'All' : v}
                   </button>
                 ))}
@@ -811,7 +811,7 @@ export default function ShuttleDashboard() {
         )}
       </main>
 
-      {/* ── BUS MODAL ── */}
+      {/* -- BUS MODAL -- */}
       {busModal && (
         <Modal title={busModal === 'add' ? 'Add New Bus' : 'Edit Bus'} onClose={() => setBusModal(null)} dark={dark}>
           <div className="space-y-4">
@@ -821,12 +821,12 @@ export default function ShuttleDashboard() {
             <Select label="Status" dark={dark} value={busForm.status} onChange={e => setBusForm({ ...busForm, status: e.target.value })}>
               <option value="Active">Active</option><option value="Maintenance">Maintenance</option>
             </Select>
-            <button onClick={saveBus} disabled={loading} className={btn('from-[#2A5F9E] to-[#1B4D89]')}>{loading ? 'Saving...' : busModal === 'add' ? 'Add Bus' : 'Update Bus'}</button>
+            <button onClick={saveBus} disabled={loading} className={btn('from-[#06b6d4] to-[#0f172a]')}>{loading ? 'Saving...' : busModal === 'add' ? 'Add Bus' : 'Update Bus'}</button>
           </div>
         </Modal>
       )}
 
-      {/* ── ROUTE MODAL — Map picker buttons for start & end ── */}
+      {/* -- ROUTE MODAL - Map picker buttons for start and end -- */}
       {routeModal && (
         <Modal title={routeModal === 'add' ? 'Add New Route' : 'Edit Route'} onClose={() => setRouteModal(null)} dark={dark}>
           <div className="space-y-4">
@@ -840,12 +840,12 @@ export default function ShuttleDashboard() {
                   {routeForm.startPoint || <span className="text-[#6B7280]">No location picked yet</span>}
                 </div>
                 <button onClick={() => setMapPicker({ field: 'start' })}
-                  className="px-4 py-3 rounded-xl bg-gradient-to-r from-[#1B4D89] to-[#2A5F9E] text-white text-xs font-bold hover:opacity-90 transition-all shrink-0 flex items-center gap-1.5">
+                  className="px-4 py-3 rounded-xl bg-gradient-to-r from-[#0f172a] to-[#06b6d4] text-white text-xs font-bold hover:opacity-90 transition-all shrink-0 flex items-center gap-1.5">
                   <Icon path={IC.pin} className="w-4 h-4" /> Pick on Map
                 </button>
               </div>
               <p className={`text-[10px] pl-1 ${routeForm.startLat ? 'text-emerald-500 font-semibold' : 'text-[#FF6B35]'}`}>
-                {routeForm.startLat ? `✓ ${routeForm.startLat.toFixed(5)}, ${routeForm.startLng.toFixed(5)}` : '⚠ No map pin — please pick on map'}
+                {routeForm.startLat ? `Pinned: ${routeForm.startLat.toFixed(5)}, ${routeForm.startLng.toFixed(5)}` : 'No map pin - please pick on map'}
               </p>
             </div>
 
@@ -857,26 +857,26 @@ export default function ShuttleDashboard() {
                   {routeForm.endPoint || <span className="text-[#6B7280]">No location picked yet</span>}
                 </div>
                 <button onClick={() => setMapPicker({ field: 'end' })}
-                  className="px-4 py-3 rounded-xl bg-gradient-to-r from-[#1B4D89] to-[#2A5F9E] text-white text-xs font-bold hover:opacity-90 transition-all shrink-0 flex items-center gap-1.5">
+                  className="px-4 py-3 rounded-xl bg-gradient-to-r from-[#0f172a] to-[#06b6d4] text-white text-xs font-bold hover:opacity-90 transition-all shrink-0 flex items-center gap-1.5">
                   <Icon path={IC.pin} className="w-4 h-4" /> Pick on Map
                 </button>
               </div>
               <p className={`text-[10px] pl-1 ${routeForm.endLat ? 'text-emerald-500 font-semibold' : 'text-[#FF6B35]'}`}>
-                {routeForm.endLat ? `✓ ${routeForm.endLat.toFixed(5)}, ${routeForm.endLng.toFixed(5)}` : '⚠ No map pin — please pick on map'}
+                {routeForm.endLat ? `Pinned: ${routeForm.endLat.toFixed(5)}, ${routeForm.endLng.toFixed(5)}` : 'No map pin - please pick on map'}
               </p>
             </div>
 
             <Input label="Stops (comma separated)" dark={dark} placeholder="e.g. Library, Hostel Block A"
               value={routeForm.stops} onChange={e => setRouteForm({ ...routeForm, stops: e.target.value })} />
 
-            <button onClick={saveRoute} disabled={loading} className={btn('from-[#1B4D89] to-[#143A6B]')}>
+            <button onClick={saveRoute} disabled={loading} className={btn('from-[#0f172a] to-[#1e293b]')}>
               {loading ? 'Saving...' : routeModal === 'add' ? 'Add Route' : 'Update Route'}
             </button>
           </div>
         </Modal>
       )}
 
-      {/* ── SCHEDULE MODAL ── */}
+      {/* -- SCHEDULE MODAL -- */}
       {scheduleModal && (
         <Modal title={scheduleModal === 'add' ? 'Create Schedule' : 'Edit Schedule'} onClose={() => setScheduleModal(null)} dark={dark}>
           <div className="space-y-4">
@@ -886,7 +886,7 @@ export default function ShuttleDashboard() {
             </Select>
             <Select label="Select Route" dark={dark} value={scheduleForm.routeId} onChange={e => setScheduleForm({ ...scheduleForm, routeId: e.target.value })}>
               <option value="">-- Choose a route --</option>
-              {routes.map(r => <option key={r._id} value={r._id}>{r.routeName} ({r.startPoint} → {r.endPoint})</option>)}
+              {routes.map(r => <option key={r._id} value={r._id}>{r.routeName} ({r.startPoint}{' -> '}{r.endPoint})</option>)}
             </Select>
             <Input label="Departure Time" dark={dark} type="datetime-local" value={scheduleForm.departureTime} onChange={e => setScheduleForm({ ...scheduleForm, departureTime: e.target.value })} />
             <button onClick={saveSchedule} disabled={loading} className={btn('from-rose-500 to-pink-600')}>

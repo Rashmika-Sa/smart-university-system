@@ -1,12 +1,12 @@
-﻿import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from '../../api/axios';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import StudentTopNav from '../../components/StudentTopNav';
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 //  Leaflet / OpenStreetMap loader
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 let leafletLoadPromise = null;
 const loadLeaflet = () => {
   if (window.L) return Promise.resolve();
@@ -25,9 +25,9 @@ const loadLeaflet = () => {
   return leafletLoadPromise;
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  ADVANCED 3D SEAT MAP  — realistic bus interior
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+//  ADVANCED 3D SEAT MAP - realistic bus interior
+// -----------------------------------------------------------------------------
 const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVisible }) => {
   const containerRef   = useRef(null);
   const sceneRef       = useRef(null);
@@ -37,7 +37,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
   const seatDataRef    = useRef(new Map());
   const raycasterRef   = useRef(null);
   const animationRef   = useRef(null);
-  // Use THREE.Clock but suppress deprecation — or just track time manually
+  // Use THREE.Clock but suppress deprecation warnings, or track time manually
   const startTimeRef   = useRef(Date.now());
   const initializedRef = useRef(false);
 
@@ -69,7 +69,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
 
   useEffect(() => { if (initializedRef.current) refreshSeatAppearance(); }, [takenSeats, selectedSeat]);
 
-  // ── THREE init ──────────────────────────────────────────────────────────────
+  // -- THREE init --------------------------------------------------------------
   const initThree = () => {
     const el = containerRef.current;
     const W = el.clientWidth, H = el.clientHeight;
@@ -106,7 +106,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
     window.addEventListener('resize', onResize);
   };
 
-  // ── Helper: create mesh, set position/rotation, add to scene ───────────────
+  // -- Helper: create mesh, set position/rotation, add to scene ---------------
   const addMesh = (scene, geo, mat, x = 0, y = 0, z = 0, rx = 0, ry = 0) => {
     const m = new THREE.Mesh(geo, mat);
     m.position.set(x, y, z);
@@ -120,20 +120,20 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
 
 
 
-  // ── Minimal open floor + aisle — NO walls, NO roof ────────────────────────
+  // -- Minimal open floor + aisle - no walls, no roof ------------------------
   const buildBusInterior = () => {
     const s = sceneRef.current;
     const busLen = rows * 1.35 + 2.0;
     const zMid   = ROW_Z_START + (rows - 1) * ROW_Z_STEP / 2;
 
-    // Floor — clean light tile
+    // Floor - clean light tile
     addMesh(s,
       new THREE.BoxGeometry(7.2, 0.05, busLen),
       new THREE.MeshStandardMaterial({ color: 0xe8edf5, roughness: 0.8, metalness: 0.0 }),
       0, -0.025, zMid
     );
 
-    // Aisle runner — slightly darker strip between seat columns
+    // Aisle runner - slightly darker strip between seat columns
     addMesh(s,
       new THREE.BoxGeometry(1.55, 0.06, busLen),
       new THREE.MeshStandardMaterial({ color: 0xc8d0de, roughness: 0.85 }),
@@ -150,7 +150,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
       );
     }
 
-    // ── DRIVER AREA — placed at front of bus (high +Z) ───────────────────────
+    // -- DRIVER AREA - placed at front of bus (high +Z) -----------------------
     const frontZ = ROW_Z_START + 2.5;   // in front of first passenger row
     const darkMat  = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5, metalness: 0.4 });
     const greyMat  = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.6, metalness: 0.3 });
@@ -194,7 +194,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
     col.castShadow = true;
     s.add(col);
 
-    // ── STEERING WHEEL ───────────────────────────────────────────────────────
+    // -- STEERING WHEEL -------------------------------------------------------
     const swX = -1.7, swY = 0.88, swZ = frontZ + 0.0;
     const swTiltX = -0.38;   // angled toward driver
 
@@ -281,7 +281,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
     });
   };
 
-  // ── Seat builder ───────────────────────────────────────────────────────────
+  // -- Seat builder -----------------------------------------------------------
   const makeSeat = (isTaken, isSel) => {
     const g = new THREE.Group();
     const cC = isTaken ? 0x7f1d1d : isSel ? 0x164e63 : 0x1e3a8a;
@@ -323,7 +323,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
     pipe.position.set(0, cushY + 0.07, 0.3);
     g.add(pipe);
 
-    // Side bolsters — FIXED: use position.set() not Object.assign
+    // Side bolsters - fixed: use position.set() not Object.assign
     [-0.4, 0.4].forEach(bx => {
       const bolster = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.16, 0.56), mat(tC, 0.4));
       bolster.position.set(bx, cushY + 0.02, 0);
@@ -368,7 +368,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
       g.add(hw);
     });
 
-    // Armrests — FIXED: use position.set() not Object.assign
+    // Armrests - fixed: use position.set() not Object.assign
     [-0.44, 0.44].forEach(ax => {
       const post = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.22, 8), mat(0x6b7280, 0.4, 0.6));
       post.position.set(ax, cushY + 0.11, 0);
@@ -382,7 +382,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
     return { group: g, cushion, backrest, headrest: hr };
   };
 
-  // ── Seated person ──────────────────────────────────────────────────────────
+  // -- Seated person ----------------------------------------------------------
   const VARIANTS = [
     { skin: 0xf5cba7, shirt: 0x1e3a8a, pants: 0x1f2937, hair: 0x1a0a00 },
     { skin: 0xd4956a, shirt: 0x064e3b, pants: 0x1e293b, hair: 0x2c1a00 },
@@ -398,12 +398,12 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
     const m = (col, rough = 0.55) => new THREE.MeshStandardMaterial({ color: col, roughness: rough });
     const hipY = 0.56, torsoH = 0.5, torsoY = hipY + torsoH / 2 + 0.02, headY = torsoY + torsoH / 2 + 0.23;
 
-    // Hips — FIXED
+    // Hips - fixed
     const hips = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.17, 0.19, 10), m(pants));
     hips.position.set(0, hipY, 0);
     g.add(hips);
 
-    // Thighs, shins, shoes — FIXED
+    // Thighs, shins, shoes - fixed
     [-0.1, 0.1].forEach(tx => {
       const th = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.075, 0.42, 10), m(pants));
       th.rotation.x = Math.PI / 2;
@@ -417,7 +417,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
       sh.castShadow = true;
       g.add(sh);
 
-      // Shoe — FIXED
+      // Shoe - fixed
       const shoe = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.065, 0.19), m(0x111827, 0.5));
       shoe.position.set(tx, hipY - 0.41, 0.53);
       g.add(shoe);
@@ -438,7 +438,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
       g.add(shoulder);
     });
 
-    // Neck — FIXED
+    // Neck - fixed
     const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.075, 0.12, 10), m(skin));
     neck.position.set(0, torsoY + torsoH / 2 + 0.01, -0.02);
     g.add(neck);
@@ -507,7 +507,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
     return g;
   };
 
-  // ── Seat number badge ──────────────────────────────────────────────────────
+  // -- Seat number badge ------------------------------------------------------
   const makeBadgeCanvas = (sn, isTaken, isSel) => {
     const cv = document.createElement('canvas'); cv.width = cv.height = 128;
     const ctx = cv.getContext('2d');
@@ -591,7 +591,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
     placeRowNumbers();
   };
 
-  // ── Lights — bright open scene ─────────────────────────────────────────────
+  // -- Lights - bright open scene ---------------------------------------------
   const addLights = () => {
     const s = sceneRef.current;
 
@@ -619,7 +619,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
     s.add(back);
   };
 
-  // ── Seat material refresh ──────────────────────────────────────────────────
+  // -- Seat material refresh --------------------------------------------------
   const refreshSeatAppearance = () => {
     seatDataRef.current.forEach((d, sn) => {
       const isTaken = takenSeats?.includes(sn);
@@ -662,7 +662,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
     });
   };
 
-  // ── Click handler ──────────────────────────────────────────────────────────
+  // -- Click handler ----------------------------------------------------------
   const handleClick = (e) => {
     if (!containerRef.current || !raycasterRef.current) return;
     const rect  = containerRef.current.getBoundingClientRect();
@@ -681,7 +681,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
     if (sn && !takenSeats?.includes(sn) && onSelect) onSelect(sn);
   };
 
-  // ── Render loop ────────────────────────────────────────────────────────────
+  // -- Render loop ------------------------------------------------------------
   const startLoop = () => {
     startTimeRef.current = Date.now();
     const loop = () => {
@@ -718,7 +718,7 @@ const Advanced3DSeatMap = ({ capacity, takenSeats, selectedSeat, onSelect, isVis
   );
 };
 
-// ─── Icons ────────────────────────────────────────────────────────────────────
+// --- Icons --------------------------------------------------------------------
 const Ic = ({ d, className = 'w-5 h-5' }) => (
   <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={d} />
@@ -741,7 +741,7 @@ const I = {
   bell:   'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9',
 };
 
-// ─── Toast ────────────────────────────────────────────────────────────────────
+// --- Toast --------------------------------------------------------------------
 const Toast = ({ msg, type, onClose }) => (
   <div className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl border text-sm font-semibold animate-toast
     ${type === 'success' ? 'bg-emerald-500/15 border-emerald-400/30 text-emerald-400' : 'bg-rose-500/15 border-rose-400/30 text-rose-400'}`}>
@@ -750,7 +750,7 @@ const Toast = ({ msg, type, onClose }) => (
   </div>
 );
 
-// ─── Modal ────────────────────────────────────────────────────────────────────
+// --- Modal --------------------------------------------------------------------
 const Modal = ({ onClose, children, wide = false }) => (
   <div className="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/70 backdrop-blur-lg">
     <div className={`relative rounded-3xl shadow-2xl w-full border border-white/10 bg-[#0f1117] max-h-[92vh] overflow-y-auto ${wide ? 'max-w-5xl' : 'max-w-lg'}`}>
@@ -759,9 +759,9 @@ const Modal = ({ onClose, children, wide = false }) => (
   </div>
 );
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 //  SCHEDULE CARD
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 const ScheduleCard = ({ schedule, onBook, hasBooked, dark }) => {
   const dep  = new Date(schedule.departureTime);
   const mins = Math.round((dep - new Date()) / 60000);
@@ -801,12 +801,12 @@ const ScheduleCard = ({ schedule, onBook, hasBooked, dark }) => {
       const map = L.map(el, { zoomControl: true, scrollWheelZoom: false })
         .setView([(startLat + endLat) / 2, (startLng + endLng) / 2], 12);
       mapRef.current = map;
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap', maxZoom: 19 }).addTo(map);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(map);
       const greenIcon = L.divIcon({ className: '', html: `<div style="width:18px;height:18px;border-radius:50%;background:#10b981;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35)"></div>`, iconSize: [18, 18], iconAnchor: [9, 9] });
       const redIcon   = L.divIcon({ className: '', html: `<div style="width:18px;height:18px;border-radius:50%;background:#ef4444;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35)"></div>`, iconSize: [18, 18], iconAnchor: [9, 9] });
-      L.marker([startLat, startLng], { icon: greenIcon }).addTo(map).bindPopup(`<b>🟢 Start</b><br>${startPoint}`, { closeButton: false }).openPopup();
-      L.marker([endLat,   endLng  ], { icon: redIcon   }).addTo(map).bindPopup(`<b>🔴 End</b><br>${endPoint}`,     { closeButton: false });
-      L.polyline([[startLat, startLng], [endLat, endLng]], { color: '#1B4D89', weight: 3, opacity: 0.8, dashArray: '8 6' }).addTo(map);
+      L.marker([startLat, startLng], { icon: greenIcon }).addTo(map).bindPopup(`<b>Start</b><br>${startPoint}`, { closeButton: false }).openPopup();
+      L.marker([endLat,   endLng  ], { icon: redIcon   }).addTo(map).bindPopup(`<b>End</b><br>${endPoint}`,     { closeButton: false });
+      L.polyline([[startLat, startLng], [endLat, endLng]], { color: '#0f172a', weight: 3, opacity: 0.8, dashArray: '8 6' }).addTo(map);
       map.fitBounds([[startLat, startLng], [endLat, endLng]], { padding: [40, 40] });
       setMapLoading(false);
     } catch { setMapError('Map failed to load.'); setMapLoading(false); mapInitedRef.current = false; }
@@ -822,14 +822,14 @@ const ScheduleCard = ({ schedule, onBook, hasBooked, dark }) => {
 
   return (
     <div className={`relative overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl
-      ${dark ? 'bg-gray-900 border-white/10 hover:border-[#1B4D89]/30' : 'bg-white border-[#E0E4EB] hover:border-[#2A5F9E] shadow-sm'}`}>
-      <div className={`h-1 w-full ${gone ? 'bg-gray-500' : soon ? 'bg-gradient-to-r from-[#FF6B35] to-[#F59E0B]' : 'bg-gradient-to-r from-[#1B4D89] to-[#2A5F9E]'}`} />
+      ${dark ? 'bg-gray-900 border-white/10 hover:border-[#0f172a]/30' : 'bg-white border-[#E0E4EB] hover:border-[#06b6d4] shadow-sm'}`}>
+      <div className={`h-1 w-full ${gone ? 'bg-gray-500' : soon ? 'bg-gradient-to-r from-[#FF6B35] to-[#F59E0B]' : 'bg-gradient-to-r from-[#0f172a] to-[#06b6d4]'}`} />
 
       <div className="p-5">
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-lg ${gone ? 'bg-gray-700' : soon ? 'bg-gradient-to-br from-[#FF6B35] to-[#F59E0B]' : 'bg-gradient-to-br from-[#1B4D89] to-[#2A5F9E]'}`}>
+            <div className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-lg ${gone ? 'bg-gray-700' : soon ? 'bg-gradient-to-br from-[#FF6B35] to-[#F59E0B]' : 'bg-gradient-to-br from-[#0f172a] to-[#06b6d4]'}`}>
               <Ic d={I.bus} className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -847,7 +847,7 @@ const ScheduleCard = ({ schedule, onBook, hasBooked, dark }) => {
           <span className={dark ? 'text-slate-300' : 'text-gray-600'}>{startPoint}</span>
           <div className="flex-1 flex items-center gap-0.5">
             {[...Array(4)].map((_, i) => <div key={i} className={`flex-1 h-px ${dark ? 'bg-white/10' : 'bg-gray-200'}`} />)}
-            <Ic d={I.arrow} className="w-3 h-3 text-[#1B4D89] shrink-0" />
+            <Ic d={I.arrow} className="w-3 h-3 text-[#0f172a] shrink-0" />
           </div>
           <span className={dark ? 'text-slate-300' : 'text-gray-600'}>{endPoint}</span>
           <div className="w-2 h-2 rounded-full bg-rose-400 ring-2 ring-rose-400/30 shrink-0" />
@@ -880,18 +880,18 @@ const ScheduleCard = ({ schedule, onBook, hasBooked, dark }) => {
       <div className={`border-t ${dark ? 'border-white/10' : 'border-[#E0E4EB]'}`}>
         <div className={`px-5 py-3 ${dark ? 'bg-white/5' : 'bg-[#F5F7FA]'}`}>
           <div className="flex items-center gap-2 text-xs font-semibold text-[#6B7280] mb-2">
-            <svg className="w-3.5 h-3.5 text-[#1B4D89]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3.5 h-3.5 text-[#0f172a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
             <span>Route Map</span>
-            {hasCoords  && <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/15 text-emerald-400">📍 Precise</span>}
-            {!hasCoords && <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#FF6B35]/15 text-[#FF6B35]">⚠ No coords</span>}
+            {hasCoords  && <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/15 text-emerald-400">Precise</span>}
+            {!hasCoords && <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#FF6B35]/15 text-[#FF6B35]">No coords</span>}
           </div>
           {mapLoading && (
             <div className="flex flex-col items-center justify-center gap-3" style={{ height: 220 }}>
-              <div className="w-8 h-8 rounded-full animate-spin" style={{ border: '3px solid #1B4D89', borderTopColor: 'transparent' }} />
-              <p className="text-xs text-[#6B7280] font-medium">Loading map…</p>
+              <div className="w-8 h-8 rounded-full animate-spin" style={{ border: '3px solid #0f172a', borderTopColor: 'transparent' }} />
+              <p className="text-xs text-[#6B7280] font-medium">Loading map...</p>
             </div>
           )}
           {mapError && !mapLoading && (
@@ -909,7 +909,7 @@ const ScheduleCard = ({ schedule, onBook, hasBooked, dark }) => {
                 <div className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />{startPoint}</div>
                 <div className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-rose-400 inline-block" />{endPoint}</div>
               </div>
-              <span>🗺 OpenStreetMap</span>
+              <span>OpenStreetMap</span>
             </div>
           )}
         </div>
@@ -918,13 +918,13 @@ const ScheduleCard = ({ schedule, onBook, hasBooked, dark }) => {
       {/* Book button */}
       <div className="p-5 pt-3">
         {hasBooked ? (
-          <div className="w-full py-3 rounded-xl bg-emerald-500/10 border border-emerald-400/20 text-emerald-400 text-xs font-bold text-center">✓ Already Booked</div>
+          <div className="w-full py-3 rounded-xl bg-emerald-500/10 border border-emerald-400/20 text-emerald-400 text-xs font-bold text-center">Already Booked</div>
         ) : schedule.availableSeats === 0 ? (
           <div className="w-full py-3 rounded-xl bg-rose-500/10 border border-rose-400/20 text-rose-400 text-xs font-bold text-center">Fully Booked</div>
         ) : gone ? (
           <div className="w-full py-3 rounded-xl bg-gray-500/10 border border-gray-400/20 text-[#6B7280] text-xs font-bold text-center">Already Departed</div>
         ) : (
-          <button onClick={() => onBook(schedule)} className="w-full py-3 rounded-xl bg-gradient-to-r from-[#1B4D89] to-[#2A5F9E] hover:from-[#2A5F9E] hover:to-[#1B4D89] text-white text-sm font-bold shadow-lg shadow-[#1B4D89]/25 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2">
+          <button onClick={() => onBook(schedule)} className="w-full py-3 rounded-xl bg-gradient-to-r from-[#0f172a] to-[#06b6d4] hover:from-[#06b6d4] hover:to-[#0f172a] text-white text-sm font-bold shadow-lg shadow-[#0f172a]/25 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2">
             <Ic d={I.ticket} className="w-4 h-4" /> Book Seat
           </button>
         )}
@@ -933,9 +933,9 @@ const ScheduleCard = ({ schedule, onBook, hasBooked, dark }) => {
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 //  MAIN STUDENT DASHBOARD
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 export default function StudentShuttleDashboard() {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [dark, setDark]   = useState(false);
@@ -1014,8 +1014,8 @@ export default function StudentShuttleDashboard() {
   const text    = D ? 'text-white' : 'text-gray-900';
   const muted   = 'text-[#6B7280]';
   const inputCls = D
-    ? 'bg-white/5 border-white/10 text-white placeholder-gray-600 focus:border-[#1B4D89]/60 focus:ring-2 focus:ring-[#1B4D89]/20'
-    : 'bg-[#F5F7FA] border-[#E0E4EB] text-gray-900 placeholder-[#6B7280] focus:border-[#1B4D89] focus:ring-2 focus:ring-[#1B4D89]/20';
+    ? 'bg-white/5 border-white/10 text-white placeholder-gray-600 focus:border-[#0f172a]/60 focus:ring-2 focus:ring-[#0f172a]/20'
+    : 'bg-[#F5F7FA] border-[#E0E4EB] text-gray-900 placeholder-[#6B7280] focus:border-[#0f172a] focus:ring-2 focus:ring-[#0f172a]/20';
 
   const closeModal = () => { setBookingSchedule(null); setSelectedSeat(null); setConfirming(false); setIs3DVisible(false); };
 
@@ -1036,7 +1036,7 @@ export default function StudentShuttleDashboard() {
         }
         .confirmed-glow { animation: confirmed-pulse 1.5s ease-out 2; }
         ::-webkit-scrollbar { width: 5px }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg,#2A5F9E,#143A6B); border-radius: 10px }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg,#06b6d4,#1e293b); border-radius: 10px }
         .leaflet-container { font-family: inherit !important; z-index: 1; }
         .leaflet-popup-content-wrapper { border-radius: 10px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important; }
         .leaflet-popup-tip-container { display: none; }
@@ -1048,7 +1048,7 @@ export default function StudentShuttleDashboard() {
       <main className="max-w-6xl mx-auto px-6 py-8 space-y-8">
 
         {/* Hero */}
-        <div className="relative overflow-hidden rounded-3xl p-8 fade-up" style={{ background: 'linear-gradient(135deg,#1B4D89 0%,#2A5F9E 40%,#143A6B 100%)' }}>
+        <div className="relative overflow-hidden rounded-3xl p-8 fade-up" style={{ background: 'linear-gradient(135deg,#0f172a 0%,#06b6d4 40%,#1e293b 100%)' }}>
           <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }} />
           <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div>
@@ -1076,7 +1076,7 @@ export default function StudentShuttleDashboard() {
         {/* Status bar */}
         {myBookings.length > 0 && (
           <div className={`flex items-center gap-4 flex-wrap p-4 rounded-2xl border ${surface} ${border}`}>
-            <Ic d={I.bell} className="w-4 h-4 text-[#1B4D89] shrink-0" />
+            <Ic d={I.bell} className="w-4 h-4 text-[#0f172a] shrink-0" />
             <span className={`text-sm font-semibold ${text}`}>Booking Status</span>
             <div className="flex gap-3 flex-wrap">
               {pendingCount > 0 && <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-[#FF6B35]/10 text-[#FF6B35] border border-[#FF6B35]/20">{pendingCount} Pending</span>}
@@ -1091,10 +1091,10 @@ export default function StudentShuttleDashboard() {
           {[{ id: 'schedules', label: 'Find a Bus', icon: I.bus }, { id: 'bookings', label: 'My Bookings', icon: I.ticket }].map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
               className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200
-                ${tab === t.id ? 'bg-gradient-to-r from-[#1B4D89] to-[#2A5F9E] text-white shadow-lg shadow-[#1B4D89]/25' : `${muted} hover:text-white`}`}>
+                ${tab === t.id ? 'bg-gradient-to-r from-[#0f172a] to-[#06b6d4] text-white shadow-lg shadow-[#0f172a]/25' : `${muted} hover:text-white`}`}>
               <Ic d={t.icon} className="w-4 h-4" />{t.label}
               {t.id === 'bookings' && myBookings.length > 0 && (
-                <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${tab === t.id ? 'bg-white/20 text-white' : 'bg-[#1B4D89]/20 text-[#1B4D89]'}`}>{myBookings.length}</span>
+                <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${tab === t.id ? 'bg-white/20 text-white' : 'bg-[#0f172a]/20 text-[#0f172a]'}`}>{myBookings.length}</span>
               )}
               {t.id === 'bookings' && pendingCount > 0 && tab !== 'bookings' && (
                 <span className="w-2 h-2 rounded-full bg-[#FF6B35] animate-pulse" />
@@ -1108,7 +1108,7 @@ export default function StudentShuttleDashboard() {
           <div className="fade-up space-y-6">
             <div className="relative">
               <Ic d={I.search} className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 ${muted}`} />
-              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by route, destination or bus plate…"
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by route, destination or bus plate..."
                 className={`w-full pl-11 pr-4 py-3.5 rounded-2xl border text-sm outline-none transition-all ${inputCls}`} />
             </div>
             {filteredSchedules.length === 0 ? (
@@ -1139,7 +1139,7 @@ export default function StudentShuttleDashboard() {
               <div className={`rounded-2xl border ${surface} ${border} py-20 text-center`}>
                 <Ic d={I.ticket} className={`w-12 h-12 mx-auto mb-3 ${muted}`} />
                 <p className={`font-bold ${text}`}>No bookings yet</p>
-                <button onClick={() => setTab('schedules')} className="mt-4 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#1B4D89] to-[#2A5F9E] text-white text-sm font-bold hover:opacity-90 transition-all">Find a Bus</button>
+                <button onClick={() => setTab('schedules')} className="mt-4 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#0f172a] to-[#06b6d4] text-white text-sm font-bold hover:opacity-90 transition-all">Find a Bus</button>
               </div>
             ) : (
               <div className="space-y-4">
@@ -1152,7 +1152,7 @@ export default function StudentShuttleDashboard() {
                       <div className="flex items-start justify-between gap-4 flex-wrap pt-2">
                         <div className="flex items-center gap-4">
                           <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg font-black text-xl text-white
-                            ${gone ? 'bg-gradient-to-br from-gray-600 to-gray-700' : isConfirmed ? 'bg-gradient-to-br from-emerald-500 to-teal-500' : 'bg-gradient-to-br from-[#1B4D89] to-[#2A5F9E]'}`}>
+                            ${gone ? 'bg-gradient-to-br from-gray-600 to-gray-700' : isConfirmed ? 'bg-gradient-to-br from-emerald-500 to-teal-500' : 'bg-gradient-to-br from-[#0f172a] to-[#06b6d4]'}`}>
                             {b.seatNumber}
                           </div>
                           <div>
@@ -1160,7 +1160,7 @@ export default function StudentShuttleDashboard() {
                             <p className={`text-xs font-semibold ${muted}`}>{b.scheduleId?.busId?.plateNumber} - Seat {b.seatNumber}</p>
                             <div className="flex items-center gap-3 mt-1.5 flex-wrap">
                               <span className={`text-xs font-semibold flex items-center gap-1 ${muted}`}><Ic d={I.clock} className="w-3 h-3" />{dep.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</span>
-                              <span className={`text-xs font-semibold flex items-center gap-1 ${muted}`}><Ic d={I.map} className="w-3 h-3" />{b.scheduleId?.routeId?.startPoint} → {b.scheduleId?.routeId?.endPoint}</span>
+                              <span className={`text-xs font-semibold flex items-center gap-1 ${muted}`}><Ic d={I.map} className="w-3 h-3" />{b.scheduleId?.routeId?.startPoint}{' -> '}{b.scheduleId?.routeId?.endPoint}</span>
                             </div>
                           </div>
                         </div>
@@ -1187,7 +1187,7 @@ export default function StudentShuttleDashboard() {
         )}
       </main>
 
-      {/* ── Booking Modal ── */}
+      {/* -- Booking Modal -- */}
       {bookingSchedule && (
         <Modal onClose={closeModal} wide>
           <div className="p-6">
@@ -1207,12 +1207,12 @@ export default function StudentShuttleDashboard() {
                 <div className="grid grid-cols-4 gap-3 mb-6">
                   {[
                     { icon: I.clock, val: new Date(bookingSchedule.departureTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), sub: new Date(bookingSchedule.departureTime).toLocaleDateString(), label: 'Departure' },
-                    { icon: I.map,   val: bookingSchedule.routeId?.startPoint, sub: `→ ${bookingSchedule.routeId?.endPoint}`, label: 'Route' },
+                    { icon: I.map,   val: bookingSchedule.routeId?.startPoint, sub: `-> ${bookingSchedule.routeId?.endPoint}`, label: 'Route' },
                     { icon: I.seat,  val: `${bookingSchedule.availableSeats} seats`, sub: `of ${bookingSchedule.busId?.capacity} total`, label: 'Available' },
                   ].map(info => (
                     <div key={info.label} className="flex flex-col gap-1 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
                       <div className="flex items-center gap-1.5 mb-0.5">
-                        <Ic d={info.icon} className="w-3.5 h-3.5 text-[#2A5F9E]" />
+                        <Ic d={info.icon} className="w-3.5 h-3.5 text-[#06b6d4]" />
                         <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">{info.label}</span>
                       </div>
                       <p className="text-sm font-black text-white leading-none">{info.val}</p>
@@ -1244,8 +1244,8 @@ export default function StudentShuttleDashboard() {
                 ) : (
                   <div className="w-full h-[580px] rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
                     <div className="text-center">
-                      <div className="w-14 h-14 border-4 border-[#1B4D89] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                      <p className="text-slate-500 font-medium">Loading 3D Seat Map…</p>
+                      <div className="w-14 h-14 border-4 border-[#0f172a] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                      <p className="text-slate-500 font-medium">Loading 3D Seat Map...</p>
                     </div>
                   </div>
                 )}
@@ -1276,15 +1276,15 @@ export default function StudentShuttleDashboard() {
                   <button
                     onClick={() => { if (!selectedSeat) return showToast('Please select a seat first', 'error'); setConfirming(true); }}
                     disabled={!selectedSeat}
-                    className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#1B4D89] to-[#2A5F9E] text-white font-bold text-sm shadow-lg hover:opacity-90 transition-all disabled:opacity-30">
-                    {selectedSeat ? `Continue with Seat ${selectedSeat} →` : 'Select a seat first'}
+                    className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#0f172a] to-[#06b6d4] text-white font-bold text-sm shadow-lg hover:opacity-90 transition-all disabled:opacity-30">
+                    {selectedSeat ? `Continue with Seat ${selectedSeat}` : 'Select a seat first'}
                   </button>
                 </div>
               </>
             ) : (
               /* Confirm screen */
               <div className="space-y-5">
-                <div className="relative overflow-hidden rounded-3xl p-6" style={{ background: 'linear-gradient(135deg,#1B4D89,#2A5F9E,#143A6B)' }}>
+                <div className="relative overflow-hidden rounded-3xl p-6" style={{ background: 'linear-gradient(135deg,#0f172a,#06b6d4,#1e293b)' }}>
                   <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
                   <div className="relative flex items-start justify-between mb-4">
                     <div>
@@ -1320,7 +1320,7 @@ export default function StudentShuttleDashboard() {
                   </button>
                   <button onClick={handleConfirmBook} disabled={loading}
                     className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold text-sm shadow-lg hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
-                    {loading ? 'Booking…' : <><Ic d={I.check} className="w-4 h-4" />Confirm Booking</>}
+                    {loading ? 'Booking...' : <><Ic d={I.check} className="w-4 h-4" />Confirm Booking</>}
                   </button>
                 </div>
               </div>

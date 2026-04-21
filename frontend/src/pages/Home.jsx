@@ -9,7 +9,7 @@ const Home = () => {
         backgroundImage: "url('https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?q=80&w=2070&auto=format&fit=crop')", 
       }}
     >
-      {/* 👇 FIX: Changed bg-primary-dark/80 to bg-black/60 to remove the blue but keep text readable */}
+      {/* Changed bg-primary-dark/80 to bg-black/60 to remove the blue but keep text readable */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
       
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -18,7 +18,7 @@ const Home = () => {
         <div className="flex-grow flex flex-col items-center justify-center text-center px-4 py-16">
           <div className="mb-6 inline-block px-4 py-1.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md animate-fade-in-down">
             <span className="text-white text-xs font-bold tracking-widest uppercase">
-              🚀 The Future of Campus Life
+              
             </span>
           </div>
 
@@ -67,7 +67,7 @@ const Home = () => {
             />
             <FeatureCard 
               icon="📚" 
-              title="Academic Spaces" 
+              title="Library" 
               desc="Reserve books & rooms." 
               color="from-green-400 to-emerald-500"
             />
@@ -84,7 +84,7 @@ const Home = () => {
   );
 };
 
-// --- SUB-COMPONENTS ---
+// SUB-COMPONENTS
 const FeatureCard = ({ icon, title, desc, color }) => (
   <div className="group relative p-6 h-full rounded-2xl bg-white/10 border border-white/20 hover:border-white/40 transition-all duration-300 hover:bg-white/20 backdrop-blur-md flex flex-col items-center text-center overflow-hidden">
     <div className={`absolute inset-0 opacity-0 group-hover:opacity-30 rounded-2xl bg-gradient-to-br ${color} transition-opacity duration-500`}></div>
