@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 import FacilitiesLayout from "./FacilitiesLayout";
-import StudentTopNav from "../../components/StudentTopNav";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 const TABS = [
@@ -172,9 +171,7 @@ const MyBookings = () => {
   };
 
   return (
-    <>
-      <StudentTopNav active="Book Facilities" />
-      <FacilitiesLayout>
+    <FacilitiesLayout>
       <div className="p-8 max-w-3xl">
         {/* heading */}
         <div className="flex items-start justify-between mb-7">
@@ -228,7 +225,6 @@ const MyBookings = () => {
         )}
       </div>
     </FacilitiesLayout>
-    </>
   );
 };
 
