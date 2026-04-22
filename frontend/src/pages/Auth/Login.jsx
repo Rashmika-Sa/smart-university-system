@@ -70,13 +70,15 @@ const Login = () => {
           navigate('/facility-dashboard');
           break;
         case 'society':
-          navigate('/facilities/bookings');
+          // Societies should land on the public home page rather than the facilities bookings
+          navigate('/');
           break;
         case 'team_captain':
-          navigate('/facilities/bookings');
+          // Team captains should land on the public home page by default
+          navigate('/');
           break;
         case 'sports_council':
-          navigate('/facilities/application-reviews');
+          navigate('/');
           break;
         default:
           navigate('/student-dashboard');
