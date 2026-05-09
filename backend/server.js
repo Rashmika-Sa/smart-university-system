@@ -27,7 +27,7 @@ const libraryBookBookingRoutes  = require('./routes/Library/bookBookingRoutes');
 
 // Initialize the App
 const app        = express();
-const PORT       = process.env.PORT       || 5000;
+const PORT       = process.env.PORT       || 9000;
 const BODY_LIMIT = process.env.BODY_LIMIT || '10mb';
 
 const configuredOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
@@ -53,10 +53,20 @@ const corsOrigin = (origin, callback) => {
 };
 
 // Middleware
-app.use(cors({
-  origin: corsOrigin,
-  credentials: true,
-}));
+const isDevEnv = (process.env.NODE_ENV || 'development') !== 'production';
+
+if (isDevEnv) {
+  app.use(cors({
+    origin: true,
+    credentials: true,
+  }));
+ } else {
+  
+  app.use(cors({
+    origin: corsOrigin,
+    credentials: true,
+  }));
+}
 app.use(express.json({ limit: BODY_LIMIT }));
 app.use(express.urlencoded({ extended: true, limit: BODY_LIMIT }));
 
@@ -86,7 +96,7 @@ app.get('/', (req, res) => {
 
 // ── Database Connection ───────────────────────────────────────────────────────
 const connectWithFallback = async () => {
-  const opts        = { serverSelectionTimeoutMS: 5000 };
+  const opts        = { serverSelectionTimeoutMS: 9000 };
   const primaryUri  = process.env.MONGO_URI;
   const fallbackUri = process.env.LOCAL_MONGO_URI || 'mongodb://127.0.0.1:27017/uni-system';
   const isDev       = (process.env.NODE_ENV || 'development') !== 'production';
