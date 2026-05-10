@@ -62,20 +62,29 @@ const paletteFor = (id, cache) => {
   return cache[id];
 };
 
+const normalizeType = (value) => String(value || "").trim().toLowerCase();
+const isSportsSpace = (space) => normalizeType(space?.type).includes("sport");
+const isEventSpace = (space) => normalizeType(space?.type).includes("event");
+const bookingTitle = (booking) => booking.label?.trim() || booking.space?.name || "Booking";
+const bookingVenue = (booking) => booking.space?.name || "Venue";
+
 // ── event card (month view) ───────────────────────────────────────────────────
 const EventCard = ({ booking, palette }) => (
   <div
-    title={`${booking.space?.name} · ${booking.startTime}–${booking.endTime}${booking.label ? ` · ${booking.label}` : ""}`}
-    className="flex rounded-[4px] overflow-hidden cursor-default select-none w-full"
+    title={`${bookingTitle(booking)} · ${booking.startTime}–${booking.endTime} · ${bookingVenue(booking)}`}
+    className="flex rounded-sm overflow-hidden cursor-default select-none w-full"
     style={{ background: palette.bg }}
   >
     <div style={{ width: 3, flexShrink: 0, background: palette.bar }} />
     <div className="px-1.5 py-0.5 min-w-0 flex flex-col gap-0.5 overflow-hidden">
-      <span className="text-[10px] font-medium leading-none whitespace-nowrap" style={{ color: palette.bar }}>
-        {booking.startTime}
+      <span className="text-[11px] font-bold leading-tight truncate" style={{ color: palette.text }}>
+        {bookingTitle(booking)}
       </span>
-      <span className="text-[10px] font-semibold leading-tight truncate" style={{ color: palette.text }}>
-        {booking.space?.name}
+      <span className="text-[10px] font-medium leading-none whitespace-nowrap" style={{ color: palette.bar }}>
+        {booking.startTime}–{booking.endTime}
+      </span>
+      <span className="text-[9px] leading-tight truncate" style={{ color: palette.text, opacity: 0.72 }}>
+        {bookingVenue(booking)}
       </span>
     </div>
   </div>
@@ -98,12 +107,13 @@ const CalendarContent = ({ colorCache }) => {
   const [loading, setLoading]  = useState(true);
 
   const weekScrollRef = useRef(null);
-  const spaceType     = tab === "Sports Places" ? "Sports Facility" : "Event Space";
+  const spaceType     = tab === "Sports Places" ? "sports" : "event";
 
   const filteredSpaces = useMemo(
-    () => spaces.filter((s) => s.type === spaceType),
+    () => spaces.filter((s) => spaceType === "sports" ? isSportsSpace(s) : isEventSpace(s)),
     [spaces, spaceType]
   );
+  const visibleSpaceIds = useMemo(() => new Set(filteredSpaces.map((space) => space._id)), [filteredSpaces]);
 
   const weekDays = useMemo(() =>
     Array.from({ length: 7 }, (_, i) => {
@@ -127,7 +137,7 @@ const CalendarContent = ({ colorCache }) => {
         from = dateIso(weekDays[0]);
         to   = dateIso(weekDays[6]);
       }
-      const { data } = await axios.get(`/facilities/bookings?from=${from}&to=${to}&status=confirmed&calendar=true`);
+      const { data } = await axios.get(`/facilities/bookings?from=${from}&to=${to}&calendar=true`);
       setBookings(data);
     } catch { setBookings([]); }
     finally   { setLoading(false); }
@@ -146,13 +156,15 @@ const CalendarContent = ({ colorCache }) => {
   const bookingsByDate = useMemo(() => {
     const map = {};
     bookings.forEach((b) => {
-      if (!b.space || b.space.type !== spaceType) return;
+      if (!b.space) return;
+      if (!['pending', 'confirmed'].includes(b.status)) return;
+      if (visibleSpaceIds.size > 0 && !visibleSpaceIds.has(b.space._id)) return;
       if (selectedSpaces.size > 0 && !selectedSpaces.has(b.space._id)) return;
       if (!map[b.date]) map[b.date] = [];
       map[b.date].push(b);
     });
     return map;
-  }, [bookings, spaceType, selectedSpaces]);
+  }, [bookings, selectedSpaces, visibleSpaceIds]);
 
   const monthGrid = useMemo(() => buildMonthGrid(year, month), [year, month]);
 
@@ -178,7 +190,11 @@ const CalendarContent = ({ colorCache }) => {
     setWeekStart(getMondayOf(today));
   };
 
-  const monthTotal = bookings.filter((b) => b.space?.type === spaceType).length;
+  const monthTotal = bookings.filter((b) =>
+    ['pending', 'confirmed'].includes(b.status) &&
+    b.space &&
+    (visibleSpaceIds.size === 0 || visibleSpaceIds.has(b.space._id))
+  ).length;
 
   const weekLabel = useMemo(() => {
     const s = weekDays[0], e = weekDays[6];
@@ -224,7 +240,7 @@ const CalendarContent = ({ colorCache }) => {
         {/* Venue filter */}
         <div style={{ padding: "0 12px", flex: 1, minHeight: 0, overflowY: "auto" }}>
           <p style={{ fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "#71717a", padding: "0 8px 8px" }}>
-            {spaceType === "Sports Facility" ? "Sports Venues" : "Event Venues"}
+            {spaceType === "sports" ? "Sports Venues" : "Event Venues"}
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {[{ _id: "__all", name: "All Venues" }, ...filteredSpaces].map((s) => {
@@ -470,7 +486,7 @@ const CalendarContent = ({ colorCache }) => {
                           const pal    = paletteFor(b.space?._id, colorCache);
                           return (
                             <div key={b._id}
-                              title={`${b.space?.name} · ${b.startTime}–${b.endTime}${b.label ? ` · ${b.label}` : ""}`}
+                              title={`${bookingTitle(b)} · ${b.startTime}–${b.endTime} · ${bookingVenue(b)}`}
                               style={{
                                 position: "absolute", top, left: 2, right: 2, height,
                                 display: "flex", borderRadius: 4, overflow: "hidden",
@@ -478,17 +494,15 @@ const CalendarContent = ({ colorCache }) => {
                               }}>
                               <div style={{ width: 3, flexShrink: 0, background: pal.bar }} />
                               <div style={{ padding: "4px 6px", overflow: "hidden", minWidth: 0 }}>
-                                <p style={{ fontSize: 10, fontWeight: 500, color: pal.bar, lineHeight: 1, whiteSpace: "nowrap", margin: 0 }}>
+                                <p style={{ fontSize: 11, fontWeight: 700, color: pal.text, lineHeight: 1.25, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", margin: "3px 0 0" }}>
+                                  {bookingTitle(b)}
+                                </p>
+                                <p style={{ fontSize: 10, fontWeight: 500, color: pal.bar, lineHeight: 1, whiteSpace: "nowrap", margin: "2px 0 0" }}>
                                   {b.startTime}–{b.endTime}
                                 </p>
-                                <p style={{ fontSize: 10, fontWeight: 600, color: pal.text, lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", margin: "3px 0 0" }}>
-                                  {b.space?.name}
+                                <p style={{ fontSize: 9, color: pal.text, opacity: 0.72, lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", margin: "2px 0 0" }}>
+                                  {bookingVenue(b)}
                                 </p>
-                                {b.label && height >= 56 && (
-                                  <p style={{ fontSize: 9, color: pal.text, opacity: 0.7, lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", margin: "2px 0 0" }}>
-                                    {b.label}
-                                  </p>
-                                )}
                               </div>
                             </div>
                           );
